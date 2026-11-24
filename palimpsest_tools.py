@@ -1,0 +1,226 @@
+"""Tool handlers and schemas for Palimpsest."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+
+try:
+    from .palimpsest_audit import audit_path, audit_source
+    from .palimpsest_data import BASE_TOKENS, FAMILIES, MOODS, SKILL_BY_FAMILY
+except ImportError:  # standalone CLI / tests
+    from palimpsest_audit import audit_path, audit_source
+    from palimpsest_data import BASE_TOKENS, FAMILIES, MOODS, SKILL_BY_FAMILY
+
+DIRECTIONS = ["The Quiet Instrument", "Paper Teeth", "Soft Machinery", "The Long Table",
+              "Field Notes", "After Hours", "The Slow Signal", "Open Studio"]
+KEYWORDS = {
+    "cards": ("card", "deck", "collect", "ticket", "wallet", "stack", "fan"),
+    "press": ("hold", "confirm", "delete", "pay", "publish", "send", "destructive"),
+    "drag": ("drag", "reorder", "sort", "kanban", "move", "timeline", "scrub"),
+    "hover": ("hover", "preview", "cursor", "gallery", "row", "magnetic"),
+    "select": ("select", "segment", "tab", "filter", "picker", "toggle", "view"),
+    "shader": ("shader", "webgl", "noise", "field", "globe", "heat", "atmosphere"),
+    "type": ("type", "wordmark", "editorial", "font", "headline", "label", "quote"),
+    "scroll": ("scroll", "story", "chapter", "pinned", "timeline", "parallax"),
+    "loading": ("agent", "loading", "thinking", "wait", "job", "stream", "status"),
+}
+
+
+def _j(payload: dict) -> str:
+    return json.dumps(payload, ensure_ascii=False)
+
+
+def _text(value, name: str, limit: int = 2000) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{name} must be a non-empty string")
+    value = value.strip()
+    if len(value) > limit:
+        raise ValueError(f"{name} must be at most {limit} characters")
+    return value
+
+
+def _family(fid: str) -> dict:
+    for family in FAMILIES:
+        if family["id"] == fid:
+            return family
+    raise ValueError(f"unknown family: {fid}")
+
+
+def _pick_families(brief: str, mood: str) -> list[str]:
+    low = brief.lower()
+    scored = []
+    for fid, words in KEYWORDS.items():
+        score = sum(1 for word in words if word in low)
+        if score:
+            scored.append((score, fid))
+    scored.sort(key=lambda item: (-item[0], item[1]))
+    picks = []
+    for _, fid in scored:
+        if fid not in picks:
+            picks.append(fid)
+        if len(picks) == 2:
+            break
+    if not picks:
+        picks = ["paper-ink"]
+    if len(picks) == 1:
+        complement = "type" if picks[0] != "type" else "select"
+        if mood == "tactile":
+            complement = "cards"
+        if mood == "technical" and picks[0] != "loading":
+            complement = "loading"
+        if complement == picks[0]:
+            complement = "type" if picks[0] != "type" else "select"
+        picks.append(complement)
+    return picks[:2]
+
+
+def _accent(mood: str) -> dict:
+    return MOODS.get(mood, MOODS["quiet"])
+
+
+def h_index(args: dict) -> str:
+    return _j({
+        "ok": True,
+        "plugin": "palimpsest",
+        "version": "0.1.0",
+        "families": [
+            {"id": f["id"], "name": f["name"], "skill": f["skill"],
+             "signature": f["signature"], "use_when": f["use_when"], "avoid": f["avoid"]}
+            for f in FAMILIES
+        ],
+        "base_tokens": BASE_TOKENS,
+        "moods": sorted(MOODS),
+        "note": "Recipes are starting directions, not templates. Study the brief before writing code.",
+    })
+
+
+def h_recipe(args: dict) -> str:
+    brief = _text(args.get("brief"), "brief", 2000)
+    mood = str(args.get("mood") or "quiet").lower()
+    if mood not in MOODS:
+        raise ValueError(f"mood must be one of: {', '.join(sorted(MOODS))}")
+    stack = str(args.get("stack") or "HTML/CSS/JS").strip()[:200]
+    constraints = str(args.get("constraints") or "").strip()[:500]
+    picks = _pick_families(brief, mood)
+    base = _family(picks[0]) if picks[0] == "paper-ink" else _family("paper-ink")
+    accent = _accent(mood)
+    direction = DIRECTIONS[int(hashlib.sha256(brief.encode()).hexdigest(), 16) % len(DIRECTIONS)]
+    signature = [_family(fid) for fid in picks]
+    avoid = []
+    for family in signature:
+        avoid.append(family["avoid"])
+    avoid.extend(["purple-blue gradient as the identity", "glass on every surface",
+                  "fake progress or spinner-only loading", "ten identical rounded cards"])
+    checks = ["One loud line and one quiet paragraph", "Body measure 45-75ch",
+              "Visible focus and 4.5:1 body contrast", "Reduced-motion path",
+              "No copied assets or reference code"]
+    for family in signature:
+        checks.extend(family["check"])
+    tokens = {
+        "--paper": accent["field"],
+        "--ink": accent["ink"],
+        "--muted": "#6b6a66" if mood != "technical" else "#a3a3a3",
+        "--line": "#e7e3d8" if mood != "technical" else "#2a2a2a",
+        "--accent": accent["accent"],
+        "--accent-deep": accent["deep"],
+        "--display": "clamp(2.6rem, 6vw, 6rem)",
+        "--body": "1rem/1.55",
+        "--radius": "2px" if mood in {"quiet", "editorial"} else "18px",
+        "--ease-out": "cubic-bezier(.22, 1, .36, 1)",
+        "--ease-spring": "cubic-bezier(.2, 1.35, .4, 1)",
+    }
+    type_system = {
+        "display": "Instrument Serif" if mood == "editorial" else ("IBM Plex Mono" if mood == "technical" else "Satoshi"),
+        "body": "Satoshi" if mood != "technical" else "IBM Plex Sans",
+        "utility": "JetBrains Mono",
+    }
+    return _j({
+        "ok": True,
+        "direction": direction,
+        "thesis": f"{accent['note']} The page is built around {signature[0]['name'].lower()} and {signature[1]['name'].lower()}.",
+        "base": base["name"],
+        "mood": mood,
+        "stack": stack,
+        "signature_moves": [
+            {"id": f["id"], "name": f["name"], "skill": f["skill"], "signature": f["signature"]}
+            for f in signature
+        ],
+        "tokens": tokens,
+        "type": type_system,
+        "composition": [
+            "First screen: one loud line, one quiet paragraph, one action, one proof object.",
+            "Second screen: the first signature move at full size; no second hero.",
+            "Middle: alternate a dense instrument with a quiet section; break the grid once.",
+            "Final: a plain-language close and a real next action; no fake logo wall.",
+        ],
+        "motion": {
+            "feedback_ms": 160,
+            "scene_ms": 520,
+            "ease": "--ease-out",
+            "spring": "--ease-spring",
+            "reduced": "Freeze transforms and parallax; keep state changes and content.",
+        },
+        "avoid": avoid,
+        "build_order": [
+            "Write the reference map and the not-doing list.",
+            "Set tokens and type; test the first screen without images.",
+            "Build the structural signature move; verify at 390px.",
+            "Build the behavioral signature; test pointer, keyboard and reduced motion.",
+            "Add content, then run the audit and three-width screenshots.",
+        ],
+        "acceptance": checks,
+        "constraints": constraints,
+        "skills": [f["skill"] for f in signature],
+        "caveat": "This is a direction. The builder must still study the reference, write original code and verify in a browser.",
+    })
+
+
+def h_audit(args: dict) -> str:
+    source = args.get("source")
+    path = args.get("path")
+    if bool(source) == bool(path):
+        raise ValueError("pass exactly one of source or path")
+    if path:
+        return _j(audit_path(_text(path, "path", 1000)))
+    return _j(audit_source(_text(source, "source", 300_000)))
+
+
+TOOL_SPECS = [
+    {
+        "name": "palimpsest_index",
+        "handler": h_index,
+        "emoji": "🗂️",
+        "description": "List the ten reference families, their skills and the base design tokens.",
+        "schema": {"type": "object", "properties": {}, "required": []},
+    },
+    {
+        "name": "palimpsest_recipe",
+        "handler": h_recipe,
+        "emoji": "🧪",
+        "description": "Turn a product brief into an original design direction with tokens, type, two signature moves and checks.",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "brief": {"type": "string", "description": "What is being built, for whom, and why."},
+                "mood": {"type": "string", "enum": sorted(MOODS)},
+                "stack": {"type": "string", "description": "Target stack, e.g. Next.js + Tailwind."},
+                "constraints": {"type": "string", "description": "Hard constraints: brand, content, a11y, performance."},
+            },
+            "required": ["brief"],
+        },
+    },
+    {
+        "name": "palimpsest_audit",
+        "handler": h_audit,
+        "emoji": "🔎",
+        "description": "Scan local HTML/CSS/JS text for generic gradients, transition-all, missing reduced motion and other design slop.",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "path": {"type": "string", "description": "Local text file to scan."},
+                "source": {"type": "string", "description": "Source text to scan instead of a path."},
+            },
+        },
+    },
+]

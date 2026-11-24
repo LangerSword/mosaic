@@ -1,0 +1,20 @@
+name: palimpsest
+label: Palimpsest
+kind: standalone
+version: 0.1.0
+author: Lakshaya Sharma (LangerSword)
+homepage: https://github.com/LangerSword/palimpsest
+description: >
+  Design direction for Hermes. Palimpsest turns a brief or a studied reference
+  into an original interface recipe: a base field, one accent, a type pairing,
+  two signature moves, a composition order, motion rules and an audit
+  checklist. It also indexes the reference families and audits a local
+  HTML/CSS/JS source for generic or inaccessible patterns. Local only: no
+  network, no keys, no telemetry.
+requires_hermes: ">=0.23.0"
+python_dependencies: []
+provides_hooks: []
+provides_tools:
+  - palimpsest_index
+  - palimpsest_recipe
+  - palimpsest_audit
