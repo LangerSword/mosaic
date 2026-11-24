@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mosaic / film</title>
+<style>
+@font-face{font-family:Anton;src:url("../site/fonts/Anton-Regular.ttf");font-weight:400;font-display:swap}
+@font-face{font-family:Playfair;src:url("../site/fonts/PlayfairDisplay-Italic.ttf");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:Barlow;src:url("../site/fonts/Barlow-Regular.ttf");font-weight:400;font-display:swap}
+@font-face{font-family:Barlow;src:url("../site/fonts/Barlow-Medium.ttf");font-weight:500;font-display:swap}
+@font-face{font-family:Plex;src:url("../site/fonts/IBMPlexMono-Regular.ttf");font-weight:400;font-display:swap}
+@font-face{font-family:Plex;src:url("../site/fonts/IBMPlexMono-Bold.ttf");font-weight:700;font-display:swap}
+*{box-sizing:border-box}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#11110f;color:#f3efe6;font-family:Barlow,sans-serif}
+body:before{content:"";position:fixed;inset:0;background-image:linear-gradient(to right,rgba(243,239,230,.035) 1px,transparent 1px),linear-gradient(to bottom,rgba(243,239,230,.035) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(120deg,black,transparent 82%)}
+.frame{position:fixed;inset:0;overflow:hidden}
+.scene{position:absolute;inset:0;display:flex;align-items:center;padding:100px 110px;opacity:0;will-change:opacity,transform}
+.scene:after{content:"";position:absolute;right:10%;top:18%;width:360px;height:360px;border:1px solid rgba(243,239,230,.16);transform:rotate(12deg)}
+.eyebrow{font-family:Plex,monospace;font-size:15px;letter-spacing:.2em;text-transform:uppercase;color:#c9a999;margin-bottom:34px}
+h1{margin:0;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:150px;line-height:.82;letter-spacing:-.025em;text-transform:uppercase}
+h1 em{font-family:Playfair,Georgia,serif;font-weight:400;text-transform:none;letter-spacing:-.06em;color:#e06a4f}
+.deck{margin-top:34px;max-width:720px;font-size:25px;line-height:1.4;color:#b9b0a1}
+.mark{position:absolute;left:110px;bottom:62px;display:flex;align-items:center;gap:12px;font-family:Anton,Impact,sans-serif;font-size:22px;letter-spacing:.1em}
+.tiles{display:grid;grid-template-columns:repeat(2,7px);grid-template-rows:repeat(2,7px);gap:1px}.tiles i{background:#f3efe6}.tiles i:nth-child(2){background:#c64a2e}.tiles i:nth-child(3){background:#0d2340}
+.label{position:absolute;right:110px;bottom:66px;font-family:Plex,monospace;font-size:12px;letter-spacing:.14em;color:#8e877c}
+.stamp{position:absolute;right:110px;top:80px;font-family:Plex,monospace;font-size:12px;letter-spacing:.14em;color:#8e877c;border:1px solid #49443c;padding:7px 10px}
+.big{font-family:Anton,Impact,sans-serif;font-size:280px;line-height:.76;letter-spacing:-.04em;color:#f3efe6}
+.big em{font-family:Playfair,Georgia,serif;font-weight:400;letter-spacing:-.09em;color:#c64a2e;text-transform:none}
+.grid{position:absolute;right:110px;top:160px;width:530px;height:700px;display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,1fr);border:1px solid #4d473e}
+.grid div{padding:20px;border-right:1px solid #4d473e;border-bottom:1px solid #4d473e;display:flex;flex-direction:column;justify-content:space-between;font-family:Plex,monospace;font-size:12px;letter-spacing:.06em;color:#8e877c}
+.grid div:nth-child(2n){border-right:0}.grid div:nth-child(n+5){border-bottom:0}.grid b{font-family:Anton,Impact,sans-serif;font-size:22px;font-weight:400;letter-spacing:.04em;color:#f3efe6}
+.grid .hot{background:#c64a2e;color:#f3efe6}.grid .hot b{color:#f3efe6}.grid .ink{background:#0d2340;color:#c8d1df}.grid .ink b{color:#f3efe6}
+.stats{font-family:Anton,Impact,sans-serif;font-size:58px;line-height:1.05;letter-spacing:-.02em}
+.stats span{color:#e06a4f}
+.small{font-family:Plex,monospace;font-size:14px;letter-spacing:.08em;color:#9d9587;line-height:1.9;margin-top:28px}
+.url{font-family:Plex,monospace;font-size:16px;letter-spacing:.1em;color:#f3efe6;margin-top:38px}
+.watermark{position:absolute;right:110px;bottom:60px;font-family:Plex,monospace;font-size:12px;letter-spacing:.14em;color:#716b61}
+</style>
+</head>
+<body>
+<div class="frame">
+  <section class="scene" data-a="0" data-b="2.8">
+    <div>
+      <div class="eyebrow">Mosaic / a design reference engine</div>
+      <h1>A reference<br>is not<br><em>a template.</em></h1>
+      <p class="deck">Study the move. Separate the principle from the skin. Then build the original.</p>
+    </div>
+    <div class="stamp">HERMES PLUGIN / 0.5.0</div>
+    <div class="mark"><span class="tiles"><i></i><i></i><i></i><i></i></span> MOSAIC</div>
+    <div class="label">REFERENCE IN. ORIGINAL OUT.</div>
+  </section>
+
+  <section class="scene" data-a="2.8" data-b="5.6">
+    <div>
+      <div class="eyebrow">The problem</div>
+      <h1>Most pages<br>copy the<br><em>skin.</em></h1>
+      <p class="deck">The gradient, the cards, the motion. None of it explains what the product is doing.</p>
+    </div>
+    <div class="grid">
+      <div><span>01 / SURFACE</span><b>Borrowed</b></div>
+      <div class="hot"><span>02 / MOVE</span><b>Missing</b></div>
+      <div class="ink"><span>03 / PROOF</span><b>Absent</b></div>
+      <div><span>04 / STATE</span><b>Hidden</b></div>
+      <div><span>05 / SYSTEM</span><b>Not yet</b></div>
+      <div><span>06 / TASTE</span><b>?</b></div>
+    </div>
+    <div class="mark"><span class="tiles"><i></i><i></i><i></i><i></i></span> MOSAIC</div>
+    <div class="label">STUDY THE MOVE, NOT THE SKIN</div>
+  </section>
+
+  <section class="scene" data-a="5.6" data-b="8.0">
+    <div>
+      <div class="eyebrow">The method</div>
+      <div class="big">REFERENCE<br>IN.<br><em>ORIGINAL</em><br>OUT.</div>
+    </div>
+    <div class="grid">
+      <div><span>13</span><b>SKILLS</b></div>
+      <div><span>07</span><b>TOOLS</b></div>
+      <div><span>20</span><b>COMPONENTS</b></div>
+      <div><span>06</span><b>STACKS</b></div>
+      <div class="hot"><span>21</span><b>TESTS</b></div>
+      <div><span>00</span><b>NETWORK</b></div>
+    </div>
+    <div class="mark"><span class="tiles"><i></i><i></i><i></i><i></i></span> MOSAIC</div>
+    <div class="label">A DIRECTION, NOT A DECK</div>
+  </section>
+</div>
+<script>
+const scenes=[...document.querySelectorAll('.scene')];
+const clamp=v=>Math.max(0,Math.min(1,v));
+const ease=p=>1-Math.pow(1-p,3);
+let started=0,raf=0,t0=0;
+function render(t){
+  scenes.forEach((el,i)=>{
+    const a=+el.dataset.a,b=+el.dataset.b;
+    const pin=clamp((t-a)/0.38),pout=clamp((b-t)/0.38);
+    const p=Math.min(pin,pout);
+    el.style.opacity=p;
+    el.style.transform=`translateY(${(1-ease(pin))*18}px) scale(${0.985+0.015*ease(pin)})`;
+    el.style.pointerEvents=p>0?'auto':'none';
+  });
+}
+function tick(now){
+  if(!started)started=now;
+  const t=(now-started)/1000;
+  render(t);
+  if(t<8.4)raf=requestAnimationFrame(tick);
+}
+function start(){started=0;cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);}
+window.__render=render;window.__startFilm=start;window.__filmReady=true;
+</script>
+</body>
+</html>

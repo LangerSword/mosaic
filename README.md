@@ -91,6 +91,10 @@ python3 -m http.server 4173 --directory site
 
 The page is verified at 1440 and 390, with no horizontal overflow and no console errors. Screenshots are in `docs/site-1440.png` and `docs/site-390.png`.
 
+## 60 second film
+
+[Watch the demo](https://github.com/LangerSword/mosaic/releases/tag/v0.5.0): a kinetic intro, real footage of the live site, the Forge playground, the generated component lab, the Taste lab and the end card. Source and build steps are in `demo/`.
+
 ## Reference study and independence
 
 The reference notes in `skills/mosaic/references/construct-teardown.md` are an original study of the public Construct Design catalog and four free specimen pages at `https://www.tobiadonadon.com/projects/construct/design`. The study records layout, type, tokens and interaction behavior. It does not copy code, assets or the paid library. Mosaic is unaffiliated with Construct or Tobia Donadon.

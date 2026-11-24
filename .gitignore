@@ -2,3 +2,7 @@ __pycache__/
 *.pyc
 .venv/
 .DS_Store
+demo/raw/
+demo/edit/
+demo/*.webm
+demo/*.mp4
