@@ -14,6 +14,15 @@ except ImportError:  # standalone CLI / tests
 
 DIRECTIONS = ["The Quiet Instrument", "Paper Teeth", "Soft Machinery", "The Long Table",
               "Field Notes", "After Hours", "The Slow Signal", "Open Studio"]
+COMPONENT_HINTS = {
+    "cards": ["face-card", "live-card", "card-arc", "join-group"],
+    "type": ["script-over", "beat-wordmark", "quanta"],
+    "press": ["hold-to-confirm", "publish-bar", "live-card", "join-group", "story-pills"],
+    "drag": ["card-arc", "channel-rail", "story-pills"],
+    "hover": ["face-card", "glass-month", "live-cursors"],
+    "select": ["flow-canvas", "segmented-control"],
+    "loading": ["thinking-shimmer"],
+}
 KEYWORDS = {
     "cards": ("card", "deck", "collect", "ticket", "wallet", "stack", "fan"),
     "press": ("hold", "confirm", "delete", "pay", "publish", "send", "destructive"),
@@ -172,7 +181,11 @@ def h_recipe(args: dict) -> str:
         "acceptance": checks,
         "constraints": constraints,
         "skills": [f["skill"] for f in signature],
-        "component_candidates": [c["id"] for c in COMPONENTS if c["family"] in picks][:6],
+        "component_candidates": list(dict.fromkeys(
+            cid for pick in picks for cid in (
+                COMPONENT_HINTS.get(pick, []) + [c["id"] for c in COMPONENTS if c["family"] == pick]
+            )
+        ))[:8],
         "caveat": "This is a direction. The builder must still study the reference, write original code and verify in a browser.",
     })
 

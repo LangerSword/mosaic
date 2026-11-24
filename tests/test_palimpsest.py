@@ -33,6 +33,7 @@ class RecipeTests(unittest.TestCase):
         self.assertIn("cards", [m["id"] for m in out["signature_moves"]])
         self.assertIn("--paper", out["tokens"])
         self.assertIn("--display", out["tokens"])
+        self.assertIn("face-card", out["component_candidates"])
 
     def test_agent_brief_picks_loading(self):
         out = json.loads(h_recipe({"brief": "An agent that streams its work while it reads files"}))
