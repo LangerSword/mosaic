@@ -8,7 +8,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from mosaic_tools import TOOL_SPECS, h_audit, h_components, h_forge, h_index, h_recipe, h_stacks
+from mosaic_tools import TOOL_SPECS, h_audit, h_components, h_forge, h_index, h_invent, h_recipe, h_stacks
 
 
 def main() -> int:
@@ -38,6 +38,12 @@ def main() -> int:
     forge.add_argument("--motion", default="css")
     forge.add_argument("--brief", default="")
 
+    invent = sub.add_parser("invent", help="compose interaction candidates")
+    invent.add_argument("--brief", required=True)
+    invent.add_argument("--constraints", default="")
+    invent.add_argument("--count", type=int, default=3)
+    invent.add_argument("--seed", type=int)
+
     args = parser.parse_args()
     if args.cmd == "index":
         out = h_index({})
@@ -48,6 +54,9 @@ def main() -> int:
     elif args.cmd == "forge":
         out = h_forge({"kind": args.kind, "stack": args.stack,
                        "motion": args.motion, "brief": args.brief})
+    elif args.cmd == "invent":
+        out = h_invent({"brief": args.brief, "constraints": args.constraints,
+                        "count": args.count, "seed": args.seed})
     elif args.cmd == "recipe":
         out = h_recipe({"brief": args.brief, "mood": args.mood,
                         "stack": args.stack, "constraints": args.constraints})

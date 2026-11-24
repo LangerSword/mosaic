@@ -37,7 +37,7 @@ def load_plugin():
 
 def main():
     module, ctx = load_plugin()
-    declared = {"mosaic_index", "mosaic_components", "mosaic_stacks", "mosaic_forge", "mosaic_recipe", "mosaic_audit"}
+    declared = {"mosaic_index", "mosaic_components", "mosaic_stacks", "mosaic_forge", "mosaic_invent", "mosaic_recipe", "mosaic_audit"}
     assert set(ctx.tools) == declared, (set(ctx.tools), declared)
     assert not ctx.hooks
     idx = json.loads(ctx.tools["mosaic_index"]["handler"]({}))
@@ -49,6 +49,9 @@ def main():
     forged = json.loads(ctx.tools["mosaic_forge"]["handler"](
         {"kind": "swipe-confirm", "stack": "react", "motion": "gsap"}))
     assert forged["ok"] and forged["files"] and forged["deps"] == ["gsap"]
+    invented = json.loads(ctx.tools["mosaic_invent"]["handler"](
+        {"brief": "A quiet onboarding for a design tool", "count": 3}))
+    assert invented["ok"] and len(invented["candidates"]) == 3
     rec = json.loads(ctx.tools["mosaic_recipe"]["handler"](
         {"brief": "A tactile collectible deck for a racing game", "mood": "tactile"}))
     assert rec["ok"] and rec["signature_moves"]

@@ -9,10 +9,12 @@ try:
     from .mosaic_audit import audit_path, audit_source
     from .mosaic_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS, SKILL_BY_FAMILY
     from .mosaic_forge import KINDS, STACKS, forge
+    from .mosaic_invent import invent
 except ImportError:  # standalone CLI / tests
     from mosaic_audit import audit_path, audit_source
     from mosaic_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS, SKILL_BY_FAMILY
     from mosaic_forge import KINDS, STACKS, forge
+    from mosaic_invent import invent
 
 DIRECTIONS = ["The Quiet Instrument", "Paper Teeth", "Soft Machinery", "The Long Table",
               "Field Notes", "After Hours", "The Slow Signal", "Open Studio"]
@@ -231,6 +233,16 @@ def h_forge(args: dict) -> str:
     return forge(kind, stack, motion, brief)
 
 
+def h_invent(args: dict) -> str:
+    brief = str(args.get("brief") or "").strip()
+    constraints = str(args.get("constraints") or "").strip()
+    count = int(args.get("count") or 3)
+    seed = args.get("seed")
+    if seed is not None:
+        seed = int(seed)
+    return invent(brief, constraints, count, seed)
+
+
 def h_audit(args: dict) -> str:
     source = args.get("source")
     path = args.get("path")
@@ -283,6 +295,22 @@ TOOL_SPECS = [
                 "brief": {"type": "string"},
             },
             "required": ["kind"],
+        },
+    },
+    {
+        "name": "mosaic_invent",
+        "handler": h_invent,
+        "emoji": "💡",
+        "description": "Invent interaction candidates from a brief with a state machine and a transparent taste score.",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "brief": {"type": "string"},
+                "constraints": {"type": "string"},
+                "count": {"type": "integer", "minimum": 1, "maximum": 5},
+                "seed": {"type": "integer"},
+            },
+            "required": ["brief"],
         },
     },
     {

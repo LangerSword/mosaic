@@ -294,4 +294,74 @@
       advance.textContent = progress >= 100 ? 'Complete' : 'Advance event';
     });
   }
+
+  // Taste lab: selected brief -> real mosaic_invent candidates.
+  const tasteData = window.MOSAIC_INVENT;
+  const tasteSelect = document.querySelector('#taste-brief');
+  const tasteGrid = document.querySelector('#taste-grid');
+  if (tasteData && tasteSelect && tasteGrid) {
+    const add = (parent, tag, className, text) => {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      parent.append(node);
+      return node;
+    };
+    tasteData.briefs.forEach((group, index) => {
+      const option = document.createElement('option');
+      option.value = String(index);
+      option.textContent = group.brief;
+      tasteSelect.append(option);
+    });
+    const renderTaste = () => {
+      const group = tasteData.briefs[Number(tasteSelect.value) || 0];
+      tasteGrid.replaceChildren();
+      group.candidates.forEach((c) => {
+        const card = add(tasteGrid, 'article', 'taste-card');
+        add(card, 'h3', '', c.name);
+        add(card, 'p', 'thesis', c.thesis);
+        const chips = add(card, 'div', 'taste-chips');
+        [c.input, c.physics, c.feedback, c.forge_kind].forEach((value) => add(chips, 'span', '', value));
+        const list = add(card, 'ol', 'taste-states');
+        c.state_machine.slice(0, 3).forEach((state) => add(list, 'li', '', `${state.state}: ${state.event} → ${state.result}`));
+        const scores = add(card, 'div', 'scores');
+        Object.entries(c.scores).forEach(([key, value]) => {
+          const row = add(scores, 'div', 'score-row');
+          add(row, 'span', '', key);
+          const bar = add(row, 'i');
+          const fill = add(bar, 'b');
+          fill.style.width = `${value * 10}%`;
+          add(row, 'em', '', String(value));
+        });
+        const total = add(card, 'div', 'taste-total');
+        add(total, 'span', '', 'overall');
+        add(total, 'strong', '', c.overall.toFixed(1));
+      });
+    };
+    tasteSelect.addEventListener('change', renderTaste);
+    renderTaste();
+  }
+
+  // Component index: all public observations, with a small visual grammar.
+  const gallery = window.MOSAIC_COMPONENTS;
+  const galleryGrid = document.querySelector('#component-grid');
+  if (gallery && galleryGrid) {
+    const add = (parent, tag, className, text) => {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      parent.append(node);
+      return node;
+    };
+    gallery.forEach((component) => {
+      const card = add(galleryGrid, 'article', 'specimen');
+      const art = add(card, 'div', 'specimen-art');
+      art.dataset.family = component.family;
+      const body = add(card, 'div', 'specimen-body');
+      add(body, 'b', '', component.name);
+      add(body, 'span', '', component.family);
+      add(body, 'p', '', component.state.length > 152 ? component.state.slice(0, 149) + '...' : component.state);
+      add(body, 'small', '', component.use_when);
+    });
+  }
 })();

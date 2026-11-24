@@ -23,6 +23,7 @@
       <a href="#method">Method</a>
       <a href="#lab">Lab</a>
       <a href="#forge">Forge</a>
+      <a href="#taste">Taste</a>
       <a href="#evidence">Evidence</a>
       <a href="#install">Install</a>
     </nav>
@@ -40,8 +41,8 @@
           <a class="btn btn-ghost" href="#install">Install locally</a>
         </div>
         <dl class="hero-stats">
-          <div><dt>Skills</dt><dd>12</dd></div>
-          <div><dt>Tools</dt><dd>6</dd></div>
+          <div><dt>Skills</dt><dd>13</dd></div>
+          <div><dt>Tools</dt><dd>7</dd></div>
           <div><dt>Public components</dt><dd>20</dd></div>
           <div><dt>Network</dt><dd>0</dd></div>
         </dl>
@@ -215,7 +216,7 @@
 <span class="c-key">avoid</span>: [<span class="c-str">"purple gradient"</span>,
         <span class="c-str">"glass everywhere"</span>]
 <span class="c-key">accept</span>: <span class="c-bool">true</span></code></pre>
-        <div class="panel-foot"><span>deterministic · local · no network</span><span>6 tools</span></div>
+        <div class="panel-foot"><span>deterministic · local · no network</span><span>7 tools</span></div>
       </div>
     </section>
 
@@ -308,6 +309,29 @@ index.tsx          React adapter
       </div>
     </section>
 
+    <section class="taste wrap" id="taste">
+      <div class="section-head reveal">
+        <p class="eyebrow">Taste lab</p>
+        <h2>Invent with<br>a rubric.</h2>
+        <p>Three candidates from a brief, each a typed state machine. Coherence, legibility, novelty, restraint and fit are scored before anything is rendered. A score is a hypothesis, not a verdict.</p>
+      </div>
+      <div class="taste-switch reveal">
+        <label for="taste-brief">Brief</label>
+        <select id="taste-brief"></select>
+      </div>
+      <div class="taste-grid" id="taste-grid"></div>
+      <p class="taste-foot">Scores are a transparent heuristic. The browser test and the user still decide. <code>mosaic_invent</code></p>
+    </section>
+
+    <section class="components wrap" id="components">
+      <div class="section-head reveal">
+        <p class="eyebrow">Component index</p>
+        <h2>Twenty<br>specimens.</h2>
+        <p>Public observations, kept as state and motion notes. The eight live pieces above are the proof; this is the grammar behind them.</p>
+      </div>
+      <div class="component-grid" id="component-grid"></div>
+    </section>
+
     <section class="evidence wrap" id="evidence">
       <div class="section-head reveal">
         <p class="eyebrow">Evidence / limits</p>
@@ -315,19 +339,19 @@ index.tsx          React adapter
       </div>
       <div class="evidence-grid reveal">
         <table>
-          <caption>Mosaic 0.4.0</caption>
+          <caption>Mosaic 0.5.0</caption>
           <tbody>
-            <tr><th scope="row">Skills</th><td>12</td><td>master + nine families + components + forge</td></tr>
-            <tr><th scope="row">Tools</th><td>6</td><td>index, components, stacks, forge, recipe, audit</td></tr>
+            <tr><th scope="row">Skills</th><td>13</td><td>master + nine families + components + forge + invent</td></tr>
+            <tr><th scope="row">Tools</th><td>7</td><td>index, components, stacks, forge, invent, recipe, audit</td></tr>
             <tr><th scope="row">Public components</th><td>20</td><td>state, timing, parameters, a11y</td></tr>
-            <tr><th scope="row">Tests</th><td>17</td><td>stdlib, no network</td></tr>
+            <tr><th scope="row">Tests</th><td>21</td><td>stdlib, no network</td></tr>
             <tr><th scope="row">Network</th><td>00</td><td>local reads only</td></tr>
           </tbody>
         </table>
         <div class="limits">
           <p><strong>Not a clone.</strong> The public Construct study reads catalog copy, live previews, computed styles and recorded states. Paid code and gated components were not accessed.</p>
           <p><strong>Not a guarantee.</strong> The audit is a text heuristic. A browser, a keyboard and a contrast measurement still need to run.</p>
-          <p><strong>Not a generator.</strong> The recipe returns a direction. The page still needs an author.</p>
+          <p><strong>Not an autopilot.</strong> The recipe returns a direction and the forge returns a starter. The page still needs an author.</p>
         </div>
       </div>
     </section>
@@ -353,6 +377,7 @@ python scripts/install_skills.py
             <li><code>mosaic_components</code><span>public state grammar</span></li>
             <li><code>mosaic_stacks</code><span>framework + skill matrix</span></li>
             <li><code>mosaic_forge</code><span>stack-aware starter code</span></li>
+            <li><code>mosaic_invent</code><span>interaction candidates + taste scores</span></li>
             <li><code>mosaic_recipe</code><span>a direction from a brief</span></li>
             <li><code>mosaic_audit</code><span>generic-pattern scan</span></li>
           </ul>
@@ -373,6 +398,8 @@ python scripts/install_skills.py
   </footer>
 
   <script src="forge-samples.js" defer></script>
+  <script src="invent-samples.js" defer></script>
+  <script src="component-gallery.js" defer></script>
   <script src="app.js" defer></script>
   <script type="module" src="forge/paper-plane.js"></script>
   <script type="module" src="forge/swipe-confirm.js"></script>

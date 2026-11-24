@@ -6,12 +6,13 @@ It is not a template library, a cloner, or a moodboard generator. It gives the a
 
 ## What is in the box
 
-- **12 Hermes skills**: one master method, nine interaction families, a component grammar and a forge.
-- **6 local tools**:
+- **13 Hermes skills**: one master method, nine interaction families, a component grammar, a forge and an inventor.
+- **7 local tools**:
   - `mosaic_index`: the reference families, skills and base tokens.
   - `mosaic_components`: the public component observations, filterable by family or text.
   - `mosaic_stacks`: the HTML, React, Next, Svelte, Vue and Astro matrix with paired Hermes skills.
   - `mosaic_forge`: an original component starter for a stack, with CSS or GSAP motion.
+  - `mosaic_invent`: interaction candidates with a state machine and a transparent taste score.
   - `mosaic_recipe`: a deterministic direction for a brief.
   - `mosaic_audit`: a local text scan for generic gradients, `transition: all`, missing reduced-motion and similar slop.
 - **A CLI** over the same handlers, for a demo or CI without Hermes.
@@ -36,6 +37,7 @@ python mosaic_cli.py recipe --brief "A collectible racing deck for a design conf
 python mosaic_cli.py components --family press
 python mosaic_cli.py stacks
 python mosaic_cli.py forge --kind swipe-confirm --stack react --motion gsap
+python mosaic_cli.py invent --brief "A quiet onboarding for a design tool" --count 3
 python mosaic_cli.py audit --path src/app.css
 ```
 
@@ -64,6 +66,7 @@ The recipe is a starting direction, not an answer. It deliberately returns a the
 | `mosaic-loading` | Agent thinking states and honest progress |
 | `mosaic-components` | Component state matrices and the public component grammar |
 | `mosaic-forge` | Stack-aware component starters with CSS or GSAP |
+| `mosaic-invent` | Interaction candidates with a typed taste rubric |
 
 Each skill has a trigger, a procedure, pitfalls and a verification pass. The master skill carries the reference method and the public Construct teardown.
 
@@ -96,8 +99,8 @@ Construct is a useful reference precisely because it is plural: a quiet gallery 
 
 ## Evidence
 
-- 17 unit tests pass with stdlib only.
-- `smoke_load.py` loads the real entry point against a recording context, asserts 6 tools and dispatches them.
+- 21 unit tests pass with stdlib only.
+- `smoke_load.py` loads the real entry point against a recording context, asserts 7 tools and dispatches them.
 - `hermes plugins validate` and `hermes plugins doctor` are the admission gates.
 - CLI outputs are deterministic and JSON.
 - 20 public component observations are included; six second-row components were account-gated, and the rest of the catalog requires an account. None were bypassed.

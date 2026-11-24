@@ -4,7 +4,8 @@ import unittest
 from pathlib import Path
 
 from mosaic_audit import audit_source
-from mosaic_tools import TOOL_SPECS, h_audit, h_components, h_forge, h_index, h_recipe, h_stacks
+from mosaic_forge import KINDS
+from mosaic_tools import TOOL_SPECS, h_audit, h_components, h_forge, h_index, h_invent, h_recipe, h_stacks
 
 
 class IndexTests(unittest.TestCase):
@@ -17,7 +18,7 @@ class IndexTests(unittest.TestCase):
     def test_tool_specs_are_named(self):
         self.assertEqual([s["name"] for s in TOOL_SPECS],
                          ["mosaic_index", "mosaic_components", "mosaic_stacks", "mosaic_forge",
-                          "mosaic_recipe", "mosaic_audit"])
+                          "mosaic_invent", "mosaic_recipe", "mosaic_audit"])
 
     def test_components_filter(self):
         out = json.loads(h_components({"family": "press"}))
@@ -56,6 +57,33 @@ class ForgeTests(unittest.TestCase):
         self.assertTrue(out["ok"])
         self.assertEqual(len(out["stacks"]), 6)
         self.assertEqual(len(out["kinds"]), 7)
+
+
+class InventTests(unittest.TestCase):
+    def test_invent_is_deterministic_and_unique(self):
+        args = {"brief": "A quiet onboarding for a design tool", "count": 3, "seed": 7}
+        one = json.loads(h_invent(args))
+        two = json.loads(h_invent(args))
+        self.assertEqual(one, two)
+        self.assertEqual(len(one["candidates"]), 3)
+        self.assertEqual(len({c["id"] for c in one["candidates"]}), 3)
+        self.assertEqual(len({c["input"] for c in one["candidates"]}), 3)
+
+    def test_invent_scores_and_forge_kind(self):
+        out = json.loads(h_invent({"brief": "A banking app where a transfer feels deliberate", "count": 3}))
+        for candidate in out["candidates"]:
+            self.assertEqual(set(candidate["scores"]), {"coherence", "legibility", "novelty", "restraint", "fit"})
+            self.assertGreaterEqual(candidate["overall"], 0)
+            self.assertLessEqual(candidate["overall"], 10)
+            self.assertIn(candidate["forge_kind"], KINDS)
+
+    def test_invent_respects_no_hover(self):
+        out = json.loads(h_invent({"brief": "A quiet keyboard-first archive", "constraints": "no hover", "count": 3}))
+        self.assertTrue(all(c["input"] != "hover" for c in out["candidates"]))
+
+    def test_invent_rejects_short_brief(self):
+        with self.assertRaises(ValueError):
+            h_invent({"brief": "short"})
 
 
 class RecipeTests(unittest.TestCase):

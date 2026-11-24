@@ -8,7 +8,7 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, web, reference, system, frontend]
-    related_skills: [mosaic-cards, mosaic-press, mosaic-drag, mosaic-hover, mosaic-select, mosaic-shader, mosaic-type, mosaic-scroll, mosaic-loading, mosaic-components, mosaic-forge]
+    related_skills: [mosaic-cards, mosaic-press, mosaic-drag, mosaic-hover, mosaic-select, mosaic-shader, mosaic-type, mosaic-scroll, mosaic-loading, mosaic-components, mosaic-forge, mosaic-invent]
 ---
 
 # Mosaic
@@ -124,4 +124,4 @@ If `mosaic_recipe` is available, use it as a starting direction, then apply this
 
 ## See Also
 
-`mosaic-cards`, `mosaic-press`, `mosaic-drag`, `mosaic-hover`, `mosaic-select`, `mosaic-shader`, `mosaic-type`, `mosaic-scroll`, `mosaic-loading`, `mosaic-components`, `mosaic-forge`. The reference notes are in `references/construct-teardown.md`.
+`mosaic-cards`, `mosaic-press`, `mosaic-drag`, `mosaic-hover`, `mosaic-select`, `mosaic-shader`, `mosaic-type`, `mosaic-scroll`, `mosaic-loading`, `mosaic-components`, `mosaic-forge`, `mosaic-invent`. The reference notes are in `references/construct-teardown.md`.
