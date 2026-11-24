@@ -37,11 +37,13 @@ def load_plugin():
 
 def main():
     module, ctx = load_plugin()
-    declared = {"palimpsest_index", "palimpsest_recipe", "palimpsest_audit"}
+    declared = {"palimpsest_index", "palimpsest_components", "palimpsest_recipe", "palimpsest_audit"}
     assert set(ctx.tools) == declared, (set(ctx.tools), declared)
     assert not ctx.hooks
     idx = json.loads(ctx.tools["palimpsest_index"]["handler"]({}))
     assert idx["ok"] and len(idx["families"]) == 10
+    comps = json.loads(ctx.tools["palimpsest_components"]["handler"]({"family": "press"}))
+    assert comps["ok"] and comps["count"] >= 5
     rec = json.loads(ctx.tools["palimpsest_recipe"]["handler"](
         {"brief": "A tactile collectible deck for a racing game", "mood": "tactile"}))
     assert rec["ok"] and rec["signature_moves"]

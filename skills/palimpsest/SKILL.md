@@ -8,7 +8,7 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, web, reference, system, frontend]
-    related_skills: [palimpsest-cards, palimpsest-press, palimpsest-drag, palimpsest-hover, palimpsest-select, palimpsest-shader, palimpsest-type, palimpsest-scroll, palimpsest-loading]
+    related_skills: [palimpsest-cards, palimpsest-press, palimpsest-drag, palimpsest-hover, palimpsest-select, palimpsest-shader, palimpsest-type, palimpsest-scroll, palimpsest-loading, palimpsest-components]
 ---
 
 # Palimpsest
@@ -112,4 +112,4 @@ If `palimpsest_recipe` is available, use it as a starting direction, then apply 
 
 ## See Also
 
-`palimpsest-cards`, `palimpsest-press`, `palimpsest-drag`, `palimpsest-hover`, `palimpsest-select`, `palimpsest-shader`, `palimpsest-type`, `palimpsest-scroll`, `palimpsest-loading`. The reference notes are in `references/construct-teardown.md`.
+`palimpsest-cards`, `palimpsest-press`, `palimpsest-drag`, `palimpsest-hover`, `palimpsest-select`, `palimpsest-shader`, `palimpsest-type`, `palimpsest-scroll`, `palimpsest-loading`, `palimpsest-components`. The reference notes are in `references/construct-teardown.md`.

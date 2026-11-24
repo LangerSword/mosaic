@@ -6,9 +6,10 @@ It is not a template library, a cloner, or a moodboard generator. It gives the a
 
 ## What is in the box
 
-- **10 Hermes skills**: one master method and nine interaction families.
-- **3 local tools**:
+- **11 Hermes skills**: one master method, nine interaction families and a component grammar.
+- **4 local tools**:
   - `palimpsest_index`: the reference families, skills and base tokens.
+  - `palimpsest_components`: the public component observations, filterable by family or text.
   - `palimpsest_recipe`: a deterministic direction for a brief.
   - `palimpsest_audit`: a local text scan for generic gradients, `transition: all`, missing reduced-motion and similar slop.
 - **A CLI** over the same handlers, for a demo or CI without Hermes.
@@ -30,6 +31,7 @@ Start a new Hermes session so the tools and skills enter the index. The skills c
 ```bash
 python palimpsest_cli.py index
 python palimpsest_cli.py recipe --brief "A collectible racing deck for a design conference" --mood tactile
+python palimpsest_cli.py components --family press
 python palimpsest_cli.py audit --path src/app.css
 ```
 
@@ -56,6 +58,7 @@ The recipe is a starting direction, not an answer. It deliberately returns a the
 | `palimpsest-type` | Editorial type, wordmarks, labels, numerals |
 | `palimpsest-scroll` | Scroll-driven narrative and pinned scenes |
 | `palimpsest-loading` | Agent thinking states and honest progress |
+| `palimpsest-components` | Component state matrices and the public component grammar |
 
 Each skill has a trigger, a procedure, pitfalls and a verification pass. The master skill carries the reference method and the public Construct teardown.
 
@@ -78,10 +81,11 @@ Construct is a useful reference precisely because it is plural: a quiet gallery 
 
 ## Evidence
 
-- 12 unit tests pass with stdlib only.
-- `smoke_load.py` loads the real entry point against a recording context, asserts 3 tools and dispatches all three.
+- 13 unit tests pass with stdlib only.
+- `smoke_load.py` loads the real entry point against a recording context, asserts 4 tools and dispatches them.
 - `hermes plugins validate` and `hermes plugins doctor` are the admission gates.
 - CLI outputs are deterministic and JSON.
+- 16 public component observations are included; six second-row components were account-gated, and the rest of the catalog requires an account. None were bypassed.
 
 ## Limits
 

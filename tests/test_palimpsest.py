@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 from palimpsest_audit import audit_source
-from palimpsest_tools import TOOL_SPECS, h_audit, h_index, h_recipe
+from palimpsest_tools import TOOL_SPECS, h_audit, h_components, h_index, h_recipe
 
 
 class IndexTests(unittest.TestCase):
@@ -16,7 +16,14 @@ class IndexTests(unittest.TestCase):
 
     def test_tool_specs_are_named(self):
         self.assertEqual([s["name"] for s in TOOL_SPECS],
-                         ["palimpsest_index", "palimpsest_recipe", "palimpsest_audit"])
+                         ["palimpsest_index", "palimpsest_components", "palimpsest_recipe", "palimpsest_audit"])
+
+    def test_components_filter(self):
+        out = json.loads(h_components({"family": "press"}))
+        self.assertTrue(out["ok"])
+        self.assertGreater(out["count"], 3)
+        self.assertTrue(all(c["family"] == "press" for c in out["components"]))
+        self.assertIn("hold-to-confirm", [c["id"] for c in out["components"]])
 
 
 class RecipeTests(unittest.TestCase):

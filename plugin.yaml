@@ -1,7 +1,7 @@
 name: palimpsest
 label: Palimpsest
 kind: standalone
-version: 0.1.0
+version: 0.2.0
 author: Lakshaya Sharma (LangerSword)
 homepage: https://github.com/LangerSword/palimpsest
 description: >
@@ -16,5 +16,6 @@ python_dependencies: []
 provides_hooks: []
 provides_tools:
   - palimpsest_index
+  - palimpsest_components
   - palimpsest_recipe
   - palimpsest_audit

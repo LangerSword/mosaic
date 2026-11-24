@@ -7,10 +7,10 @@ import json
 
 try:
     from .palimpsest_audit import audit_path, audit_source
-    from .palimpsest_data import BASE_TOKENS, FAMILIES, MOODS, SKILL_BY_FAMILY
+    from .palimpsest_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS, SKILL_BY_FAMILY
 except ImportError:  # standalone CLI / tests
     from palimpsest_audit import audit_path, audit_source
-    from palimpsest_data import BASE_TOKENS, FAMILIES, MOODS, SKILL_BY_FAMILY
+    from palimpsest_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS, SKILL_BY_FAMILY
 
 DIRECTIONS = ["The Quiet Instrument", "Paper Teeth", "Soft Machinery", "The Long Table",
               "Field Notes", "After Hours", "The Slow Signal", "Open Studio"]
@@ -172,7 +172,25 @@ def h_recipe(args: dict) -> str:
         "acceptance": checks,
         "constraints": constraints,
         "skills": [f["skill"] for f in signature],
+        "component_candidates": [c["id"] for c in COMPONENTS if c["family"] in picks][:6],
         "caveat": "This is a direction. The builder must still study the reference, write original code and verify in a browser.",
+    })
+
+
+def h_components(args: dict) -> str:
+    family = str(args.get("family") or "").strip().lower()
+    query = str(args.get("query") or "").strip().lower()
+    rows = COMPONENTS
+    if family:
+        rows = [c for c in rows if c["family"] == family]
+    if query:
+        rows = [c for c in rows if query in (c["name"] + " " + c["state"] + " " + c["use_when"]).lower()]
+    return _j({
+        "ok": True,
+        "count": len(rows),
+        "families": sorted({c["family"] for c in COMPONENTS}),
+        "components": rows,
+        "note": "Public observations only. The source URL is a public preview; it is not a licence to copy the implementation.",
     })
 
 
@@ -193,6 +211,19 @@ TOOL_SPECS = [
         "emoji": "🗂️",
         "description": "List the ten reference families, their skills and the base design tokens.",
         "schema": {"type": "object", "properties": {}, "required": []},
+    },
+    {
+        "name": "palimpsest_components",
+        "handler": h_components,
+        "emoji": "🧩",
+        "description": "List the public component observations (state model, timing, parameters, a11y) filtered by family or query.",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "family": {"type": "string", "description": "press, drag, hover, select, shader, type, scroll or loading"},
+                "query": {"type": "string", "description": "Text to match against name, state and use_when."},
+            },
+        },
     },
     {
         "name": "palimpsest_recipe",
