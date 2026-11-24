@@ -60,7 +60,7 @@ FAMILIES = [
     {
         "id": "paper-ink",
         "name": "Paper and ink",
-        "skill": "palimpsest",
+        "skill": "mosaic",
         "signature": "A neutral field, a huge tight display line, hairlines and one warm accent.",
         "use_when": "Editorial products, portfolios, libraries, thoughtful tools and any page that needs calm confidence.",
         "avoid": "Purple-to-blue gradients, glass on every surface, six accents, a card grid as the whole page.",
@@ -70,7 +70,7 @@ FAMILIES = [
     {
         "id": "cards",
         "name": "Card objects",
-        "skill": "palimpsest-cards",
+        "skill": "mosaic-cards",
         "signature": "Cards with edges, contact shadow and a small lift; stack or fan, never a flat grid of clones.",
         "use_when": "Collectibles, decks, saved items, layered previews, tickets and hands.",
         "avoid": "Rounded rectangles with no objecthood; ten identical glass cards.",
@@ -80,7 +80,7 @@ FAMILIES = [
     {
         "id": "press",
         "name": "Press, hold and confirm",
-        "skill": "palimpsest-press",
+        "skill": "mosaic-press",
         "signature": "A physical state machine: contact, commitment, release and a visible consequence.",
         "use_when": "Delete, pay, publish, send, or any action that should not be a single accidental tap.",
         "avoid": "Fake progress, hold-only actions with no keyboard path, ghost timers that fire after cancel.",
@@ -90,7 +90,7 @@ FAMILIES = [
     {
         "id": "drag",
         "name": "Direct manipulation",
-        "skill": "palimpsest-drag",
+        "skill": "mosaic-drag",
         "signature": "Pickup, ghost, drop target and a reversible settle; the object follows the pointer.",
         "use_when": "Sorting, kanban, moving between containers, timeline scrubbing, canvas panning.",
         "avoid": "Drag-only primary navigation, no keyboard path, dropping outside deletes silently.",
@@ -100,7 +100,7 @@ FAMILIES = [
     {
         "id": "hover",
         "name": "Pointer reveal",
-        "skill": "palimpsest-hover",
+        "skill": "mosaic-hover",
         "signature": "A small preview or lift that is a bonus, never the only way to reach content.",
         "use_when": "Galleries, dense indexes, previews, magnetic actions and playful cursor labels.",
         "avoid": "Hover-only prices or actions, cursor effects that cover text, per-row preview DOM.",
@@ -110,7 +110,7 @@ FAMILIES = [
     {
         "id": "select",
         "name": "Visible choice",
-        "skill": "palimpsest-select",
+        "skill": "mosaic-select",
         "signature": "Two to five options on one track, one moving indicator and a content change that stays put.",
         "use_when": "Segmented controls, tabs, filters, small pickers and view switches.",
         "avoid": "Dropdowns for three options, color-only active state, six-option pills on mobile.",
@@ -120,7 +120,7 @@ FAMILIES = [
     {
         "id": "shader",
         "name": "Atmosphere",
-        "skill": "palimpsest-shader",
+        "skill": "mosaic-shader",
         "signature": "One field, one motion and a static fallback that still carries the page.",
         "use_when": "A hero material, a data field, grain, a dot globe or a single brand moment.",
         "avoid": "Rainbow palettes, bloom plus displacement plus aberration, WebGL-only content.",
@@ -130,7 +130,7 @@ FAMILIES = [
     {
         "id": "type",
         "name": "Type as image",
-        "skill": "palimpsest-type",
+        "skill": "mosaic-type",
         "signature": "One display voice, one body face and one utility face doing different jobs.",
         "use_when": "Heroes, wordmarks, editorial sections, labels and data-heavy surfaces.",
         "avoid": "Inter for everything, script body copy, gradient headline as the only identity.",
@@ -140,7 +140,7 @@ FAMILIES = [
     {
         "id": "scroll",
         "name": "Scroll as pacing",
-        "skill": "palimpsest-scroll",
+        "skill": "mosaic-scroll",
         "signature": "One pinned scene or reveal rhythm; the document still works without motion.",
         "use_when": "Product stories, timelines, chapters, galleries and scroll-linked demonstrations.",
         "avoid": "Scroll-jacking, 100vh hero after 100vh hero, content hidden behind animation.",
@@ -150,7 +150,7 @@ FAMILIES = [
     {
         "id": "loading",
         "name": "Thinking, not spinning",
-        "skill": "palimpsest-loading",
+        "skill": "mosaic-loading",
         "signature": "Named work, real steps and a slow state; shimmer is atmosphere, not the status.",
         "use_when": "Agents, long jobs, cold renders, data fetches and multi-step processes.",
         "avoid": "Fake percentages, infinite shimmer, spinner-only blank screens.",

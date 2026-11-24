@@ -1,5 +1,5 @@
 ---
-name: palimpsest-select
+name: mosaic-select
 description: Design segmented pickers and selection surfaces.
 version: 0.1.0
 author: Lakshaya Sharma (LangerSword), Hermes Agent
@@ -8,10 +8,10 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, interaction, select, segmented, picker]
-    related_skills: [palimpsest]
+    related_skills: [mosaic]
 ---
 
-# Palimpsest Select
+# Mosaic Select
 
 Selection is a spatial promise: one option is active, the others are still reachable, and changing your mind is cheap. This skill covers segmented controls, pill pickers, tabs, and small menus.
 

@@ -1,5 +1,5 @@
 ---
-name: palimpsest-cards
+name: mosaic-cards
 description: Build layered card objects with physical depth.
 version: 0.1.0
 author: Lakshaya Sharma (LangerSword), Hermes Agent
@@ -8,10 +8,10 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, cards, depth, interaction]
-    related_skills: [palimpsest]
+    related_skills: [mosaic]
 ---
 
-# Palimpsest Cards
+# Mosaic Cards
 
 Cards are small objects with edges, weight, and a front and back. This skill covers stacks, fans, arcs, pockets, and hover lift. It is about objecthood, not putting every piece of content in a rounded rectangle.
 

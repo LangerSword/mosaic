@@ -1,11 +1,11 @@
-name: palimpsest
-label: Palimpsest
+name: mosaic
+label: Mosaic
 kind: standalone
-version: 0.2.0
+version: 0.3.0
 author: Lakshaya Sharma (LangerSword)
-homepage: https://github.com/LangerSword/palimpsest
+homepage: https://github.com/LangerSword/mosaic
 description: >
-  Design direction for Hermes. Palimpsest turns a brief or a studied reference
+  Design direction for Hermes. Mosaic turns a brief or a studied reference
   into an original interface recipe: a base field, one accent, a type pairing,
   two signature moves, a composition order, motion rules and an audit
   checklist. It also indexes the reference families and audits a local
@@ -15,7 +15,7 @@ requires_hermes: ">=0.23.0"
 python_dependencies: []
 provides_hooks: []
 provides_tools:
-  - palimpsest_index
-  - palimpsest_components
-  - palimpsest_recipe
-  - palimpsest_audit
+  - mosaic_index
+  - mosaic_components
+  - mosaic_recipe
+  - mosaic_audit

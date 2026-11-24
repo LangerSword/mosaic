@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Copy the bundled Palimpsest skills into the active Hermes skills tree."""
+"""Copy the bundled Mosaic skills into the active Hermes skills tree."""
 from __future__ import annotations
 
 import shutil
@@ -24,7 +24,7 @@ def main() -> int:
             shutil.rmtree(target)
         shutil.copytree(skill, target)
         count += 1
-    print(f"installed {count} Palimpsest skills into {DEST}")
+    print(f"installed {count} Mosaic skills into {DEST}")
     return 0
 
 

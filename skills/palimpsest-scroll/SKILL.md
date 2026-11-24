@@ -1,5 +1,5 @@
 ---
-name: palimpsest-scroll
+name: mosaic-scroll
 description: Design scroll-driven narrative and pinned scenes.
 version: 0.1.0
 author: Lakshaya Sharma (LangerSword), Hermes Agent
@@ -8,10 +8,10 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, scroll, narrative, motion, performance]
-    related_skills: [palimpsest]
+    related_skills: [mosaic]
 ---
 
-# Palimpsest Scroll
+# Mosaic Scroll
 
 Scroll is pacing. This skill covers reveal-on-scroll, pinned scenes, progress rails, and horizontal chapters. The page must remain a document, not a hostage.
 

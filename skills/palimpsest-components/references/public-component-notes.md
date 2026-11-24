@@ -1,6 +1,6 @@
 # Public component notes
 
-Observed on the public Construct Design preview pages, 2026-11-24. The source is a public preview, not paid code; these notes are paraphrases of visible behavior and are not a licence to copy implementation. Live tool: `palimpsest_components`.
+Observed on the public Construct Design preview pages, 2026-11-24. The source is a public preview, not paid code; these notes are paraphrases of visible behavior and are not a licence to copy implementation. Live tool: `mosaic_components`.
 
 | id | Family | State and timing observation | Source |
 |---|---|---|---|

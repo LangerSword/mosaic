@@ -17,4 +17,4 @@ jobs:
       - name: Load and dispatch
         run: python smoke_load.py
       - name: CLI smoke
-        run: python palimpsest_cli.py recipe --brief "A quiet portfolio for a type designer" --mood editorial
+        run: python mosaic_cli.py recipe --brief "A quiet portfolio for a type designer" --mood editorial

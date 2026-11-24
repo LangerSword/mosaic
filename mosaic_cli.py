@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Thin CLI over the Palimpsest tool handlers.
+"""Thin CLI over the Mosaic tool handlers.
 
 Same handlers, same JSON; useful for a demo or a CI smoke test without Hermes.
 """
@@ -8,11 +8,11 @@ from __future__ import annotations
 import argparse
 import json
 
-from palimpsest_tools import TOOL_SPECS, h_audit, h_components, h_index, h_recipe
+from mosaic_tools import TOOL_SPECS, h_audit, h_components, h_index, h_recipe
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(prog="palimpsest", description="Design direction for Hermes")
+    parser = argparse.ArgumentParser(prog="mosaic", description="Design direction for Hermes")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     sub.add_parser("index", help="list reference families")

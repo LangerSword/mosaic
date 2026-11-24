@@ -1,5 +1,5 @@
 ---
-name: palimpsest-press
+name: mosaic-press
 description: Design tactile press, hold and confirm controls.
 version: 0.1.0
 author: Lakshaya Sharma (LangerSword), Hermes Agent
@@ -8,10 +8,10 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, interaction, press, hold, confirm]
-    related_skills: [palimpsest]
+    related_skills: [mosaic]
 ---
 
-# Palimpsest Press
+# Mosaic Press
 
 Press is a transaction. A control should show contact, commitment, and consequence. This skill covers press states, hold-to-confirm, destructive actions, and the release path.
 

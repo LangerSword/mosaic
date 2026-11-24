@@ -1,5 +1,5 @@
 ---
-name: palimpsest-hover
+name: mosaic-hover
 description: Build hover reveals, cursors and pointer states.
 version: 0.1.0
 author: Lakshaya Sharma (LangerSword), Hermes Agent
@@ -8,10 +8,10 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, interaction, hover, cursor, reveal]
-    related_skills: [palimpsest]
+    related_skills: [mosaic]
 ---
 
-# Palimpsest Hover
+# Mosaic Hover
 
 Hover is a preview, not a requirement. This skill covers image reveals, cursor-follow effects, magnetic buttons, and hover cards. The test is whether the page still works when hover does not exist.
 

@@ -1,4 +1,4 @@
-"""Palimpsest: design direction for Hermes.
+"""Mosaic: design direction for Hermes.
 
 The plugin is deliberately small: an index of reference families, a
 deterministic recipe builder and a local source audit. It does not render,
@@ -11,12 +11,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-__version__ = "0.2.0"
-TOOLSET = "palimpsest"
+__version__ = "0.3.0"
+TOOLSET = "mosaic"
 
 
 def register(ctx) -> None:
-    from .palimpsest_tools import TOOL_SPECS
+    from .mosaic_tools import TOOL_SPECS
 
     for spec in TOOL_SPECS:
         def tool_handler(args: dict, _run=spec["handler"], **_kw) -> str:

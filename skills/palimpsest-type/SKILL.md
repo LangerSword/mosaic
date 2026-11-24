@@ -1,5 +1,5 @@
 ---
-name: palimpsest-type
+name: mosaic-type
 description: Compose editorial type, wordmarks and labels.
 version: 0.1.0
 author: Lakshaya Sharma (LangerSword), Hermes Agent
@@ -8,10 +8,10 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, typography, editorial, wordmark, labels]
-    related_skills: [palimpsest]
+    related_skills: [mosaic]
 ---
 
-# Palimpsest Type
+# Mosaic Type
 
 Type is the fastest way to make a page feel like something. This skill covers editorial display, wordmarks, mixed voices, labels, and the small type that makes a system feel designed.
 

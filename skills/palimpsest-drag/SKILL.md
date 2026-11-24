@@ -1,5 +1,5 @@
 ---
-name: palimpsest-drag
+name: mosaic-drag
 description: Design direct-manipulation drag and reorder surfaces.
 version: 0.1.0
 author: Lakshaya Sharma (LangerSword), Hermes Agent
@@ -8,10 +8,10 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, interaction, drag, reorder, pointer]
-    related_skills: [palimpsest]
+    related_skills: [mosaic]
 ---
 
-# Palimpsest Drag
+# Mosaic Drag
 
 Drag is direct manipulation. The object should feel picked up, the drop target should be obvious, and the result should be recoverable. This skill covers card sorting, kanban movement, sliders, and canvas panning.
 

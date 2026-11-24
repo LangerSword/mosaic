@@ -3,8 +3,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from palimpsest_audit import audit_source
-from palimpsest_tools import TOOL_SPECS, h_audit, h_components, h_index, h_recipe
+from mosaic_audit import audit_source
+from mosaic_tools import TOOL_SPECS, h_audit, h_components, h_index, h_recipe
 
 
 class IndexTests(unittest.TestCase):
@@ -16,7 +16,7 @@ class IndexTests(unittest.TestCase):
 
     def test_tool_specs_are_named(self):
         self.assertEqual([s["name"] for s in TOOL_SPECS],
-                         ["palimpsest_index", "palimpsest_components", "palimpsest_recipe", "palimpsest_audit"])
+                         ["mosaic_index", "mosaic_components", "mosaic_recipe", "mosaic_audit"])
 
     def test_components_filter(self):
         out = json.loads(h_components({"family": "press"}))

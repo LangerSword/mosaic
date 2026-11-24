@@ -1,4 +1,4 @@
-"""Tool handlers and schemas for Palimpsest."""
+"""Tool handlers and schemas for Mosaic."""
 
 from __future__ import annotations
 
@@ -6,11 +6,11 @@ import hashlib
 import json
 
 try:
-    from .palimpsest_audit import audit_path, audit_source
-    from .palimpsest_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS, SKILL_BY_FAMILY
+    from .mosaic_audit import audit_path, audit_source
+    from .mosaic_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS, SKILL_BY_FAMILY
 except ImportError:  # standalone CLI / tests
-    from palimpsest_audit import audit_path, audit_source
-    from palimpsest_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS, SKILL_BY_FAMILY
+    from mosaic_audit import audit_path, audit_source
+    from mosaic_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS, SKILL_BY_FAMILY
 
 DIRECTIONS = ["The Quiet Instrument", "Paper Teeth", "Soft Machinery", "The Long Table",
               "Field Notes", "After Hours", "The Slow Signal", "Open Studio"]
@@ -91,7 +91,7 @@ def _accent(mood: str) -> dict:
 def h_index(args: dict) -> str:
     return _j({
         "ok": True,
-        "plugin": "palimpsest",
+        "plugin": "mosaic",
         "version": "0.1.0",
         "families": [
             {"id": f["id"], "name": f["name"], "skill": f["skill"],
@@ -219,14 +219,14 @@ def h_audit(args: dict) -> str:
 
 TOOL_SPECS = [
     {
-        "name": "palimpsest_index",
+        "name": "mosaic_index",
         "handler": h_index,
         "emoji": "🗂️",
         "description": "List the ten reference families, their skills and the base design tokens.",
         "schema": {"type": "object", "properties": {}, "required": []},
     },
     {
-        "name": "palimpsest_components",
+        "name": "mosaic_components",
         "handler": h_components,
         "emoji": "🧩",
         "description": "List the public component observations (state model, timing, parameters, a11y) filtered by family or query.",
@@ -239,7 +239,7 @@ TOOL_SPECS = [
         },
     },
     {
-        "name": "palimpsest_recipe",
+        "name": "mosaic_recipe",
         "handler": h_recipe,
         "emoji": "🧪",
         "description": "Turn a product brief into an original design direction with tokens, type, two signature moves and checks.",
@@ -255,7 +255,7 @@ TOOL_SPECS = [
         },
     },
     {
-        "name": "palimpsest_audit",
+        "name": "mosaic_audit",
         "handler": h_audit,
         "emoji": "🔎",
         "description": "Scan local HTML/CSS/JS text for generic gradients, transition-all, missing reduced motion and other design slop.",

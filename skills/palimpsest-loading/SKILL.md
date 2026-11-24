@@ -1,5 +1,5 @@
 ---
-name: palimpsest-loading
+name: mosaic-loading
 description: Design agents that show thinking, not spinners.
 version: 0.1.0
 author: Lakshaya Sharma (LangerSword), Hermes Agent
@@ -8,10 +8,10 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, loading, agent, status, shimmer]
-    related_skills: [palimpsest]
+    related_skills: [mosaic]
 ---
 
-# Palimpsest Loading
+# Mosaic Loading
 
 Loading is a promise about what the system is doing. A spinner says "wait"; a good thinking state says "here is the work." This skill covers agent progress, skeletons, shimmer, and slow states.
 

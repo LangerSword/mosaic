@@ -1,5 +1,5 @@
 ---
-name: palimpsest
+name: mosaic
 description: Turn design references into original web systems.
 version: 0.1.0
 author: Lakshaya Sharma (LangerSword), Hermes Agent
@@ -8,12 +8,12 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, web, reference, system, frontend]
-    related_skills: [palimpsest-cards, palimpsest-press, palimpsest-drag, palimpsest-hover, palimpsest-select, palimpsest-shader, palimpsest-type, palimpsest-scroll, palimpsest-loading, palimpsest-components]
+    related_skills: [mosaic-cards, mosaic-press, mosaic-drag, mosaic-hover, mosaic-select, mosaic-shader, mosaic-type, mosaic-scroll, mosaic-loading, mosaic-components]
 ---
 
-# Palimpsest
+# Mosaic
 
-Palimpsest is a design-reference method. Inspect a surface, name what makes it work, then build an original system from the principles. It does not clone a reference, copy proprietary code or assets, or stop at a moodboard. The output is a direction, a small token set, a composition, one or two signature moves, and a verification pass.
+Mosaic is a design-reference method. Inspect a surface, name what makes it work, then build an original system from the principles. It does not clone a reference, copy proprietary code or assets, or stop at a moodboard. The output is a direction, a small token set, a composition, one or two signature moves, and a verification pass.
 
 ## When to Use
 
@@ -99,9 +99,9 @@ Use `clamp()` for display type. Keep body measure at 45-75ch. Use tabular numera
 - Performance: no layout shift; pause shaders offscreen; no unbounded blur.
 - Originality: remove any direct copy. The reference map is a check, not a template.
 
-## With the Palimpsest plugin
+## With the Mosaic plugin
 
-If `palimpsest_recipe` is available, use it as a starting direction, then apply this method. Ask for a mood and a brief, take the two signature moves and token table, and replace anything that does not belong to the actual product. `palimpsest_audit` is a quick text screen before browser review; it is not a substitute for keyboard, contrast or performance tests. The skills work without the plugin.
+If `mosaic_recipe` is available, use it as a starting direction, then apply this method. Ask for a mood and a brief, take the two signature moves and token table, and replace anything that does not belong to the actual product. `mosaic_audit` is a quick text screen before browser review; it is not a substitute for keyboard, contrast or performance tests. The skills work without the plugin.
 
 ## Verification
 
@@ -112,4 +112,4 @@ If `palimpsest_recipe` is available, use it as a starting direction, then apply 
 
 ## See Also
 
-`palimpsest-cards`, `palimpsest-press`, `palimpsest-drag`, `palimpsest-hover`, `palimpsest-select`, `palimpsest-shader`, `palimpsest-type`, `palimpsest-scroll`, `palimpsest-loading`, `palimpsest-components`. The reference notes are in `references/construct-teardown.md`.
+`mosaic-cards`, `mosaic-press`, `mosaic-drag`, `mosaic-hover`, `mosaic-select`, `mosaic-shader`, `mosaic-type`, `mosaic-scroll`, `mosaic-loading`, `mosaic-components`. The reference notes are in `references/construct-teardown.md`.

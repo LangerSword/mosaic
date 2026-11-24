@@ -1,5 +1,5 @@
 ---
-name: palimpsest-components
+name: mosaic-components
 description: Specify component states before styling them.
 version: 0.1.0
 author: Lakshaya Sharma (LangerSword), Hermes Agent
@@ -8,10 +8,10 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, components, states, interaction, spec]
-    related_skills: [palimpsest]
+    related_skills: [mosaic]
 ---
 
-# Palimpsest Components
+# Mosaic Components
 
 A component is a state machine with a surface, not a rectangle with a hover colour. This skill covers the public component grammar behind the Construct study: flow canvases, cards, live rails, publishing bars, wordmarks, cursors, story pills, hold controls, segmented pickers and thinking states.
 
@@ -20,9 +20,9 @@ A component is a state machine with a surface, not a rectangle with a hover colo
 - You are about to build a component from a reference.
 - A component works in one state but falls apart in hover, press, focus, loading or error.
 - You need to choose between a card, a control, an instrument or a surface.
-- You want to add a component family to Palimpsest.
+- You want to add a component family to Mosaic.
 
-Do not use for a full-page composition; use `palimpsest` first.
+Do not use for a full-page composition; use `mosaic` first.
 
 ## Object, Control, Instrument, Surface
 
@@ -53,7 +53,7 @@ If a state cannot be seen in a still frame, it probably is not designed yet.
 
 ## Public Component Notes
 
-These are public observations, not code to copy. The full records live in `references/public-component-notes.md`; the `palimpsest_components` tool returns them filtered.
+These are public observations, not code to copy. The full records live in `references/public-component-notes.md`; the `mosaic_components` tool returns them filtered.
 
 | Component | Family | Public state idea |
 |---|---|---|
@@ -81,7 +81,7 @@ These are public observations, not code to copy. The full records live in `refer
 3. Pick one signature motion. Completion: it explains a state change, not decoration.
 4. Build rest and focus first, then press, then loading/error. Completion: each state works without hover.
 5. Test 390px, keyboard, reduced motion and a slow network. Completion: no state is lost.
-6. Add observed-but-original notes to the Palimpsest corpus only if they teach a reusable move.
+6. Add observed-but-original notes to the Mosaic corpus only if they teach a reusable move.
 
 ## Pitfalls
 

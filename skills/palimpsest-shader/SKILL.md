@@ -1,5 +1,5 @@
 ---
-name: palimpsest-shader
+name: mosaic-shader
 description: Build atmospheric shaders with static fallbacks.
 version: 0.1.0
 author: Lakshaya Sharma (LangerSword), Hermes Agent
@@ -8,10 +8,10 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, shader, webgl, atmosphere, performance]
-    related_skills: [palimpsest]
+    related_skills: [mosaic]
 ---
 
-# Palimpsest Shader
+# Mosaic Shader
 
 A shader is atmosphere, not a screensaver. This skill covers noise fields, dot globes, heat maps, and subtle distortion. The rule: the page must still be readable when the shader is absent, paused, or reduced.
 
