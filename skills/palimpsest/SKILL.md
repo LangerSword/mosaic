@@ -99,6 +99,10 @@ Use `clamp()` for display type. Keep body measure at 45-75ch. Use tabular numera
 - Performance: no layout shift; pause shaders offscreen; no unbounded blur.
 - Originality: remove any direct copy. The reference map is a check, not a template.
 
+## With the Palimpsest plugin
+
+If `palimpsest_recipe` is available, use it as a starting direction, then apply this method. Ask for a mood and a brief, take the two signature moves and token table, and replace anything that does not belong to the actual product. `palimpsest_audit` is a quick text screen before browser review; it is not a substitute for keyboard, contrast or performance tests. The skills work without the plugin.
+
 ## Verification
 
 - Three-sentence rationale: what it is, why the signature moves, what was refused.
