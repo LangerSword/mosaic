@@ -21,6 +21,7 @@ capabilities:
     - mosaic_components
     - mosaic_stacks
     - mosaic_forge
+    - mosaic_invent
     - mosaic_recipe
     - mosaic_audit
   provides_hooks: []
