@@ -73,6 +73,16 @@ Each skill has a trigger, a procedure, pitfalls and a verification pass. The mas
 7. Texture is a material, not a default. Pick paper, glass, metal or pixel; not all four.
 8. The document works without the show: keyboard, reduced motion and slow network are part of the design.
 
+## Example site
+
+`site/index.html` is a static, dependency-free product page for the plugin: a reference table, a live component lab, a recipe panel and the install path. Serve it locally with:
+
+```bash
+python3 -m http.server 4173 --directory site
+```
+
+The page is verified at 1440 and 390, with no horizontal overflow and no console errors. Screenshots are in `docs/site-1440.png` and `docs/site-390.png`.
+
 ## Reference study and independence
 
 The reference notes in `skills/mosaic/references/construct-teardown.md` are an original study of the public Construct Design catalog and four free specimen pages at `https://www.tobiadonadon.com/projects/construct/design`. The study records layout, type, tokens and interaction behavior. It does not copy code, assets or the paid library. Mosaic is unaffiliated with Construct or Tobia Donadon.
