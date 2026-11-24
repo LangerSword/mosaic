@@ -12,7 +12,7 @@ from textwrap import dedent
 
 TOKENS = """--paper:#f3efe6;--paper-2:#e9e2d5;--ink:#15130f;--muted:#6c655a;--line:#d4ccbd;--clay:#c64a2e;--cobalt:#0d2340;--ease:cubic-bezier(.22,1,.36,1);"""
 
-COMMON_CSS = """:host{display:block;color:var(--ink);font-family:ui-sans-serif,system-ui,sans-serif;line-height:1.4}*{box-sizing:border-box}button{font:inherit;color:inherit}button:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}"""
+COMMON_CSS = """:host{--paper:#f3efe6;--paper-2:#e9e2d5;--ink:#15130f;--muted:#6c655a;--line:#d4ccbd;--clay:#c64a2e;--cobalt:#0d2340;--ease:cubic-bezier(.22,1,.36,1);display:block;color:var(--ink);font-family:ui-sans-serif,system-ui,sans-serif;line-height:1.4}*{box-sizing:border-box}button{font:inherit;color:inherit}button:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}"""
 
 KINDS = {
     "hold": {"tag": "mosaic-hold", "event": "mosaic-confirm", "label": "Hold to delete", "gsap": False},
@@ -220,22 +220,36 @@ def _react_wrapper(kind: str, nextjs: bool) -> str:
     meta = KINDS[kind]
     tag, event, label = meta["tag"], meta["event"], meta["label"]
     client = '"use client";\n\n' if nextjs else ''
-    prop = "progress" if kind == "download-ring" else "label"
-    set_value = "\n    if (el) el.progress = value;" if kind == "download-ring" else ""
-    arg = "label = " + json.dumps(label) + (", value = 0" if kind == "download-ring" else "")
+    if kind == "download-ring":
+        props = 'label = "Download", value = 0'
+        types = '{ label?: string; value?: number; onEvent?: (detail: unknown) => void }'
+        effect = '''const el = ref.current;
+    if (el) el.progress = value;
+    if (!el) return;
+    const handler = (event: Event) => onEvent?.((event as CustomEvent).detail);
+    el.addEventListener("''' + event + '''", handler);
+    return () => el.removeEventListener("''' + event + '''", handler);'''
+        deps = '[onEvent, value]'
+        attrs = 'ref, label, progress: value'
+    else:
+        props = 'label = ' + json.dumps(label)
+        types = '{ label?: string; onEvent?: (detail: unknown) => void }'
+        effect = '''const el = ref.current;
+    if (!el) return;
+    const handler = (event: Event) => onEvent?.((event as CustomEvent).detail);
+    el.addEventListener("''' + event + '''", handler);
+    return () => el.removeEventListener("''' + event + '''", handler);'''
+        deps = '[onEvent]'
+        attrs = 'ref, label'
     return dedent(f'''{client}import React, {{ useEffect, useRef }} from "react";
 import "./{kind}.js";
 
-export default function Mosaic{kind.title().replace("-", "")}({{ {arg}, onEvent }}: {{ {arg}: string | number; onEvent?: (detail: unknown) => void }}) {{
+export default function Mosaic{kind.title().replace("-", "")}({{ {props}, onEvent }}: {types}) {{
   const ref = useRef<HTMLElement | null>(null);
   useEffect(() => {{
-    const el = ref.current;{set_value}
-    if (!el) return;
-    const handler = (event: Event) => onEvent?.((event as CustomEvent).detail);
-    el.addEventListener("{event}", handler);
-    return () => el.removeEventListener("{event}", handler);
-  }}, [onEvent, value]);
-  return React.createElement("{tag}", {{ ref, {prop}: {prop} }});
+    {effect}
+  }}, {deps});
+  return React.createElement("{tag}", {{ {attrs} }});
 }}
 ''')
 
