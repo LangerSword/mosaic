@@ -8,7 +8,7 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, web, reference, system, frontend]
-    related_skills: [mosaic-cards, mosaic-press, mosaic-drag, mosaic-hover, mosaic-select, mosaic-shader, mosaic-type, mosaic-scroll, mosaic-loading, mosaic-components]
+    related_skills: [mosaic-cards, mosaic-press, mosaic-drag, mosaic-hover, mosaic-select, mosaic-shader, mosaic-type, mosaic-scroll, mosaic-loading, mosaic-components, mosaic-forge]
 ---
 
 # Mosaic
@@ -39,6 +39,18 @@ Do not use for pixel-perfect recreation, licensed asset extraction, paywall bypa
 4. Write a reference map with four columns: observed, why it works, keep as principle, do not copy.
 5. Name one specimen idea, the page's reason to exist. "Modern SaaS" is not an idea.
 6. Stop when you can explain the page in three sentences without adjectives.
+
+## Public preview and motion evidence
+
+Before recording, confirm the page is publicly reachable. If it returns a login or an "opens with an account" gate, stop and mark the component gated; never bypass authentication, a paywall, or a licence to inspect code. Public previews are evidence, not a licence to copy implementation.
+
+1. Capture layout at 1440 and 390, then record the animated state at a viewport that shows the specimen (1200x800 is enough). Scroll the specimen into view before the recording starts.
+2. Use `scripts/capture-reference-motion.py` or the same Playwright recipe: `record_video_dir`, `record_video_size`, `goto(..., wait_until="domcontentloaded")`, a short settle, then the state action (hover, hold, click, key). Keep the video path before the context closes.
+3. Extract 2-3 frames per recording with ffmpeg and put them on a labelled contact sheet. Vision the sheet, then pair the visual read with the live DOM text and computed timing. A still poster alone cannot establish motion.
+4. Measure state timing rather than describing it: record pointer-down, intermediate frames and completion; report the actual progress and settle states. For a hold control, note the hold duration and the observed progress at two points.
+5. If the vision model rate-limits the contact sheet, say so; the video and frame sheet remain evidence, but do not claim the visual pass completed.
+
+The detailed recipe and pitfalls are in `references/public-preview-capture.md`; the reusable capture script is `scripts/capture-reference-motion.py`.
 
 ## Choose the System
 
@@ -112,4 +124,4 @@ If `mosaic_recipe` is available, use it as a starting direction, then apply this
 
 ## See Also
 
-`mosaic-cards`, `mosaic-press`, `mosaic-drag`, `mosaic-hover`, `mosaic-select`, `mosaic-shader`, `mosaic-type`, `mosaic-scroll`, `mosaic-loading`, `mosaic-components`. The reference notes are in `references/construct-teardown.md`.
+`mosaic-cards`, `mosaic-press`, `mosaic-drag`, `mosaic-hover`, `mosaic-select`, `mosaic-shader`, `mosaic-type`, `mosaic-scroll`, `mosaic-loading`, `mosaic-components`, `mosaic-forge`. The reference notes are in `references/construct-teardown.md`.
