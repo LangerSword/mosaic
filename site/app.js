@@ -235,4 +235,63 @@
       }
     });
   });
+
+  // Forge playground: real files and real code from the bundled samples.
+  const forgeData = window.MOSAIC_FORGE;
+  const stackSelect = document.querySelector('#forge-stack');
+  const motionSelect = document.querySelector('#forge-motion');
+  const fileList = document.querySelector('#forge-files');
+  const codeEl = document.querySelector('#forge-code');
+  const fileLabel = document.querySelector('#forge-file');
+  const depsLabel = document.querySelector('#forge-deps');
+  if (forgeData && stackSelect && motionSelect && fileList && codeEl) {
+    forgeData.stacks.forEach((stack) => {
+      const option = document.createElement('option');
+      option.value = stack.id;
+      option.textContent = stack.label;
+      stackSelect.append(option);
+    });
+    stackSelect.value = 'react';
+    let selectedPath = 'index.tsx';
+    const renderCode = () => {
+      const sample = forgeData.samples[stackSelect.value]?.[motionSelect.value];
+      if (!sample) return;
+      const files = sample.files || [];
+      if (!files.some((file) => file.path === selectedPath)) {
+        selectedPath = files.find((file) => file.path.startsWith('index.'))?.path || files[0]?.path || '';
+      }
+      fileList.replaceChildren();
+      files.forEach((file) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = file.path;
+        button.setAttribute('aria-pressed', String(file.path === selectedPath));
+        button.addEventListener('click', () => {
+          selectedPath = file.path;
+          renderCode();
+        });
+        fileList.append(button);
+      });
+      const selected = files.find((file) => file.path === selectedPath);
+      if (fileLabel) fileLabel.textContent = selected?.path || 'forge';
+      const deps = sample.deps?.length ? sample.deps.join(', ') : 'none';
+      if (depsLabel) depsLabel.textContent = `deps: ${deps}`;
+      if (codeEl) codeEl.textContent = selected?.content || '';
+    };
+    stackSelect.addEventListener('change', () => { selectedPath = 'index.tsx'; renderCode(); });
+    motionSelect.addEventListener('change', renderCode);
+    renderCode();
+  }
+
+  // Download ring demo: every step is an explicit event, not a timer.
+  const ring = document.querySelector('mosaic-download-ring');
+  const advance = document.querySelector('[data-demo-download]');
+  if (ring && advance) {
+    let progress = 0;
+    advance.addEventListener('click', () => {
+      progress = Math.min(100, progress + 20);
+      ring.progress = progress;
+      advance.textContent = progress >= 100 ? 'Complete' : 'Advance event';
+    });
+  }
 })();

@@ -215,7 +215,7 @@
 <span class="c-key">avoid</span>: [<span class="c-str">"purple gradient"</span>,
         <span class="c-str">"glass everywhere"</span>]
 <span class="c-key">accept</span>: <span class="c-bool">true</span></code></pre>
-        <div class="panel-foot"><span>deterministic · local · no network</span><span>4 tools</span></div>
+        <div class="panel-foot"><span>deterministic · local · no network</span><span>6 tools</span></div>
       </div>
     </section>
 
@@ -248,6 +248,63 @@ swipe-confirm.js   core state machine
 index.tsx          React adapter
 # deps: gsap</code></pre>
         </div>
+      </div>
+      <div class="forge-playground reveal">
+        <div class="forge-controls">
+          <p class="mono-label">Inspect a real forge output</p>
+          <label for="forge-stack">Stack</label>
+          <select id="forge-stack"></select>
+          <label for="forge-motion">Motion</label>
+          <select id="forge-motion">
+            <option value="css">CSS</option>
+            <option value="gsap">GSAP</option>
+          </select>
+          <p class="forge-note" id="forge-note">The file tree and code below come from the forge, not a mockup.</p>
+          <div class="forge-files" id="forge-files" aria-label="Generated files"></div>
+        </div>
+        <div class="terminal forge-code">
+          <div class="terminal-top"><span id="forge-file">swipe-confirm.js</span><span id="forge-deps">deps: none</span></div>
+          <pre><code id="forge-code"></code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="forge-lab wrap" id="forge-lab">
+      <div class="section-head reveal">
+        <p class="eyebrow">Run the forge</p>
+        <h2>Four states,<br>actually running.</h2>
+        <p>These are generated custom elements from the forge, mounted on this page. The code is not a video. Press, drag, check and send.</p>
+      </div>
+      <div class="lab-grid">
+        <article class="lab-panel reveal">
+          <header><span class="lab-kicker">FORGE / PAPER PLANE</span><span class="lab-tag">press</span></header>
+          <h3>Send the brief</h3>
+          <mosaic-paper-plane label="Send the brief"></mosaic-paper-plane>
+          <p class="lab-status">A one-shot send: fold, flight, sent, reset. The state is visible without motion.</p>
+          <footer><span>custom element</span><span>CSS motion</span></footer>
+        </article>
+        <article class="lab-panel reveal">
+          <header><span class="lab-kicker">FORGE / SWIPE CONFIRM</span><span class="lab-tag">drag</span></header>
+          <h3>Swipe to delete</h3>
+          <mosaic-swipe-confirm label="Swipe to delete"></mosaic-swipe-confirm>
+          <p class="lab-status">Drag the handle past the threshold; release early to cancel. Enter also confirms.</p>
+          <footer><span>pointer + keyboard</span><span>spring reset</span></footer>
+        </article>
+        <article class="lab-panel reveal">
+          <header><span class="lab-kicker">FORGE / DOWNLOAD RING</span><span class="lab-tag">real progress</span></header>
+          <h3>Feed the ring</h3>
+          <mosaic-download-ring label="Export" value="0"></mosaic-download-ring>
+          <button class="btn btn-small" type="button" data-demo-download>Advance event</button>
+          <p class="lab-status">The ring only moves when an event moves it. No timer, no fake percentage.</p>
+          <footer><span>role=progressbar</span><span>live value</span></footer>
+        </article>
+        <article class="lab-panel reveal">
+          <header><span class="lab-kicker">FORGE / CHECKLIST</span><span class="lab-tag">select</span></header>
+          <h3>Preflight</h3>
+          <mosaic-checklist label="Preflight"></mosaic-checklist>
+          <p class="lab-status">Native checkboxes, a strike, a progress rail and a remaining-count announcement.</p>
+          <footer><span>keyboard native</span><span>aria-live</span></footer>
+        </article>
       </div>
     </section>
 
@@ -315,6 +372,11 @@ python scripts/install_skills.py
     </div>
   </footer>
 
+  <script src="forge-samples.js" defer></script>
   <script src="app.js" defer></script>
+  <script type="module" src="forge/paper-plane.js"></script>
+  <script type="module" src="forge/swipe-confirm.js"></script>
+  <script type="module" src="forge/download-ring.js"></script>
+  <script type="module" src="forge/checklist.js"></script>
 </body>
 </html>

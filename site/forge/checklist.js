@@ -1,0 +1,13 @@
+const CSS = `:host{--paper:#f3efe6;--paper-2:#e9e2d5;--ink:#15130f;--muted:#6c655a;--line:#d4ccbd;--clay:#c64a2e;--cobalt:#0d2340;--ease:cubic-bezier(.22,1,.36,1);display:block;color:var(--ink);font-family:ui-sans-serif,system-ui,sans-serif;line-height:1.4}*{box-sizing:border-box}button{font:inherit;color:inherit}button:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+:host{--done:0} fieldset{border:0;margin:0;padding:0} legend{font:700 10px/1 ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px} label{display:flex;align-items:center;gap:10px;min-height:38px;font-size:13px;color:var(--muted);cursor:pointer} label:has(input:checked){color:var(--ink)} input{appearance:none;width:18px;height:18px;border:1px solid var(--line);border-radius:2px;background:var(--paper)} input:checked{background:var(--ink);border-color:var(--ink);box-shadow:inset 0 0 0 4px var(--paper)} .rail{height:3px;background:var(--line);margin-top:18px} .rail span{display:block;height:100%;width:calc(var(--done)*1%);background:var(--clay);transition:width .25s var(--ease)} p{margin:9px 0 0;color:var(--muted);font-size:11px}`;
+class MosaicChecklist extends HTMLElement {
+  connectedCallback() {
+    if (this.shadowRoot) return;
+    const root=this.attachShadow({mode:'open'});
+    root.innerHTML=`<style>${CSS}</style><fieldset><legend><span data-label>Checklist</span></legend><label><input type="checkbox" checked>Read the reference</label><label><input type="checkbox">Name the move</label><label><input type="checkbox">Compose the system</label><label><input type="checkbox">Audit the result</label></fieldset><div class="rail"><span></span></div><p role="status" aria-live="polite"></p>`;
+    const boxes=[...root.querySelectorAll('input')], rail=root.querySelector('.rail span'), status=root.querySelector('p'); root.querySelector('[data-label]').textContent=this.getAttribute('label')||'Checklist';
+    const update=()=>{ const done=boxes.filter(b=>b.checked).length; const pct=Math.round(done/boxes.length*100); this.style.setProperty('--done', String(pct)); rail.style.width=`${pct}%`; status.textContent=`${done} of ${boxes.length} complete.`; this.dispatchEvent(new CustomEvent('mosaic-change',{bubbles:true,composed:true,detail:{done,total:boxes.length}})); };
+    boxes.forEach(b=>b.addEventListener('change',update)); update();
+  }
+}
+customElements.define('mosaic-checklist', MosaicChecklist);
