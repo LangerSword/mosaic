@@ -8,9 +8,11 @@ import json
 try:
     from .mosaic_audit import audit_path, audit_source
     from .mosaic_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS, SKILL_BY_FAMILY
+    from .mosaic_forge import KINDS, STACKS, forge
 except ImportError:  # standalone CLI / tests
     from mosaic_audit import audit_path, audit_source
     from mosaic_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS, SKILL_BY_FAMILY
+    from mosaic_forge import KINDS, STACKS, forge
 
 DIRECTIONS = ["The Quiet Instrument", "Paper Teeth", "Soft Machinery", "The Long Table",
               "Field Notes", "After Hours", "The Slow Signal", "Open Studio"]
@@ -207,6 +209,28 @@ def h_components(args: dict) -> str:
     })
 
 
+def h_stacks(args: dict) -> str:
+    return _j({
+        "ok": True,
+        "stacks": [
+            {"id": key, "label": value["label"], "adapter": value["file"],
+             "skills": value["skills"]}
+            for key, value in STACKS.items()
+        ],
+        "motion": ["css", "gsap"],
+        "kinds": sorted(KINDS),
+        "note": "Mosaic does not vendor these skills; it routes the agent to the installed skill set. Load at most three per phase.",
+    })
+
+
+def h_forge(args: dict) -> str:
+    kind = str(args.get("kind") or "").strip()
+    stack = str(args.get("stack") or "html").strip().lower()
+    motion = str(args.get("motion") or "css").strip().lower()
+    brief = str(args.get("brief") or "").strip()
+    return forge(kind, stack, motion, brief)
+
+
 def h_audit(args: dict) -> str:
     source = args.get("source")
     path = args.get("path")
@@ -236,6 +260,29 @@ TOOL_SPECS = [
                 "family": {"type": "string", "description": "press, drag, hover, select, shader, type, scroll or loading"},
                 "query": {"type": "string", "description": "Text to match against name, state and use_when."},
             },
+        },
+    },
+    {
+        "name": "mosaic_stacks",
+        "handler": h_stacks,
+        "emoji": "🧱",
+        "description": "Return the framework matrix (HTML, React, Next, Svelte, Vue, Astro) and the Hermes web skills that pair with each target.",
+        "schema": {"type": "object", "properties": {}, "required": []},
+    },
+    {
+        "name": "mosaic_forge",
+        "handler": h_forge,
+        "emoji": "🛠️",
+        "description": "Generate an original component starter for a framework and either CSS or GSAP motion.",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "kind": {"type": "string", "enum": sorted(KINDS)},
+                "stack": {"type": "string", "enum": list(STACKS) + ["all"]},
+                "motion": {"type": "string", "enum": ["css", "gsap"]},
+                "brief": {"type": "string"},
+            },
+            "required": ["kind"],
         },
     },
     {

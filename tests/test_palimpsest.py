@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 from mosaic_audit import audit_source
-from mosaic_tools import TOOL_SPECS, h_audit, h_components, h_index, h_recipe
+from mosaic_tools import TOOL_SPECS, h_audit, h_components, h_forge, h_index, h_recipe, h_stacks
 
 
 class IndexTests(unittest.TestCase):
@@ -16,7 +16,8 @@ class IndexTests(unittest.TestCase):
 
     def test_tool_specs_are_named(self):
         self.assertEqual([s["name"] for s in TOOL_SPECS],
-                         ["mosaic_index", "mosaic_components", "mosaic_recipe", "mosaic_audit"])
+                         ["mosaic_index", "mosaic_components", "mosaic_stacks", "mosaic_forge",
+                          "mosaic_recipe", "mosaic_audit"])
 
     def test_components_filter(self):
         out = json.loads(h_components({"family": "press"}))
@@ -24,6 +25,37 @@ class IndexTests(unittest.TestCase):
         self.assertGreater(out["count"], 3)
         self.assertTrue(all(c["family"] == "press" for c in out["components"]))
         self.assertIn("hold-to-confirm", [c["id"] for c in out["components"]])
+
+
+class ForgeTests(unittest.TestCase):
+    def test_forge_emits_distinct_files_for_all_stacks(self):
+        out = json.loads(h_forge({"kind": "swipe-confirm", "stack": "all", "motion": "gsap"}))
+        self.assertTrue(out["ok"])
+        paths = [f["path"] for f in out["files"]]
+        self.assertEqual(len(paths), len(set(paths)))
+        self.assertIn("swipe-confirm.js", paths)
+        self.assertIn("index.svelte", paths)
+        self.assertIn("index.vue", paths)
+        self.assertIn("index.astro", paths)
+        self.assertIn("gsap", out["deps"])
+
+    def test_forge_has_no_unresolved_placeholders(self):
+        out = json.loads(h_forge({"kind": "paper-plane", "stack": "next", "motion": "gsap"}))
+        core = next(f["content"] for f in out["files"] if f["path"].endswith(".js"))
+        self.assertIn("customElements.define('mosaic-paper-plane'", core)
+        self.assertNotIn("{tag}", core)
+        self.assertNotIn("{{", core)
+        self.assertIn('"use client"', next(f["content"] for f in out["files"] if f["path"] == "index.tsx"))
+
+    def test_forge_rejects_unknown_target(self):
+        with self.assertRaises(ValueError):
+            h_forge({"kind": "hold", "stack": "angular"})
+
+    def test_stacks_are_indexed(self):
+        out = json.loads(h_stacks({}))
+        self.assertTrue(out["ok"])
+        self.assertEqual(len(out["stacks"]), 6)
+        self.assertEqual(len(out["kinds"]), 7)
 
 
 class RecipeTests(unittest.TestCase):

@@ -200,6 +200,14 @@ h1 em{font-family:var(--serif);font-weight:400;text-transform:none;letter-spacin
 .install-list li span{color:var(--muted);text-align:right}
 .small{font-size:13px;color:var(--muted);line-height:1.5;max-width:300px}
 
+.forge{padding-block:clamp(64px,9vw,128px)}
+.forge-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(26px,6vw,90px);align-items:start;border-top:1px solid var(--ink);padding-top:14px}
+.stack-list{border-top:1px solid var(--line)}
+.stack-list>div{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 0;border-bottom:1px solid var(--line)}
+.stack-list b{display:block;font-family:var(--display);font-size:22px;font-weight:400;text-transform:uppercase;line-height:1}
+.stack-list small{display:block;margin-top:4px;color:var(--muted);font-size:11px}
+.stack-list code{font-family:var(--mono);font-size:10px;color:var(--clay);white-space:nowrap}
+
 .site-foot{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:24px;align-items:center;padding-block:26px;border-top:1px solid var(--ink);margin-top:20px}
 .foot-brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:18px;letter-spacing:.08em}
 .site-foot p{margin:0;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}

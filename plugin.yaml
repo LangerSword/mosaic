@@ -1,7 +1,7 @@
 name: mosaic
 label: Mosaic
 kind: standalone
-version: 0.3.0
+version: 0.4.0
 author: Lakshaya Sharma (LangerSword)
 homepage: https://github.com/LangerSword/mosaic
 description: >
@@ -17,5 +17,7 @@ provides_hooks: []
 provides_tools:
   - mosaic_index
   - mosaic_components
+  - mosaic_stacks
+  - mosaic_forge
   - mosaic_recipe
   - mosaic_audit

@@ -8,7 +8,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from mosaic_tools import TOOL_SPECS, h_audit, h_components, h_index, h_recipe
+from mosaic_tools import TOOL_SPECS, h_audit, h_components, h_forge, h_index, h_recipe, h_stacks
 
 
 def main() -> int:
@@ -16,6 +16,7 @@ def main() -> int:
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     sub.add_parser("index", help="list reference families")
+    sub.add_parser("stacks", help="list the framework and skill matrix")
 
     recipe = sub.add_parser("recipe", help="build a design direction")
     recipe.add_argument("--brief", required=True)
@@ -31,11 +32,22 @@ def main() -> int:
     comps.add_argument("--family")
     comps.add_argument("--query")
 
+    forge = sub.add_parser("forge", help="generate a component starter")
+    forge.add_argument("--kind", required=True)
+    forge.add_argument("--stack", default="html")
+    forge.add_argument("--motion", default="css")
+    forge.add_argument("--brief", default="")
+
     args = parser.parse_args()
     if args.cmd == "index":
         out = h_index({})
+    elif args.cmd == "stacks":
+        out = h_stacks({})
     elif args.cmd == "components":
         out = h_components({"family": args.family, "query": args.query})
+    elif args.cmd == "forge":
+        out = h_forge({"kind": args.kind, "stack": args.stack,
+                       "motion": args.motion, "brief": args.brief})
     elif args.cmd == "recipe":
         out = h_recipe({"brief": args.brief, "mood": args.mood,
                         "stack": args.stack, "constraints": args.constraints})

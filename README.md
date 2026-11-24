@@ -6,10 +6,12 @@ It is not a template library, a cloner, or a moodboard generator. It gives the a
 
 ## What is in the box
 
-- **11 Hermes skills**: one master method, nine interaction families and a component grammar.
-- **4 local tools**:
+- **12 Hermes skills**: one master method, nine interaction families, a component grammar and a forge.
+- **6 local tools**:
   - `mosaic_index`: the reference families, skills and base tokens.
   - `mosaic_components`: the public component observations, filterable by family or text.
+  - `mosaic_stacks`: the HTML, React, Next, Svelte, Vue and Astro matrix with paired Hermes skills.
+  - `mosaic_forge`: an original component starter for a stack, with CSS or GSAP motion.
   - `mosaic_recipe`: a deterministic direction for a brief.
   - `mosaic_audit`: a local text scan for generic gradients, `transition: all`, missing reduced-motion and similar slop.
 - **A CLI** over the same handlers, for a demo or CI without Hermes.
@@ -32,6 +34,8 @@ Start a new Hermes session so the tools and skills enter the index. The skills c
 python mosaic_cli.py index
 python mosaic_cli.py recipe --brief "A collectible racing deck for a design conference" --mood tactile
 python mosaic_cli.py components --family press
+python mosaic_cli.py stacks
+python mosaic_cli.py forge --kind swipe-confirm --stack react --motion gsap
 python mosaic_cli.py audit --path src/app.css
 ```
 
@@ -59,6 +63,7 @@ The recipe is a starting direction, not an answer. It deliberately returns a the
 | `mosaic-scroll` | Scroll-driven narrative and pinned scenes |
 | `mosaic-loading` | Agent thinking states and honest progress |
 | `mosaic-components` | Component state matrices and the public component grammar |
+| `mosaic-forge` | Stack-aware component starters with CSS or GSAP |
 
 Each skill has a trigger, a procedure, pitfalls and a verification pass. The master skill carries the reference method and the public Construct teardown.
 
@@ -91,11 +96,11 @@ Construct is a useful reference precisely because it is plural: a quiet gallery 
 
 ## Evidence
 
-- 13 unit tests pass with stdlib only.
-- `smoke_load.py` loads the real entry point against a recording context, asserts 4 tools and dispatches them.
+- 17 unit tests pass with stdlib only.
+- `smoke_load.py` loads the real entry point against a recording context, asserts 6 tools and dispatches them.
 - `hermes plugins validate` and `hermes plugins doctor` are the admission gates.
 - CLI outputs are deterministic and JSON.
-- 16 public component observations are included; six second-row components were account-gated, and the rest of the catalog requires an account. None were bypassed.
+- 20 public component observations are included; six second-row components were account-gated, and the rest of the catalog requires an account. None were bypassed.
 
 ## Limits
 

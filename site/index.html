@@ -22,6 +22,7 @@
     <nav class="site-nav" aria-label="Primary">
       <a href="#method">Method</a>
       <a href="#lab">Lab</a>
+      <a href="#forge">Forge</a>
       <a href="#evidence">Evidence</a>
       <a href="#install">Install</a>
     </nav>
@@ -39,9 +40,9 @@
           <a class="btn btn-ghost" href="#install">Install locally</a>
         </div>
         <dl class="hero-stats">
-          <div><dt>Skills</dt><dd>11</dd></div>
-          <div><dt>Tools</dt><dd>4</dd></div>
-          <div><dt>Public components</dt><dd>16</dd></div>
+          <div><dt>Skills</dt><dd>12</dd></div>
+          <div><dt>Tools</dt><dd>6</dd></div>
+          <div><dt>Public components</dt><dd>20</dd></div>
           <div><dt>Network</dt><dd>0</dd></div>
         </dl>
       </div>
@@ -218,6 +219,38 @@
       </div>
     </section>
 
+    <section class="forge wrap" id="forge">
+      <div class="section-head reveal">
+        <p class="eyebrow">The forge</p>
+        <h2>One component.<br>Any stack.</h2>
+        <p>Start with one family and a one-line brief. Mosaic returns a shared state machine, a framework adapter and a CSS or GSAP motion layer. You still bring the page.</p>
+      </div>
+      <div class="forge-grid reveal">
+        <div class="stack-list" aria-label="Supported stacks">
+          <div><span><b>HTML</b><small>native custom element</small></span><code>demo.html</code></div>
+          <div><span><b>React</b><small>ref + event bridge</small></span><code>index.tsx</code></div>
+          <div><span><b>Next</b><small>client adapter</small></span><code>index.tsx</code></div>
+          <div><span><b>Svelte</b><small>onMount bridge</small></span><code>index.svelte</code></div>
+          <div><span><b>Vue</b><small>onMounted bridge</small></span><code>index.vue</code></div>
+          <div><span><b>Astro</b><small>DOM event script</small></span><code>index.astro</code></div>
+        </div>
+        <div class="terminal">
+          <div class="terminal-top"><span>mosaic_forge</span><span>CSS / GSAP</span></div>
+          <pre><code>mosaic_forge(
+  kind: "swipe-confirm",
+  stack: "react",
+  motion: "gsap",
+  brief: "delete a saved board"
+)
+
+# returns
+swipe-confirm.js   core state machine
+index.tsx          React adapter
+# deps: gsap</code></pre>
+        </div>
+      </div>
+    </section>
+
     <section class="evidence wrap" id="evidence">
       <div class="section-head reveal">
         <p class="eyebrow">Evidence / limits</p>
@@ -225,12 +258,12 @@
       </div>
       <div class="evidence-grid reveal">
         <table>
-          <caption>Mosaic 0.3.0</caption>
+          <caption>Mosaic 0.4.0</caption>
           <tbody>
-            <tr><th scope="row">Skills</th><td>11</td><td>master + nine families + components</td></tr>
-            <tr><th scope="row">Tools</th><td>4</td><td>index, components, recipe, audit</td></tr>
-            <tr><th scope="row">Public components</th><td>16</td><td>state, timing, parameters, a11y</td></tr>
-            <tr><th scope="row">Tests</th><td>13</td><td>stdlib, no network</td></tr>
+            <tr><th scope="row">Skills</th><td>12</td><td>master + nine families + components + forge</td></tr>
+            <tr><th scope="row">Tools</th><td>6</td><td>index, components, stacks, forge, recipe, audit</td></tr>
+            <tr><th scope="row">Public components</th><td>20</td><td>state, timing, parameters, a11y</td></tr>
+            <tr><th scope="row">Tests</th><td>17</td><td>stdlib, no network</td></tr>
             <tr><th scope="row">Network</th><td>00</td><td>local reads only</td></tr>
           </tbody>
         </table>
@@ -261,6 +294,8 @@ python scripts/install_skills.py
           <ul>
             <li><code>mosaic_index</code><span>families, tokens, skills</span></li>
             <li><code>mosaic_components</code><span>public state grammar</span></li>
+            <li><code>mosaic_stacks</code><span>framework + skill matrix</span></li>
+            <li><code>mosaic_forge</code><span>stack-aware starter code</span></li>
             <li><code>mosaic_recipe</code><span>a direction from a brief</span></li>
             <li><code>mosaic_audit</code><span>generic-pattern scan</span></li>
           </ul>
