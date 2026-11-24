@@ -10,7 +10,10 @@ import hashlib
 import json
 import random
 
-from mosaic_forge import KINDS
+try:
+    from .mosaic_forge import KINDS
+except ImportError:  # standalone CLI / tests
+    from mosaic_forge import KINDS
 
 OBJECTS = ["card", "field", "rail", "token", "ring", "stack", "ledger", "lens"]
 INPUTS = ["hold", "swipe", "drag", "tap", "hover", "scroll", "key"]
