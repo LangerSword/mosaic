@@ -73,6 +73,10 @@ These are public observations, not code to copy. The full records live in `refer
 | Segmented control | select | One track, one sliding indicator, content changes in place |
 | Thinking shimmer | loading | Named steps, elapsed time, quiet shimmer, no fake percentage |
 | Quanta | type | One claim, one live instrument, one proof block |
+| Paper plane | press | A send action that folds, flies and resolves into a sent state |
+| Swipe confirm | drag | Threshold drag with a spring cancel and a keyboard path |
+| Download ring | loading | Real progress in a ring; completion becomes a check |
+| Checklist | select | Done state, strike and a remaining-count announcement |
 
 ## Procedure
 

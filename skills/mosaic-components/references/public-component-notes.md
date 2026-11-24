@@ -20,6 +20,10 @@ Observed on the public Construct Design preview pages, 2026-11-24. The source is
 | segmented-control | select | One track, one sliding indicator, content changes without moving the furniture. | `?block=segmented-control` |
 | thinking-shimmer | loading | Named steps, elapsed time and a quiet shimmer; no invented percentage. | `?block=thinking-shimmer` |
 | quanta | type | One large claim, a live tokens-per-second instrument, a proof block and a benchmark area. | `?block=quanta` |
+| paper-plane | press | A send action folds a plane out of the button, flies it across the surface and resolves into a sent confirmation. | Guanmo AI, UI microinteractions #4 |
+| swipe-confirm | drag | A handle drags along a track; crossing the threshold confirms, releasing early settles back; a keyboard alternative is required. | Guanmo AI, UI microinteractions #4 |
+| download-ring | loading | A circular progress ring fed by real bytes or job events, not a timer; completion becomes a check. | Guanmo AI, UI microinteractions #4 |
+| checklist | select | Tasks with a real done state, a strike and a progress rail; the remaining count is announced. | Guanmo AI, UI microinteractions #4 |
 
 ## What to carry into an original component
 
