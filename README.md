@@ -116,8 +116,8 @@ Construct is a useful reference precisely because it is plural: a quiet gallery 
 
 ## Evidence
 
-- 21 unit tests pass with stdlib only.
-- `smoke_load.py` loads the real entry point against a recording context, asserts 7 tools and dispatches them.
+- 28 unit tests pass with stdlib only.
+- `smoke_load.py` loads the real entry point against a recording context, asserts 10 tools and dispatches them.
 - `hermes plugins validate` and `hermes plugins doctor` are the admission gates.
 - CLI outputs are deterministic and JSON.
 - 20 public component observations are included; six second-row components were account-gated, and the rest of the catalog requires an account. None were bypassed.

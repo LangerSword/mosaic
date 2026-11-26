@@ -21,6 +21,7 @@
     </a>
     <nav class="site-nav" aria-label="Primary">
       <a href="#method">Method</a>
+      <a href="#director">Director</a>
       <a href="#lab">Lab</a>
       <a href="#forge">Forge</a>
       <a href="#taste">Taste</a>
@@ -129,6 +130,29 @@
       </ol>
     </section>
 
+    <section class="director wrap" id="director">
+      <div class="section-head reveal">
+        <p class="eyebrow">Design director / 0.6</p>
+        <h2>Three structures.<br>One decision.</h2>
+        <p>Not a palette generator. A brief and an observed reference become three different ways to carry the content. Pick a concept, read the system, then open the actual page starter.</p>
+      </div>
+      <div class="director-stage" data-director>
+        <aside class="director-sidebar">
+          <label for="director-brief">Brief</label>
+          <select id="director-brief"></select>
+          <div class="director-meta" id="director-meta"></div>
+          <div class="director-concepts" id="director-concepts" role="list" aria-label="Design concepts"></div>
+        </aside>
+        <div class="director-panel" id="director-panel" aria-live="polite"></div>
+      </div>
+      <dialog class="director-dialog" id="director-dialog" aria-label="Generated page starter">
+        <div class="director-dialog-inner">
+          <div class="director-dialog-bar"><span id="director-dialog-title">Page starter</span><button type="button" data-director-close aria-label="Close preview">Close ×</button></div>
+          <iframe id="director-preview" title="Generated page starter preview" sandbox="allow-scripts"></iframe>
+        </div>
+      </dialog>
+    </section>
+
     <section class="lab wrap" id="lab">
       <div class="section-head reveal">
         <p class="eyebrow">Live table</p>
@@ -216,7 +240,7 @@
 <span class="c-key">avoid</span>: [<span class="c-str">"purple gradient"</span>,
         <span class="c-str">"glass everywhere"</span>]
 <span class="c-key">accept</span>: <span class="c-bool">true</span></code></pre>
-        <div class="panel-foot"><span>deterministic · local · no network</span><span>7 tools</span></div>
+        <div class="panel-foot"><span>deterministic · local · no network</span><span>10 tools</span></div>
       </div>
     </section>
 
@@ -329,6 +353,10 @@ index.tsx          React adapter
         <h2>Twenty<br>specimens.</h2>
         <p>Public observations, kept as state and motion notes. The eight live pieces above are the proof; this is the grammar behind them.</p>
       </div>
+      <div class="component-tools reveal">
+        <div class="component-filters" id="component-filters" role="group" aria-label="Filter component families"></div>
+        <div class="component-detail" id="component-detail" aria-live="polite"></div>
+      </div>
       <div class="component-grid" id="component-grid"></div>
     </section>
 
@@ -397,6 +425,7 @@ python scripts/install_skills.py
     </div>
   </footer>
 
+  <script src="director-samples.js?v=0.6.0" defer></script>
   <script src="forge-samples.js?v=0.6.0" defer></script>
   <script src="invent-samples.js?v=0.6.0" defer></script>
   <script src="component-gallery.js?v=0.6.0" defer></script>

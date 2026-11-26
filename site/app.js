@@ -342,9 +342,130 @@
     renderTaste();
   }
 
-  // Component index: all public observations, with a small visual grammar.
+  // Design director: real mosaic_design output for three briefs.
+  const directorData = window.MOSAIC_DIRECTOR;
+  const directorBrief = document.querySelector('#director-brief');
+  const directorConcepts = document.querySelector('#director-concepts');
+  const directorPanel = document.querySelector('#director-panel');
+  const directorMeta = document.querySelector('#director-meta');
+  const directorDialog = document.querySelector('#director-dialog');
+  const directorPreview = document.querySelector('#director-preview');
+  const directorDialogTitle = document.querySelector('#director-dialog-title');
+  if (directorData && directorBrief && directorConcepts && directorPanel && directorMeta) {
+    let selectedSample = directorData[0];
+    let selectedConcept = selectedSample.chosen;
+
+    const add = (parent, tag, className, text) => {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      parent.append(node);
+      return node;
+    };
+    const short = (value, limit = 150) => value.length > limit ? value.slice(0, limit - 1) + '…' : value;
+
+    const renderConcepts = () => {
+      directorConcepts.replaceChildren();
+      selectedSample.concepts.forEach((concept, index) => {
+        const button = add(directorConcepts, 'button', 'director-concept');
+        button.type = 'button';
+        button.setAttribute('aria-pressed', String(concept.id === selectedConcept.id));
+        add(button, 'span', 'director-concept__index', String(index + 1).padStart(2, '0'));
+        add(button, 'span', 'director-concept__name', concept.name);
+        add(button, 'span', 'director-concept__field', `${concept.adjacent_field} / ${concept.artifact}`);
+        add(button, 'span', 'director-concept__score', concept.scores.overall.toFixed(1));
+        button.addEventListener('click', () => {
+          selectedConcept = concept;
+          renderConcepts();
+          renderPanel();
+        });
+      });
+    };
+
+    const renderPanel = () => {
+      directorPanel.replaceChildren();
+      const top = add(directorPanel, 'div', 'director-panel__top');
+      add(top, 'span', '', `selected / ${selectedSample.label}`);
+      add(top, 'span', '', `${selectedSample.domain} / ${selectedSample.action} / ${selectedSample.critique.verdict}`);
+      add(directorPanel, 'h3', '', selectedConcept.name);
+      add(directorPanel, 'p', 'director-panel__thesis', selectedConcept.thesis);
+      const grid = add(directorPanel, 'div', 'director-panel__grid');
+
+      const tokens = add(grid, 'div', 'director-block');
+      add(tokens, 'h4', '', 'system / tokens');
+      const swatches = add(tokens, 'div', 'swatches');
+      ['--field', '--ink', '--signal', '--deep', '--surface'].forEach((key) => {
+        const swatch = add(swatches, 'i');
+        swatch.style.background = selectedSample.system.tokens[key] || '#15130f';
+        swatch.title = key;
+      });
+      add(tokens, 'p', '', `ink on field ${selectedSample.system.contrast.ink_on_field}:1 · signal ${selectedSample.system.contrast.signal_on_field}:1`);
+      add(tokens, 'p', '', `display / ${selectedConcept.name} · body / ${selectedSample.system.type.body.role}`);
+
+      const comp = add(grid, 'div', 'director-block');
+      add(comp, 'h4', '', 'composition');
+      const ol = add(comp, 'ol');
+      selectedConcept.sections.forEach((section) => add(ol, 'li', '', `${section.id} — ${section.job}`));
+
+      const ref = add(grid, 'div', 'director-block');
+      add(ref, 'h4', '', 'reference / adaptation');
+      const refRow = selectedSample.reference_map[0];
+      add(ref, 'p', '', refRow?.status === 'studied'
+        ? `${refRow.reference.name} · ${refRow.confidence} confidence`
+        : 'needs observations · first principles');
+      add(ref, 'p', '', selectedConcept.borrow);
+      add(ref, 'p', '', `do not copy: ${selectedConcept.do_not_copy[0]}`);
+
+      const contract = add(grid, 'div', 'director-block');
+      add(contract, 'h4', '', 'content contract');
+      const slots = Object.entries(selectedSample.content_contract).slice(0, 5);
+      const ul = add(contract, 'ul');
+      slots.forEach(([key, value]) => add(ul, 'li', '', `${key} — ${value.rule}`));
+
+      const actions = add(directorPanel, 'div', 'director-actions');
+      add(actions, 'span', 'mono-label', `critique ${selectedSample.critique.score}/100`);
+      const open = add(actions, 'button', 'director-btn', 'Open page starter');
+      open.type = 'button';
+      open.addEventListener('click', () => {
+        if (!directorDialog || !directorPreview) return;
+        if (directorDialogTitle) directorDialogTitle.textContent = `${selectedSample.label} / ${selectedConcept.name}`;
+        directorPreview.srcdoc = selectedSample.page;
+        directorDialog.showModal();
+      });
+      add(actions, 'span', 'mono-label', short(selectedConcept.risk, 110));
+    };
+
+    directorData.forEach((sample, index) => {
+      const option = document.createElement('option');
+      option.value = String(index);
+      option.textContent = sample.label;
+      directorBrief.append(option);
+    });
+    directorBrief.value = '0';
+    selectedSample = directorData[0];
+    selectedConcept = selectedSample.chosen;
+    directorMeta.textContent = `${selectedSample.domain} / ${selectedSample.audience} / ${selectedSample.action}`;
+    renderConcepts();
+    renderPanel();
+
+    directorBrief.addEventListener('change', () => {
+      selectedSample = directorData[Number(directorBrief.value) || 0];
+      selectedConcept = selectedSample.chosen;
+      directorMeta.textContent = `${selectedSample.domain} / ${selectedSample.audience} / ${selectedSample.action}`;
+      renderConcepts();
+      renderPanel();
+    });
+    document.querySelector('[data-director-close]')?.addEventListener('click', () => directorDialog?.close());
+    directorDialog?.addEventListener('click', (event) => {
+      if (event.target === directorDialog) directorDialog.close();
+    });
+  }
+
+  // Component index: real observations, filterable, with a selected state.
   const gallery = window.MOSAIC_COMPONENTS;
   const galleryGrid = document.querySelector('#component-grid');
+  const galleryFilters = document.querySelector('#component-filters');
+  const galleryDetail = document.querySelector('#component-detail');
   if (gallery && galleryGrid) {
     const add = (parent, tag, className, text) => {
       const node = document.createElement(tag);
@@ -353,15 +474,55 @@
       parent.append(node);
       return node;
     };
-    gallery.forEach((component) => {
-      const card = add(galleryGrid, 'article', 'specimen');
-      const art = add(card, 'div', 'specimen-art');
-      art.dataset.family = component.family;
-      const body = add(card, 'div', 'specimen-body');
-      add(body, 'b', '', component.name);
-      add(body, 'span', '', component.family);
-      add(body, 'p', '', component.state.length > 152 ? component.state.slice(0, 149) + '...' : component.state);
-      add(body, 'small', '', component.use_when);
-    });
+    const families = ['all', ...new Set(gallery.map((component) => component.family))];
+    let family = 'all';
+    let active = gallery[0];
+    const renderDetail = () => {
+      if (!galleryDetail || !active) return;
+      galleryDetail.replaceChildren();
+      add(galleryDetail, 'b', '', active.name);
+      add(galleryDetail, 'em', '', `${active.family} / selected`);
+      add(galleryDetail, 'p', '', active.state);
+      add(galleryDetail, 'p', '', `use: ${active.use_when}`);
+      add(galleryDetail, 'p', '', `avoid: ${active.avoid || 'not recorded in the public observation'}`);
+    };
+    const renderGrid = () => {
+      galleryGrid.replaceChildren();
+      gallery
+        .filter((component) => family === 'all' || component.family === family)
+        .forEach((component) => {
+          const card = add(galleryGrid, 'button', 'specimen');
+          card.type = 'button';
+          card.setAttribute('aria-pressed', String(component.id === active?.id));
+          const art = add(card, 'div', 'specimen-art');
+          art.dataset.family = component.family;
+          const body = add(card, 'div', 'specimen-body');
+          add(body, 'b', '', component.name);
+          add(body, 'span', '', component.family);
+          add(body, 'p', '', component.state.length > 142 ? component.state.slice(0, 139) + '...' : component.state);
+          add(body, 'small', '', component.use_when);
+          card.addEventListener('click', () => {
+            active = component;
+            renderGrid();
+            renderDetail();
+          });
+        });
+    };
+    if (galleryFilters) {
+      families.forEach((value) => {
+        const button = add(galleryFilters, 'button', '', value === 'all' ? 'All' : value);
+        button.type = 'button';
+        button.setAttribute('aria-pressed', String(value === family));
+        button.addEventListener('click', () => {
+          family = value;
+          galleryFilters.querySelectorAll('button').forEach((item) => {
+            item.setAttribute('aria-pressed', String(item.textContent?.toLowerCase() === value));
+          });
+          renderGrid();
+        });
+      });
+    }
+    renderGrid();
+    renderDetail();
   }
 })();
