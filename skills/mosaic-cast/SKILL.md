@@ -74,9 +74,13 @@ peeks.style.setProperty('--peek', p);
 
 - The buttons sit on the section rule and extend upward; use `overflow: visible` on
   the host section and a local z-index below the fixed header.
-- Drive both characters from the same `--peek-y`; no random hide/show timer.
+- Drive both characters from the same progress, but stagger each character by a small
+  offset (for example `index * innerHeight * 0.08`) so they do not lock to one frame.
+- Put the speech bubble outside the clipped image wrapper; a bubble inside the image
+  clip disappears exactly when the character peeks out.
 - Add a boop: click squishes the sprite, throws a tiny spark and reveals a bubble.
-- On mobile, hide labels and bubbles before shrinking the art.
+- On mobile, hide labels before shrinking the art; keep the boop bubble above the
+  head and inside the viewport.
 
 ## Minimal Build
 
