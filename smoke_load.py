@@ -37,7 +37,8 @@ def load_plugin():
 
 def main():
     module, ctx = load_plugin()
-    declared = {"mosaic_index", "mosaic_components", "mosaic_stacks", "mosaic_forge", "mosaic_invent", "mosaic_recipe", "mosaic_audit"}
+    declared = {"mosaic_index", "mosaic_study", "mosaic_design", "mosaic_components", "mosaic_stacks",
+                "mosaic_forge", "mosaic_invent", "mosaic_recipe", "mosaic_audit", "mosaic_critique"}
     assert set(ctx.tools) == declared, (set(ctx.tools), declared)
     assert not ctx.hooks
     idx = json.loads(ctx.tools["mosaic_index"]["handler"]({}))

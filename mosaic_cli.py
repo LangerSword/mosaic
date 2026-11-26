@@ -8,7 +8,8 @@ from __future__ import annotations
 import argparse
 import json
 
-from mosaic_tools import TOOL_SPECS, h_audit, h_components, h_forge, h_index, h_invent, h_recipe, h_stacks
+from mosaic_tools import (TOOL_SPECS, h_audit, h_components, h_critique, h_design, h_forge,
+                         h_index, h_invent, h_recipe, h_stacks, h_study)
 
 
 def main() -> int:
@@ -23,6 +24,27 @@ def main() -> int:
     recipe.add_argument("--mood", default="quiet")
     recipe.add_argument("--stack", default="HTML/CSS/JS")
     recipe.add_argument("--constraints", default="")
+
+    study = sub.add_parser("study", help="map a reference observation set")
+    study.add_argument("--reference", required=True, help="reference name or URL")
+    study.add_argument("--observations", default="{}", help="JSON object of observations")
+    study.add_argument("--brief", default="")
+    study.add_argument("--constraints", default="")
+
+    design = sub.add_parser("design", help="direct a brief into a design and optional page")
+    design.add_argument("--brief", required=True)
+    design.add_argument("--audience", default="")
+    design.add_argument("--constraints", default="")
+    design.add_argument("--references", default="")
+    design.add_argument("--mood", default="")
+    design.add_argument("--stack", default="HTML/CSS/JS")
+    design.add_argument("--mode", choices=("direction", "page"), default="direction")
+    design.add_argument("--seed", type=int)
+
+    critique = sub.add_parser("critique", help="critique a local source for design specificity")
+    critique.add_argument("--path")
+    critique.add_argument("--source")
+    critique.add_argument("--brief", default="")
 
     audit = sub.add_parser("audit", help="scan a local text source")
     audit.add_argument("--path")
@@ -60,6 +82,21 @@ def main() -> int:
     elif args.cmd == "recipe":
         out = h_recipe({"brief": args.brief, "mood": args.mood,
                         "stack": args.stack, "constraints": args.constraints})
+    elif args.cmd == "study":
+        try:
+            observations = json.loads(args.observations)
+        except json.JSONDecodeError:
+            observations = {}
+        out = h_study({"reference": {"name": args.reference, "observations": observations},
+                       "brief": args.brief, "constraints": args.constraints})
+    elif args.cmd == "design":
+        references = [item.strip() for item in args.references.split(";") if item.strip()]
+        out = h_design({"brief": args.brief, "audience": args.audience,
+                        "constraints": args.constraints, "references": references,
+                        "mood": args.mood, "stack": args.stack,
+                        "mode": args.mode, "seed": args.seed})
+    elif args.cmd == "critique":
+        out = h_critique({"path": args.path, "source": args.source, "brief": args.brief})
     else:
         out = h_audit({"path": args.path, "source": args.source})
     print(out)

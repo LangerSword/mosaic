@@ -7,14 +7,20 @@ import json
 
 try:
     from .mosaic_audit import audit_path, audit_source
+    from .mosaic_critique import critique_path, critique_source
     from .mosaic_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS, SKILL_BY_FAMILY
+    from .mosaic_design import design
     from .mosaic_forge import KINDS, STACKS, forge
     from .mosaic_invent import invent
+    from .mosaic_study import study_reference
 except ImportError:  # standalone CLI / tests
     from mosaic_audit import audit_path, audit_source
+    from mosaic_critique import critique_path, critique_source
     from mosaic_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS, SKILL_BY_FAMILY
+    from mosaic_design import design
     from mosaic_forge import KINDS, STACKS, forge
     from mosaic_invent import invent
+    from mosaic_study import study_reference
 
 DIRECTIONS = ["The Quiet Instrument", "Paper Teeth", "Soft Machinery", "The Long Table",
               "Field Notes", "After Hours", "The Slow Signal", "Open Studio"]
@@ -51,6 +57,10 @@ def _text(value, name: str, limit: int = 2000) -> str:
     if len(value) > limit:
         raise ValueError(f"{name} must be at most {limit} characters")
     return value
+
+
+def _optional(value, limit: int = 2000) -> str:
+    return value.strip()[:limit] if isinstance(value, str) else ""
 
 
 def _family(fid: str) -> dict:
@@ -92,19 +102,65 @@ def _accent(mood: str) -> dict:
     return MOODS.get(mood, MOODS["quiet"])
 
 
+def h_study(args: dict) -> str:
+    reference = args.get("reference")
+    if not isinstance(reference, (str, dict)):
+        raise ValueError("reference must be a string or an object")
+    brief = _optional(args.get("brief"), 2400)
+    constraints = _optional(args.get("constraints"), 800)
+    return _j(study_reference(reference, brief, constraints))
+
+
+def h_design(args: dict) -> str:
+    brief = _text(args.get("brief"), "brief", 2400)
+    audience = _optional(args.get("audience"), 200)
+    constraints = _optional(args.get("constraints"), 900)
+    mood = str(args.get("mood") or "").strip().lower()
+    stack = _text(args.get("stack") or "HTML/CSS/JS", "stack", 200)
+    mode = str(args.get("mode") or "direction").strip().lower()
+    references = args.get("references") or []
+    if isinstance(references, (str, dict)):
+        references = [references]
+    if not isinstance(references, list) or len(references) > 6:
+        raise ValueError("references must be an array of at most 6 strings or objects")
+    seed = args.get("seed")
+    if seed is not None:
+        seed = int(seed)
+    return _j(design(brief, audience, constraints, references, mood, stack, mode, seed))
+
+
+def h_critique(args: dict) -> str:
+    source = args.get("source")
+    path = args.get("path")
+    if bool(source) == bool(path):
+        raise ValueError("pass exactly one of source or path")
+    brief = _optional(args.get("brief"), 2000)
+    if path:
+        return _j(critique_path(_text(path, "path", 1000), brief))
+    return _j(critique_source(_text(source, "source", 300_000), brief))
+
+
 def h_index(args: dict) -> str:
     return _j({
         "ok": True,
         "plugin": "mosaic",
-        "version": "0.1.0",
+        "version": "0.6.0",
         "families": [
             {"id": f["id"], "name": f["name"], "skill": f["skill"],
              "signature": f["signature"], "use_when": f["use_when"], "avoid": f["avoid"]}
             for f in FAMILIES
         ],
+        "methods": [
+            {"id": "study", "skill": "mosaic-study", "tool": "mosaic_study",
+             "purpose": "Turn observed references into principles without inventing visual facts."},
+            {"id": "design", "skill": "mosaic-design", "tool": "mosaic_design",
+             "purpose": "Read the brief, propose three concepts, choose one and define the system and page."},
+            {"id": "critique", "skill": "mosaic-critique", "tool": "mosaic_critique",
+             "purpose": "Critique the source against design specificity, copy, focus and content-slot discipline."},
+        ],
         "base_tokens": BASE_TOKENS,
         "moods": sorted(MOODS),
-        "note": "Recipes are starting directions, not templates. Study the brief before writing code.",
+        "note": "Families are moves, not templates. Study the brief and references before writing code.",
     })
 
 
@@ -258,8 +314,50 @@ TOOL_SPECS = [
         "name": "mosaic_index",
         "handler": h_index,
         "emoji": "🗂️",
-        "description": "List the ten reference families, their skills and the base design tokens.",
+        "description": "List the reference families, design methods, skills and base design tokens.",
         "schema": {"type": "object", "properties": {}, "required": []},
+    },
+    {
+        "name": "mosaic_study",
+        "handler": h_study,
+        "emoji": "🔬",
+        "description": "Turn observed references into principles, transferable moves and a do-not-copy contract. A URL alone returns a capture checklist, not invented facts.",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "reference": {
+                    "type": ["object", "string"],
+                    "description": "A reference object with name/url/observations, or a name/URL string.",
+                },
+                "brief": {"type": "string"},
+                "constraints": {"type": "string"},
+            },
+            "required": ["reference"],
+        },
+    },
+    {
+        "name": "mosaic_design",
+        "handler": h_design,
+        "emoji": "✳️",
+        "description": "Act as a design director: read the brief, study references, propose three concepts, select one, define the system and optionally emit a complete page starter.",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "brief": {"type": "string", "description": "What is being built, for whom, and why."},
+                "audience": {"type": "string"},
+                "constraints": {"type": "string"},
+                "references": {
+                    "type": "array",
+                    "maxItems": 6,
+                    "items": {"type": ["object", "string"]},
+                },
+                "mood": {"type": "string", "enum": sorted(MOODS)},
+                "stack": {"type": "string"},
+                "mode": {"type": "string", "enum": ["direction", "page"]},
+                "seed": {"type": "integer"},
+            },
+            "required": ["brief"],
+        },
     },
     {
         "name": "mosaic_components",
@@ -339,6 +437,20 @@ TOOL_SPECS = [
             "properties": {
                 "path": {"type": "string", "description": "Local text file to scan."},
                 "source": {"type": "string", "description": "Source text to scan instead of a path."},
+            },
+        },
+    },
+    {
+        "name": "mosaic_critique",
+        "handler": h_critique,
+        "emoji": "🪞",
+        "description": "Critique a local source for generic copy, heading hierarchy, focus, content-slot discipline, radius/font noise and generic CSS patterns.",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "path": {"type": "string", "description": "Local text file to critique."},
+                "source": {"type": "string", "description": "Source text to critique instead of a path."},
+                "brief": {"type": "string"},
             },
         },
     },

@@ -5,20 +5,23 @@ from pathlib import Path
 
 from mosaic_audit import audit_source
 from mosaic_forge import KINDS
-from mosaic_tools import TOOL_SPECS, h_audit, h_components, h_forge, h_index, h_invent, h_recipe, h_stacks
+from mosaic_tools import (TOOL_SPECS, h_audit, h_components, h_critique, h_design, h_forge,
+                         h_index, h_invent, h_recipe, h_stacks, h_study)
 
 
 class IndexTests(unittest.TestCase):
-    def test_index_has_ten_families(self):
+    def test_index_has_eleven_families(self):
         out = json.loads(h_index({}))
         self.assertTrue(out["ok"])
-        self.assertEqual(len(out["families"]), 10)
+        self.assertEqual(len(out["families"]), 11)
         self.assertIn("paper-ink", [f["id"] for f in out["families"]])
+        self.assertEqual(len(out["methods"]), 3)
 
     def test_tool_specs_are_named(self):
         self.assertEqual([s["name"] for s in TOOL_SPECS],
-                         ["mosaic_index", "mosaic_components", "mosaic_stacks", "mosaic_forge",
-                          "mosaic_invent", "mosaic_recipe", "mosaic_audit"])
+                         ["mosaic_index", "mosaic_study", "mosaic_design", "mosaic_components",
+                          "mosaic_stacks", "mosaic_forge", "mosaic_invent", "mosaic_recipe",
+                          "mosaic_audit", "mosaic_critique"])
 
     def test_components_filter(self):
         out = json.loads(h_components({"family": "press"}))
@@ -117,6 +120,74 @@ class RecipeTests(unittest.TestCase):
         out = json.loads(h_recipe({"brief": "A tactile pricing page"}))
         self.assertGreaterEqual(len(out["acceptance"]), 6)
         self.assertIn("reduced", " ".join(out["acceptance"]).lower())
+
+
+class DesignTests(unittest.TestCase):
+    brief = "A quiet portfolio for a type designer who needs clients to trust the process"
+
+    def test_design_proposes_distinct_concepts_and_chooses_one(self):
+        out = json.loads(h_design({"brief": self.brief}))
+        self.assertTrue(out["ok"])
+        self.assertEqual(len(out["concepts"]), 3)
+        self.assertEqual(len({c["id"] for c in out["concepts"]}), 3)
+        self.assertIn(out["chosen"]["id"], {c["id"] for c in out["concepts"]})
+        self.assertGreaterEqual(out["chosen"]["scores"]["overall"], 7)
+        self.assertIn("--field", out["system"]["tokens"])
+        self.assertIn("ink_on_field", out["system"]["contrast"])
+
+    def test_design_is_deterministic(self):
+        args = {"brief": self.brief, "audience": "independent studio founders", "seed": 12}
+        self.assertEqual(h_design(args), h_design(args))
+
+    def test_reference_observations_are_required_for_principles(self):
+        bare = json.loads(h_study({"reference": "https://example.com/reference"}))
+        self.assertEqual(bare["status"], "needs_observations")
+        self.assertEqual(bare["confidence"], "low")
+        studied = json.loads(h_study({
+            "reference": {
+                "name": "DIA",
+                "observations": {
+                    "layout": "index and specimen split",
+                    "what_works": "the index is the navigation",
+                },
+            }
+        }))
+        self.assertEqual(studied["status"], "studied")
+        self.assertTrue(studied["principles"])
+
+    def test_page_mode_emits_a_content_contract_not_unresolved_tokens(self):
+        out = json.loads(h_design({"brief": self.brief, "mode": "page"}))
+        page = out["page"]["files"][0]
+        self.assertEqual(page["path"], "index.html")
+        self.assertNotIn("{{", page["content"])
+        self.assertIn("data-slot", page["content"])
+        self.assertIn("--field", page["content"])
+        self.assertIn("prefers-reduced-motion", page["content"])
+
+    def test_design_rejects_bad_inputs(self):
+        with self.assertRaises(ValueError):
+            h_design({"brief": "short"})
+        with self.assertRaises(ValueError):
+            h_design({"brief": self.brief, "mode": "magic"})
+        with self.assertRaises(ValueError):
+            h_design({"brief": self.brief, "mood": "loud"})
+
+
+class CritiqueTests(unittest.TestCase):
+    def test_critique_flags_generic_copy_and_missing_focus(self):
+        source = "<html><body><h1>We unlock seamless growth</h1><button>Start</button></body></html>"
+        out = json.loads(h_critique({"source": source}))
+        self.assertTrue(out["ok"])
+        rules = {f["rule"] for f in out["findings"]}
+        self.assertIn("generic-copy", rules)
+        self.assertIn("no-focus-visible", rules)
+        self.assertIn(out["verdict"], {"revise", "reject"})
+
+    def test_critique_passes_the_generated_page(self):
+        page = json.loads(h_design({"brief": DesignTests.brief, "mode": "page"}))["page"]["files"][0]["content"]
+        out = json.loads(h_critique({"source": page}))
+        self.assertEqual(out["verdict"], "pass")
+        self.assertNotIn("no-slot-contract", {f["rule"] for f in out["findings"]})
 
 
 class AuditTests(unittest.TestCase):

@@ -6,15 +6,18 @@ It is not a template library, a cloner, or a moodboard generator. It gives the a
 
 ## What is in the box
 
-- **14 Hermes skills**: one master method, nine interaction families, a component grammar, a cast system, a forge and an inventor.
-- **7 local tools**:
+- **17 Hermes skills**: one master method, ten interaction families (including cast), a component grammar, study, design and critique methods, a forge and an inventor.
+- **10 local tools**:
   - `mosaic_index`: the reference families, skills and base tokens.
+  - `mosaic_study`: reference observations → principles, transfer candidates and a do-not-copy contract (a URL alone returns a checklist, not invented facts).
+  - `mosaic_design`: the design director: three concepts, transparent selection, tokens, type, composition and an optional complete page starter.
   - `mosaic_components`: the public component observations, filterable by family or text.
   - `mosaic_stacks`: the HTML, React, Next, Svelte, Vue and Astro matrix with paired Hermes skills.
   - `mosaic_forge`: an original component starter for a stack, with CSS or GSAP motion.
   - `mosaic_invent`: interaction candidates with a state machine and a transparent taste score.
   - `mosaic_recipe`: a deterministic direction for a brief.
   - `mosaic_audit`: a local text scan for generic gradients, `transition: all`, missing reduced-motion and similar slop.
+  - `mosaic_critique`: design-specific source critique for prompt leakage, copy, focus, slots, radius/font noise.
 - **A CLI** over the same handlers, for a demo or CI without Hermes.
 
 No network calls, no API keys, no telemetry, no rendering, no copied assets.
@@ -33,20 +36,26 @@ Start a new Hermes session so the tools and skills enter the index. The skills c
 
 ```bash
 python mosaic_cli.py index
+python mosaic_cli.py study --reference "DIA" --observations '{"layout":"index and specimen split","what_works":"the index is the navigation"}'
+python mosaic_cli.py design --brief "A quiet portfolio for a type designer" --mode page
 python mosaic_cli.py recipe --brief "A collectible racing deck for a design conference" --mood tactile
 python mosaic_cli.py components --family press
 python mosaic_cli.py stacks
 python mosaic_cli.py forge --kind swipe-confirm --stack react --motion gsap
 python mosaic_cli.py invent --brief "A quiet onboarding for a design tool" --count 3
+python mosaic_cli.py critique --path src/app.css
 python mosaic_cli.py audit --path src/app.css
 ```
 
 In a Hermes session:
 
 ```text
-mosaic_recipe(brief="A quiet portfolio for a type designer", mood="editorial")
-mosaic_audit(path="src/components/Hero.tsx")
+mosaic_study(reference={name: "DIA", observations: {layout: "index and specimen split"}})
+mosaic_design(brief="A quiet portfolio for a type designer", mode="page")
+mosaic_critique(path="src/components/Hero.tsx")
 ```
+
+`mosaic_design` is the design-director pass. It returns three structural concepts, the selected concept with transparent scores, a reference map, the design system, a content contract and — in `page` mode — a complete static starter. A reference URL alone is not a study; `mosaic_study` returns a capture checklist until observations are supplied.
 
 The recipe is a starting direction, not an answer. It deliberately returns a thesis, a token table, two moves, a build order and acceptance checks; the agent still has to study the reference, write original code and verify in a browser.
 
@@ -60,6 +69,9 @@ The recipe is a starting direction, not an answer. It deliberately returns a the
 | `mosaic-drag` | Direct manipulation, reorder, drop targets |
 | `mosaic-hover` | Hover reveals, cursor previews, magnetic actions |
 | `mosaic-cast` | Random character peeks behind section rules |
+| `mosaic-study` | Reference observations → transferable principles |
+| `mosaic-design` | Brief → three concepts → system and page starter |
+| `mosaic-critique` | Source review for specificity and honesty |
 | `mosaic-select` | Segmented controls, tabs, small pickers |
 | `mosaic-shader` | Atmospheric shaders with static fallbacks |
 | `mosaic-type` | Editorial type, wordmarks, labels, numerals |
