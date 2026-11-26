@@ -108,6 +108,16 @@ FAMILIES = [
         "check": ["Focus reveals the same thing", "Touch fallback", "Viewport clamp", "Reduced motion"],
     },
     {
+        "id": "cast",
+        "name": "Cast peeks",
+        "skill": "mosaic-cast",
+        "signature": "One or two characters briefly rise from behind a section rule, then leave.",
+        "use_when": "Portfolio sections, mascots, recurring cast members and a little authored personality.",
+        "avoid": "Fixed corner clutter, covering doodles or copy, a cast in every section, random loops without a visibility gate.",
+        "tokens": ["peek-height", "peek-bar", "pop-ms", "hold-ms"],
+        "check": ["Keyboard names", "One at a time", "No doodle/text intersections", "Reduced motion stays still"],
+    },
+    {
         "id": "select",
         "name": "Visible choice",
         "skill": "mosaic-select",

@@ -6,7 +6,7 @@ It is not a template library, a cloner, or a moodboard generator. It gives the a
 
 ## What is in the box
 
-- **13 Hermes skills**: one master method, nine interaction families, a component grammar, a forge and an inventor.
+- **14 Hermes skills**: one master method, nine interaction families, a component grammar, a cast system, a forge and an inventor.
 - **7 local tools**:
   - `mosaic_index`: the reference families, skills and base tokens.
   - `mosaic_components`: the public component observations, filterable by family or text.
@@ -59,6 +59,7 @@ The recipe is a starting direction, not an answer. It deliberately returns a the
 | `mosaic-press` | Press, hold-to-confirm, destructive actions |
 | `mosaic-drag` | Direct manipulation, reorder, drop targets |
 | `mosaic-hover` | Hover reveals, cursor previews, magnetic actions |
+| `mosaic-cast` | Random character peeks behind section rules |
 | `mosaic-select` | Segmented controls, tabs, small pickers |
 | `mosaic-shader` | Atmospheric shaders with static fallbacks |
 | `mosaic-type` | Editorial type, wordmarks, labels, numerals |
