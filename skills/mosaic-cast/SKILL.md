@@ -30,8 +30,12 @@ Do not use this for primary navigation, actions, prices, empty states or anythin
 - One button per character, each with an accessible name. The image is `alt=""` inside the button.
 - The button clips its sprite (`overflow: hidden`) and has a paper bar at the bottom so the character rises from behind the section rule.
 - Sprite starts at `translateY(110%)`; `.is-up` moves to `0`. Use 380–480ms and one ease.
-- Show one character at a time. Randomness selects the next character, the hold length and the gap.
-- Hide when the section leaves the viewport; pause the timer, do not keep a hidden loop running.
+- Show one character at a time, or both together as a scroll-synced pair.
+- Randomness can select the next character in a solitary rhythm, or the pair can share
+  one scroll progress so both rise and fall together. Do not mix the two rhythms on
+  one section.
+- Hide when the section leaves the viewport; pause the timer or scroll listener, do
+  not keep a hidden loop running.
 
 ## Placement
 
@@ -55,6 +59,24 @@ Do not use this for primary navigation, actions, prices, empty states or anythin
   in the paper bar, not drawn into the sprite.
 - Do not copy a copyrighted sprite sheet. Build original silhouettes from
   references and keep the identity cues (hair, garment, colour) original.
+
+## Scroll-synced pair
+
+When the cast belongs to a section rule, both characters can share one progress value:
+
+```js
+const start = sectionTop - innerHeight * 0.96;
+const end = sectionTop - innerHeight * 0.50;
+const p = clamp((scrollY - start) / (end - start), 0, 1);
+peeks.style.setProperty('--peek-y', `${(1 - p) * 108}%`);
+peeks.style.setProperty('--peek', p);
+```
+
+- The buttons sit on the section rule and extend upward; use `overflow: visible` on
+  the host section and a local z-index below the fixed header.
+- Drive both characters from the same `--peek-y`; no random hide/show timer.
+- Add a boop: click squishes the sprite, throws a tiny spark and reveals a bubble.
+- On mobile, hide labels and bubbles before shrinking the art.
 
 ## Minimal Build
 
