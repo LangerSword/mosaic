@@ -400,6 +400,7 @@
         swatch.title = key;
       });
       add(tokens, 'p', '', `ink on field ${selectedSample.system.contrast.ink_on_field}:1 · signal ${selectedSample.system.contrast.signal_on_field}:1`);
+      add(tokens, 'p', '', `material / ${selectedSample.system.material.primary} + ${selectedSample.system.material.secondary}`);
       add(tokens, 'p', '', `display / ${selectedConcept.name} · body / ${selectedSample.system.type.body.role}`);
 
       const comp = add(grid, 'div', 'director-block');

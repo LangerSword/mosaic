@@ -42,7 +42,7 @@ def main():
     assert set(ctx.tools) == declared, (set(ctx.tools), declared)
     assert not ctx.hooks
     idx = json.loads(ctx.tools["mosaic_index"]["handler"]({}))
-    assert idx["ok"] and len(idx["families"]) == 11
+    assert idx["ok"] and len(idx["families"]) == 13
     comps = json.loads(ctx.tools["mosaic_components"]["handler"]({"family": "press"}))
     assert comps["ok"] and comps["count"] >= 5
     stacks = json.loads(ctx.tools["mosaic_stacks"]["handler"]({}))

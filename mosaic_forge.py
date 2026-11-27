@@ -22,6 +22,8 @@ KINDS = {
     "swipe-confirm": {"tag": "mosaic-swipe-confirm", "event": "mosaic-confirm", "label": "Swipe to delete", "gsap": True},
     "download-ring": {"tag": "mosaic-download-ring", "event": "mosaic-complete", "label": "Download", "gsap": False},
     "checklist": {"tag": "mosaic-checklist", "event": "mosaic-change", "label": "Checklist", "gsap": False},
+    "ascii-field": {"tag": "mosaic-ascii-field", "event": "mosaic-ascii-change", "label": "ASCII field", "gsap": False},
+    "glass-stack": {"tag": "mosaic-glass-stack", "event": "mosaic-glass-select", "label": "Glass stack", "gsap": False},
 }
 
 STACKS = {
@@ -194,6 +196,128 @@ class {tag} extends HTMLElement {{
     const boxes=[...root.querySelectorAll('input')], rail=root.querySelector('.rail span'), status=root.querySelector('p'); root.querySelector('[data-label]').textContent=this.getAttribute('label')||'{label}';
     const update=()=>{{ const done=boxes.filter(b=>b.checked).length; const pct=Math.round(done/boxes.length*100); this.style.setProperty('--done', String(pct)); rail.style.width=`${{pct}}%`; status.textContent=`${{done}} of ${{boxes.length}} complete.`; this.dispatchEvent(new CustomEvent('{event}',{{bubbles:true,composed:true,detail:{{done,total:boxes.length}}}})); }};
     boxes.forEach(b=>b.addEventListener('change',update)); update();
+  }}
+}}
+customElements.define('{tag}', {tag});
+'''
+    if kind == "ascii-field":
+        return f'''const CSS = `{COMMON_CSS}
+:host{{--ascii-bg:#0b1424;--ascii-fg:#f1eee6;--ascii-dim:#7083a6;display:block;background:var(--ascii-bg);color:var(--ascii-fg);overflow:hidden}}
+.field{{position:relative;min-height:210px;padding:14px;background:radial-gradient(120% 120% at 18% 0%,#183451 0%,transparent 58%),var(--ascii-bg);overflow:hidden}}
+pre{{margin:0;font:11px/1.04 ui-monospace,SFMono-Regular,monospace;letter-spacing:.08em;white-space:pre;color:var(--ascii-fg);opacity:.92}}
+.toolbar{{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px;padding-top:9px;border-top:1px solid rgba(241,238,230,.2);font:8px/1.3 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ascii-dim)}}
+.toolbar strong{{color:var(--ascii-fg);font-weight:400}}
+button{{min-height:28px;padding:5px 8px;border:1px solid rgba(241,238,230,.35);background:transparent;color:var(--ascii-fg);font:8px/1 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}}
+button:hover{{background:var(--ascii-fg);color:var(--ascii-bg)}}
+.status{{margin:0;padding:0 14px 12px;color:var(--ascii-dim);font:9px/1.4 ui-monospace,monospace}}`;
+class {tag} extends HTMLElement {{
+  connectedCallback() {{
+    if (this.shadowRoot) return;
+    const root = this.attachShadow({{mode:'open'}});
+    root.innerHTML = `<style>${{CSS}}</style><div class="field"><pre aria-hidden="true" data-field></pre><div class="toolbar"><span>field / <strong data-mode>sky</strong></span><button type="button" data-shift>Shift ramp</button></div></div><p class="status" role="status" aria-live="polite">A monospace field. Pointer changes the lens; the button changes the ramp.</p>`;
+    const field = root.querySelector('.field'), pre = root.querySelector('[data-field]');
+    const modeEl = root.querySelector('[data-mode]'), button = root.querySelector('[data-shift]');
+    const status = root.querySelector('.status');
+    const ramps = [' .:-=+*#%@', ' ·░▒▓█'];
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let mode = 0, pointerX = .5, pointerY = .5, raf = 0, visible = true, last = 0;
+    const render = (time) => {{
+      const width = Math.max(280, this.clientWidth || 480);
+      const cols = Math.max(34, Math.min(72, Math.floor(width / 9)));
+      const rows = 18;
+      const ramp = ramps[mode];
+      const phase = time * .00035;
+      const lines = [];
+      for (let y = 0; y < rows; y += 1) {{
+        let line = '';
+        for (let x = 0; x < cols; x += 1) {{
+          const nx = x / Math.max(1, cols - 1), ny = y / Math.max(1, rows - 1);
+          const lens = Math.max(0, 1 - Math.hypot(nx - pointerX, ny - pointerY) * 2.2);
+          const value = (Math.sin(nx * 12 + phase) + Math.cos(ny * 9 - phase * .7) + lens * 1.7) / 3;
+          const index = Math.max(0, Math.min(ramp.length - 1, Math.floor((value * .5 + .5) * ramp.length)));
+          line += ramp[index];
+        }}
+        lines.push(line);
+      }}
+      pre.textContent = lines.join('\\n');
+    }};
+    const loop = (time) => {{
+      if (!visible || document.hidden) return;
+      if (time - last > 33) {{ render(time); last = time; }}
+      raf = requestAnimationFrame(loop);
+    }};
+    const kick = () => {{ if (!reduced && visible && !raf) {{ last = 0; raf = requestAnimationFrame(loop); }} }};
+    field.addEventListener('pointermove', (event) => {{
+      const rect = field.getBoundingClientRect();
+      pointerX = Math.max(0, Math.min(1, (event.clientX - rect.left) / Math.max(1, rect.width)));
+      pointerY = Math.max(0, Math.min(1, (event.clientY - rect.top) / Math.max(1, rect.height)));
+      if (reduced) render(0);
+    }});
+    field.addEventListener('pointerleave', () => {{ pointerX = .5; pointerY = .5; if (reduced) render(0); }});
+    button.addEventListener('click', () => {{
+      mode = (mode + 1) % ramps.length;
+      modeEl.textContent = mode === 0 ? 'sky' : 'dense';
+      status.textContent = mode === 0 ? 'Sky ramp. Pointer changes the lens.' : 'Dense ramp. Same field, different density.';
+      this.dispatchEvent(new CustomEvent('{event}', {{bubbles:true, composed:true, detail:{{ramp: mode === 0 ? 'sky' : 'dense'}}}}));
+      if (reduced) render(0); else kick();
+    }});
+    if (reduced) {{ render(0); return; }}
+    const io = new IntersectionObserver(([entry]) => {{
+      visible = entry.isIntersecting;
+      if (visible) kick(); else {{ cancelAnimationFrame(raf); raf = 0; }}
+    }}, {{threshold: .05}});
+    io.observe(this);
+    document.addEventListener('visibilitychange', () => {{ if (document.hidden) {{ cancelAnimationFrame(raf); raf = 0; }} else kick(); }});
+    kick();
+  }}
+}}
+customElements.define('{tag}', {tag});
+'''
+    if kind == "glass-stack":
+        return f'''const CSS = `{COMMON_CSS}
+:host{{display:block;--glass-key:var(--paper);--glass-deep:#13233e;--glass-ink:var(--paper);--glass-fill:rgba(31,53,82,.62);--glass-edge:rgba(255,255,255,.34);}}
+.stage{{position:relative;display:grid;place-items:center;min-height:218px;overflow:hidden;background:radial-gradient(100% 100% at 30% 20%,#315b82 0%,#13233e 52%,#09111c 100%)}}
+.stage:before,.stage:after{{content:"";position:absolute;border-radius:50%;filter:blur(1px);opacity:.7;pointer-events:none}}
+.stage:before{{width:150px;height:150px;left:-30px;top:-40px;background:radial-gradient(circle,#f6a15a,transparent 68%)}}
+.stage:after{{width:170px;height:170px;right:-20px;bottom:-50px;background:radial-gradient(circle,#4a7fd1,transparent 68%)}}
+.glass{{position:relative;z-index:1;width:min(88%,286px);padding:18px;color:var(--glass-ink);background:var(--glass-fill);border:1px solid var(--glass-edge);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 22px 50px rgba(3,10,19,.4);backdrop-filter:blur(16px) saturate(1.16);transform:perspective(700px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s var(--ease),background .2s var(--ease)}}
+.glass.is-active{{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.7)}}
+.eyebrow{{font:8px/1.3 ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:rgba(241,238,230,.7)}}
+.glass strong{{display:block;max-width:8ch;margin:18px 0 10px;font:400 clamp(2rem,5vw,3.1rem)/.86 var(--display,ui-serif);letter-spacing:-.05em;text-transform:uppercase}}
+.glass p{{max-width:24ch;margin:0 0 17px;color:rgba(241,238,230,.78);font-size:12px;line-height:1.45}}
+.glass button{{min-height:34px;padding:0 10px;border:1px solid rgba(255,255,255,.56);background:rgba(8,18,32,.34);color:var(--glass-ink);font:700 8px/1 ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}}
+.glass button:hover{{background:var(--glass-key);color:#0b1424}}
+.status{{margin:0;padding:10px 14px;color:var(--ascii-dim,#8fa1bb);background:#09111c;font:9px/1.4 ui-monospace,monospace}}
+@supports not (backdrop-filter: blur(1px)){{.glass{{background:#1b2d45}}}}
+@media (prefers-reduced-motion:reduce){{.glass{{transform:none!important}}}}
+`;
+class {tag} extends HTMLElement {{
+  connectedCallback() {{
+    if (this.shadowRoot) return;
+    const root = this.attachShadow({{mode:'open'}});
+    root.innerHTML = `<style>${{CSS}}</style><div class="stage"><div class="glass"><span class="eyebrow">glass / 01</span><strong>One lens.</strong><p>A translucent object over a strong field; a solid card when blur is not available.</p><button type="button" aria-pressed="false">Select lens</button></div></div><p class="status" role="status" aria-live="polite">One object. One specular edge. One readable layer.</p>`;
+    const stage = root.querySelector('.stage'), glass = root.querySelector('.glass'), button = root.querySelector('button'), status = root.querySelector('.status');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let active = false;
+    const toggle = () => {{
+      active = !active;
+      glass.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+      button.textContent = active ? 'Lens selected' : 'Select lens';
+      status.textContent = active ? 'Selected. The edge and label carry the state.' : 'One object. One specular edge. One readable layer.';
+      this.dispatchEvent(new CustomEvent('{event}', {{bubbles:true,composed:true,detail:{{active}}}}));
+    }};
+    button.addEventListener('click', toggle);
+    if (!reduced) {{
+      stage.addEventListener('pointermove', (event) => {{
+        const rect = stage.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - .5;
+        const y = (event.clientY - rect.top) / rect.height - .5;
+        glass.style.setProperty('--rx', `${{(-y * 6).toFixed(2)}}deg`);
+        glass.style.setProperty('--ry', `${{(x * 9).toFixed(2)}}deg`);
+      }});
+      stage.addEventListener('pointerleave', () => {{ glass.style.setProperty('--rx','0deg'); glass.style.setProperty('--ry','0deg'); }});
+    }}
   }}
 }}
 customElements.define('{tag}', {tag});

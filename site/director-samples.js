@@ -272,6 +272,16 @@ window.MOSAIC_DIRECTOR = [
           "role": "labels, data, captions"
         }
       },
+      "material": {
+        "primary": "paper and ink",
+        "secondary": "one glass lens",
+        "rules": [
+          "One material gesture per section; do not stack ASCII, glass, grain and glow.",
+          "ASCII is a density field with a static fallback; glass is one object over a strong ground.",
+          "Measure text contrast against the blended material, never the raw ground.",
+          "No blur behind body copy; no ASCII under body copy."
+        ]
+      },
       "composition": {
         "first_screen": "An asymmetric split: the claim and action occupy the left bench, the first tool is already picked up on the right.",
         "sections": [
@@ -735,6 +745,16 @@ window.MOSAIC_DIRECTOR = [
           "role": "labels, data, captions"
         }
       },
+      "material": {
+        "primary": "ascii field",
+        "secondary": "hairline rule",
+        "rules": [
+          "One material gesture per section; do not stack ASCII, glass, grain and glow.",
+          "ASCII is a density field with a static fallback; glass is one object over a strong ground.",
+          "Measure text contrast against the blended material, never the raw ground.",
+          "No blur behind body copy; no ASCII under body copy."
+        ]
+      },
       "composition": {
         "first_screen": "An asymmetric split: the claim and action occupy the left bench, the first tool is already picked up on the right.",
         "sections": [
@@ -1197,6 +1217,16 @@ window.MOSAIC_DIRECTOR = [
           "stack": "\"JetBrains Mono\", \"SFMono-Regular\", monospace",
           "role": "labels, data, captions"
         }
+      },
+      "material": {
+        "primary": "paper and ink",
+        "secondary": "one glass lens",
+        "rules": [
+          "One material gesture per section; do not stack ASCII, glass, grain and glow.",
+          "ASCII is a density field with a static fallback; glass is one object over a strong ground.",
+          "Measure text contrast against the blended material, never the raw ground.",
+          "No blur behind body copy; no ASCII under body copy."
+        ]
       },
       "composition": {
         "first_screen": "Three objects on a generous table, one picked up, with the detail card at the edge rather than over the object.",

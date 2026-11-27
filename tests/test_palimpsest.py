@@ -10,10 +10,10 @@ from mosaic_tools import (TOOL_SPECS, h_audit, h_components, h_critique, h_desig
 
 
 class IndexTests(unittest.TestCase):
-    def test_index_has_eleven_families(self):
+    def test_index_has_thirteen_families(self):
         out = json.loads(h_index({}))
         self.assertTrue(out["ok"])
-        self.assertEqual(len(out["families"]), 11)
+        self.assertEqual(len(out["families"]), 13)
         self.assertIn("paper-ink", [f["id"] for f in out["families"]])
         self.assertEqual(len(out["methods"]), 3)
 
@@ -59,7 +59,7 @@ class ForgeTests(unittest.TestCase):
         out = json.loads(h_stacks({}))
         self.assertTrue(out["ok"])
         self.assertEqual(len(out["stacks"]), 6)
-        self.assertEqual(len(out["kinds"]), 7)
+        self.assertEqual(len(out["kinds"]), 9)
 
 
 class InventTests(unittest.TestCase):
@@ -188,6 +188,29 @@ class CritiqueTests(unittest.TestCase):
         out = json.loads(h_critique({"source": page}))
         self.assertEqual(out["verdict"], "pass")
         self.assertNotIn("no-slot-contract", {f["rule"] for f in out["findings"]})
+
+
+class MaterialTests(unittest.TestCase):
+    def test_index_exposes_ascii_and_glass(self):
+        out = json.loads(h_index({}))
+        ids = {family["id"] for family in out["families"]}
+        self.assertIn("ascii", ids)
+        self.assertIn("glass", ids)
+
+    def test_ascii_forge_is_interactive_and_has_fallback(self):
+        out = json.loads(h_forge({"kind": "ascii-field", "stack": "html", "motion": "css"}))
+        js = next(f["content"] for f in out["files"] if f["path"].endswith(".js"))
+        self.assertIn("mosaic-ascii-field", js)
+        self.assertIn("requestAnimationFrame", js)
+        self.assertIn("prefers-reduced-motion", js)
+        self.assertIn("IntersectionObserver", js)
+
+    def test_glass_forge_has_a_real_fallback(self):
+        out = json.loads(h_forge({"kind": "glass-stack", "stack": "html", "motion": "css"}))
+        js = next(f["content"] for f in out["files"] if f["path"].endswith(".js"))
+        self.assertIn("backdrop-filter", js)
+        self.assertIn("@supports not (backdrop-filter", js)
+        self.assertIn("aria-pressed", js)
 
 
 class AuditTests(unittest.TestCase):

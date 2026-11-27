@@ -167,6 +167,26 @@ FAMILIES = [
         "tokens": ["working", "slow-after-ms", "skeleton", "shimmer-ms"],
         "check": ["Current step announced", "Slow state", "Cancel/retry", "No layout shift"],
     },
+    {
+        "id": "ascii",
+        "name": "ASCII field",
+        "skill": "mosaic-ascii",
+        "signature": "A monospace field that carries atmosphere or data through character density, not decoration.",
+        "use_when": "Terminal-adjacent products, night fields, type-led heroes, agent states and quiet data surfaces.",
+        "avoid": "Unreadable character noise, fake terminal output, ASCII used as a texture over body copy.",
+        "tokens": ["ascii-ramp", "ascii-ink", "ascii-paper", "ascii-dim"],
+        "check": ["Monospace grid", "Character ramp has contrast", "Static fallback", "Pointer and keyboard do not gate content"],
+    },
+    {
+        "id": "glass",
+        "name": "Glass material",
+        "skill": "mosaic-glass",
+        "signature": "One translucent object with a real fallback, a specular edge and readable ink.",
+        "use_when": "A hero artifact, a floating control, a lens over a strong image or a single calendar card.",
+        "avoid": "Glass on every surface, blur behind body copy, a translucent card with no solid fallback.",
+        "tokens": ["glass-fill", "glass-edge", "glass-blur", "glass-fallback", "glass-ink"],
+        "check": ["Solid fallback", "Text contrast measured", "No blur behind body copy", "Reduced motion keeps the card"],
+    },
 ]
 
 SKILL_BY_FAMILY = {family["id"]: family["skill"] for family in FAMILIES}

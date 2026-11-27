@@ -6,7 +6,7 @@ It is not a template library, a cloner, or a moodboard generator. It gives the a
 
 ## What is in the box
 
-- **17 Hermes skills**: one master method, ten interaction families (including cast), a component grammar, study, design and critique methods, a forge and an inventor.
+- **19 Hermes skills**: one master method, twelve interaction families (including cast, ASCII and glass), a component grammar, study, design and critique methods, a forge and an inventor.
 - **10 local tools**:
   - `mosaic_index`: the reference families, skills and base tokens.
   - `mosaic_study`: reference observations → principles, transfer candidates and a do-not-copy contract (a URL alone returns a checklist, not invented facts).
@@ -72,6 +72,8 @@ The recipe is a starting direction, not an answer. It deliberately returns a the
 | `mosaic-study` | Reference observations → transferable principles |
 | `mosaic-design` | Brief → three concepts → system and page starter |
 | `mosaic-critique` | Source review for specificity and honesty |
+| `mosaic-ascii` | Monospace character fields and ASCII atmosphere |
+| `mosaic-glass` | One glass material with a real fallback |
 | `mosaic-select` | Segmented controls, tabs, small pickers |
 | `mosaic-shader` | Atmospheric shaders with static fallbacks |
 | `mosaic-type` | Editorial type, wordmarks, labels, numerals |
@@ -116,7 +118,7 @@ Construct is a useful reference precisely because it is plural: a quiet gallery 
 
 ## Evidence
 
-- 28 unit tests pass with stdlib only.
+- 31 unit tests pass with stdlib only.
 - `smoke_load.py` loads the real entry point against a recording context, asserts 10 tools and dispatches them.
 - `hermes plugins validate` and `hermes plugins doctor` are the admission gates.
 - CLI outputs are deterministic and JSON.

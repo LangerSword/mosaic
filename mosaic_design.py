@@ -588,12 +588,23 @@ def _concept(archetype_id: str, domain: dict, analysis: dict, references: list[d
 
 def _system(concept: dict, mood: str, flags: dict) -> dict:
     tokens = _tokens(mood, flags)
+    material = {
+        "primary": "ascii field" if mood == "technical" else "paper and ink",
+        "secondary": "one glass lens" if mood in {"editorial", "playful", "tactile"} else "hairline rule",
+        "rules": [
+            "One material gesture per section; do not stack ASCII, glass, grain and glow.",
+            "ASCII is a density field with a static fallback; glass is one object over a strong ground.",
+            "Measure text contrast against the blended material, never the raw ground.",
+            "No blur behind body copy; no ASCII under body copy.",
+        ],
+    }
     return {
         "mood": mood,
         "concept": concept["name"],
         "tokens": {key: value for key, value in tokens.items() if key != "--contrast"},
         "contrast": tokens["--contrast"],
         "type": _type_system(mood),
+        "material": material,
         "composition": {
             "first_screen": concept["first_screen"],
             "sections": concept["sections"],

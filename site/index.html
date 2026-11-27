@@ -24,6 +24,7 @@
       <a href="#director">Director</a>
       <a href="#lab">Lab</a>
       <a href="#forge">Forge</a>
+      <a href="#materials">Materials</a>
       <a href="#taste">Taste</a>
       <a href="#evidence">Evidence</a>
       <a href="#install">Install</a>
@@ -42,7 +43,7 @@
           <a class="btn btn-ghost" href="#method">See the method</a>
         </div>
         <dl class="hero-stats">
-          <div><dt>Skills</dt><dd>17</dd></div>
+          <div><dt>Skills</dt><dd>19</dd></div>
           <div><dt>Tools</dt><dd>10</dd></div>
           <div><dt>Public components</dt><dd>20</dd></div>
           <div><dt>Network</dt><dd>0</dd></div>
@@ -333,6 +334,30 @@ index.tsx          React adapter
       </div>
     </section>
 
+    <section class="materials wrap" id="materials">
+      <div class="section-head reveal">
+        <p class="eyebrow">Materials / ASCII + glass</p>
+        <h2>Two materials.<br>Not a skin.</h2>
+        <p>Monospace density for a living field; one translucent object with a specular edge and a solid fallback. Both are real custom elements, not screenshots.</p>
+      </div>
+      <div class="lab-grid">
+        <article class="lab-panel lab-dark reveal">
+          <header><span class="lab-kicker">MATERIAL / ASCII</span><span class="lab-tag">character field</span></header>
+          <h3>A field with a pulse</h3>
+          <mosaic-ascii-field aria-label="Animated ASCII field"></mosaic-ascii-field>
+          <p class="lab-status">Pointer changes the lens; Shift ramp changes the character density. The field pauses offscreen and freezes under reduced motion.</p>
+          <footer><span>character ramp</span><span>30fps cap</span></footer>
+        </article>
+        <article class="lab-panel reveal">
+          <header><span class="lab-kicker">MATERIAL / GLASS</span><span class="lab-tag">with fallback</span></header>
+          <h3>One lens, one edge</h3>
+          <mosaic-glass-stack aria-label="Interactive glass specimen"></mosaic-glass-stack>
+          <p class="lab-status">One translucent object over a strong field. Pointer tilts the lens; the button selects it; a solid card is the fallback.</p>
+          <footer><span>backdrop-filter</span><span>solid fallback</span></footer>
+        </article>
+      </div>
+    </section>
+
     <section class="taste wrap" id="taste">
       <div class="section-head reveal">
         <p class="eyebrow">Taste lab</p>
@@ -351,7 +376,7 @@ index.tsx          React adapter
       <div class="section-head reveal">
         <p class="eyebrow">Component index</p>
         <h2>Twenty<br>specimens.</h2>
-        <p>Public observations, kept as state and motion notes. The eight live pieces above are the proof; this is the grammar behind them.</p>
+        <p>Public observations, kept as state and motion notes. Ten live pieces above are the proof; this is the grammar behind them.</p>
       </div>
       <div class="component-tools reveal">
         <div class="component-filters" id="component-filters" role="group" aria-label="Filter component families"></div>
@@ -369,10 +394,10 @@ index.tsx          React adapter
         <table>
           <caption>Mosaic 0.6.0</caption>
           <tbody>
-            <tr><th scope="row">Skills</th><td>17</td><td>master + ten families + components + study + design + critique + forge + invent</td></tr>
+            <tr><th scope="row">Skills</th><td>19</td><td>master + twelve families + components + study + design + critique + forge + invent</td></tr>
             <tr><th scope="row">Tools</th><td>10</td><td>index, study, design, components, stacks, forge, invent, recipe, audit, critique</td></tr>
             <tr><th scope="row">Public components</th><td>20</td><td>state, timing, parameters, a11y</td></tr>
-            <tr><th scope="row">Tests</th><td>28</td><td>stdlib, no network</td></tr>
+            <tr><th scope="row">Tests</th><td>31</td><td>stdlib, no network</td></tr>
             <tr><th scope="row">Network</th><td>00</td><td>local reads only</td></tr>
           </tbody>
         </table>
@@ -434,5 +459,7 @@ python scripts/install_skills.py
   <script type="module" src="forge/swipe-confirm.js?v=0.6.0"></script>
   <script type="module" src="forge/download-ring.js?v=0.6.0"></script>
   <script type="module" src="forge/checklist.js?v=0.6.0"></script>
+  <script type="module" src="forge/ascii-field.js?v=0.6.0"></script>
+  <script type="module" src="forge/glass-stack.js?v=0.6.0"></script>
 </body>
 </html>
