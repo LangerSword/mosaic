@@ -24,6 +24,8 @@ KINDS = {
     "checklist": {"tag": "mosaic-checklist", "event": "mosaic-change", "label": "Checklist", "gsap": False},
     "ascii-field": {"tag": "mosaic-ascii-field", "event": "mosaic-ascii-change", "label": "ASCII field", "gsap": False},
     "glass-stack": {"tag": "mosaic-glass-stack", "event": "mosaic-glass-select", "label": "Glass stack", "gsap": False},
+    "magnetic-link": {"tag": "mosaic-magnetic-link", "event": "mosaic-follow", "label": "Follow the signal", "gsap": False},
+    "cursor-lens": {"tag": "mosaic-cursor-lens", "event": "mosaic-lens", "label": "Aa", "gsap": False},
 }
 
 STACKS = {
@@ -57,6 +59,58 @@ def _core(kind: str, motion: str) -> str:
     import_gsap = 'import gsap from "gsap";\n' if gsap else ""
     # The templates are deliberately plain strings: no source input is interpolated
     # into markup; labels are assigned with textContent.
+    if kind == "magnetic-link":
+        return f'''const CSS = `{COMMON_CSS}
+:host{{display:inline-block;--mx:0px;--my:0px}} button{{position:relative;display:inline-flex;align-items:center;gap:12px;min-height:52px;padding:0 18px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);font:700 11px/1 ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transform:translate(var(--mx),var(--my));transition:transform .18s var(--ease),background .18s}} button:hover,button:focus-visible{{background:var(--clay);border-color:var(--clay)}} .arrow{{display:inline-grid;place-items:center;width:28px;height:28px;border:1px solid currentColor;border-radius:50%;font-size:16px;transition:transform .18s}} button:hover .arrow{{transform:rotate(45deg)}} .status{{display:block;margin:10px 0 0;color:var(--muted);font-size:12px}} @media(prefers-reduced-motion:reduce){{button{{transform:none}}}}`;
+class {tag} extends HTMLElement {{
+  connectedCallback() {{
+    if (this.shadowRoot) return;
+    const root = this.attachShadow({{mode:'open'}});
+    root.innerHTML = `<style>${{CSS}}</style><button type="button" part="control"><span class="label"></span><span class="arrow" aria-hidden="true">↗</span></button><p class="status" role="status" aria-live="polite">Move across the button. It follows, then settles.</p>`;
+    const button = root.querySelector('button'), label = root.querySelector('.label'), status = root.querySelector('.status');
+    label.textContent = this.getAttribute('label') || '{label}';
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reset = () => {{ button.style.setProperty('--mx','0px'); button.style.setProperty('--my','0px'); }};
+    button.addEventListener('pointermove', e => {{
+      if (reduced) return;
+      const r = button.getBoundingClientRect();
+      button.style.setProperty('--mx', `${{((e.clientX - (r.left + r.width / 2)) * .12).toFixed(1)}}px`);
+      button.style.setProperty('--my', `${{((e.clientY - (r.top + r.height / 2)) * .18).toFixed(1)}}px`);
+    }});
+    button.addEventListener('pointerleave', reset);
+    button.addEventListener('blur', reset);
+    button.addEventListener('click', () => {{
+      status.textContent = 'Signal received. The link holds.';
+      this.dispatchEvent(new CustomEvent('{event}', {{bubbles:true, composed:true, detail:{{kind:'magnetic-link'}}}}));
+      setTimeout(() => {{ status.textContent = 'Move across the button. It follows, then settles.'; }}, 1600);
+    }});
+  }}
+}}
+customElements.define('{tag}', {tag});
+'''
+    if kind == "cursor-lens":
+        return f'''const CSS = `{COMMON_CSS}
+:host{{display:block;--x:50%;--y:50%}} .stage{{position:relative;min-height:220px;display:grid;place-items:center;border:1px solid var(--line);background:var(--paper-2);overflow:hidden;cursor:crosshair}} .type{{font-family:Georgia,serif;font-size:clamp(4rem,12vw,9rem);line-height:.8;letter-spacing:-.08em;color:var(--ink);user-select:none}} .lens{{position:absolute;left:0;top:0;width:110px;height:110px;border:1px solid var(--ink);border-radius:50%;background:rgba(243,239,230,.18);backdrop-filter:blur(2px);transform:translate(var(--x),var(--y));pointer-events:none;mix-blend-mode:multiply}} .lens:after{{content:"";position:absolute;inset:9px;border:1px dashed rgba(21,19,15,.45);border-radius:50%}} .status{{margin:10px 0 0;color:var(--muted);font-size:12px}} @media(pointer:coarse){{.lens{{display:none}}}} @media(prefers-reduced-motion:reduce){{.lens{{display:none}}}}`;
+class {tag} extends HTMLElement {{
+  connectedCallback() {{
+    if (this.shadowRoot) return;
+    const root = this.attachShadow({{mode:'open'}});
+    root.innerHTML = `<style>${{CSS}}</style><div class="stage" part="stage"><span class="type"></span><span class="lens" aria-hidden="true"></span></div><p class="status" role="status" aria-live="polite">Move across the specimen. The lens follows the pointer.</p>`;
+    const stage = root.querySelector('.stage'), type = root.querySelector('.type'), lens = root.querySelector('.lens'), status = root.querySelector('.status');
+    type.textContent = this.getAttribute('label') || '{label}';
+    const reset = () => {{ lens.style.setProperty('--x','50%'); lens.style.setProperty('--y','50%'); status.textContent = 'Move across the specimen. The lens follows the pointer.'; }};
+    stage.addEventListener('pointermove', e => {{
+      const r = stage.getBoundingClientRect();
+      lens.style.setProperty('--x', `${{e.clientX - r.left - 55}}px`);
+      lens.style.setProperty('--y', `${{e.clientY - r.top - 55}}px`);
+      status.textContent = 'Reading through the lens.';
+    }});
+    stage.addEventListener('pointerleave', reset);
+    stage.addEventListener('click', () => this.dispatchEvent(new CustomEvent('{event}', {{bubbles:true, composed:true, detail:{{kind:'cursor-lens'}}}})));
+  }}
+}}
+customElements.define('{tag}', {tag});
+'''
     if kind == "hold":
         return f'''{import_gsap}
 const CSS = `{COMMON_CSS}

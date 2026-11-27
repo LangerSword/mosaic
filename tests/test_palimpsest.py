@@ -61,7 +61,7 @@ class ForgeTests(unittest.TestCase):
         out = json.loads(h_stacks({}))
         self.assertTrue(out["ok"])
         self.assertEqual(len(out["stacks"]), 6)
-        self.assertEqual(len(out["kinds"]), 9)
+        self.assertEqual(len(out["kinds"]), 11)
 
 
 class InventTests(unittest.TestCase):
@@ -220,6 +220,13 @@ class MaterialTests(unittest.TestCase):
         self.assertIn("backdrop-filter", js)
         self.assertIn("@supports not (backdrop-filter", js)
         self.assertIn("aria-pressed", js)
+
+    def test_new_kinds_keep_pointer_and_reduced_motion_fallbacks(self):
+        for kind, tag in (("magnetic-link", "mosaic-magnetic-link"), ("cursor-lens", "mosaic-cursor-lens")):
+            out = json.loads(h_forge({"kind": kind, "stack": "html", "motion": "css"}))
+            js = next(f["content"] for f in out["files"] if f["path"].endswith(".js"))
+            self.assertIn(f"customElements.define('{tag}'", js)
+            self.assertIn("prefers-reduced-motion", js)
 
     def test_download_ring_uses_a_full_circle(self):
         out = json.loads(h_forge({"kind": "download-ring", "stack": "html", "motion": "css"}))

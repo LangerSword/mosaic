@@ -2,13 +2,11 @@ window.MOSAIC_VISUAL = {
   "target": "generated / A quiet portfolio for a type designer",
   "status": "pass",
   "visual_guarantee": true,
-  "strict_visual_guarantee": false,
-  "soft_passed": 2,
+  "strict_visual_guarantee": true,
+  "soft_passed": 3,
   "soft_total": 3,
-  "warnings": [
-    "9 controls under 44px"
-  ],
-  "evidence_id": "v1-66dc5e2020405967",
+  "warnings": [],
+  "evidence_id": "v1-5b1aa230233d7263",
   "gates_passed": 16,
   "gates_total": 16,
   "blockers": [],
@@ -27,7 +25,7 @@ window.MOSAIC_VISUAL = {
       "focus": true,
       "reduced": true,
       "text": 36,
-      "colors": 953
+      "colors": 935
     },
     {
       "name": "mobile",
@@ -39,7 +37,7 @@ window.MOSAIC_VISUAL = {
       "focus": true,
       "reduced": true,
       "text": 35,
-      "colors": 1230
+      "colors": 1226
     }
   ],
   "note": "Hard visual gates only: rendered layout, text contrast, overlap, first-screen h1, focus visibility, reduced-motion, control size and a non-blank screenshot. This is not a judgement of taste or originality."

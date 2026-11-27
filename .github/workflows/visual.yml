@@ -1,0 +1,35 @@
+name: visual
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  visual:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install browser gate
+        run: |
+          python -m pip install --disable-pip-version-check playwright pillow
+          python -m playwright install --with-deps chromium
+      - name: Serve the showcase
+        run: |
+          python -m http.server 4322 -d site >/tmp/mosaic-site.log 2>&1 &
+          echo $! >/tmp/mosaic-site.pid
+          for i in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:4322/ >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/mosaic-site.log
+          exit 1
+      - name: Strict visual gates
+        env:
+          MOSAIC_BROWSER_PYTHON: python
+        run: python scripts/check_visual.py --site http://127.0.0.1:4322/ --generated
+      - name: Stop server
+        if: always()
+        run: kill "$(cat /tmp/mosaic-site.pid)" 2>/dev/null || true

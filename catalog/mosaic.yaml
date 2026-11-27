@@ -6,7 +6,7 @@ description: "A design reference engine for Hermes Agent. Mosaic turns a studied
 maintainer: LangerSword
 tier: community
 category: tools
-version: "0.7.0"
+version: "0.8.0"
 image: "https://raw.githubusercontent.com/LangerSword/mosaic/bcc8335460e9d2fc486a2b1910ed7e915a94f70b/docs/banner.png"
 requires_hermes: ">=0.23.0"
 docs_url: https://github.com/LangerSword/mosaic

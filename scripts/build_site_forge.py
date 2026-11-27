@@ -8,7 +8,7 @@ FORGE = ROOT / 'site' / 'forge'
 FORGE.mkdir(parents=True, exist_ok=True)
 
 # The live lab uses the real generated HTML cores.
-for kind in ('paper-plane', 'swipe-confirm', 'download-ring', 'checklist'):
+for kind in ('paper-plane', 'swipe-confirm', 'download-ring', 'checklist', 'magnetic-link', 'cursor-lens'):
     out = json.loads(forge(kind, 'html', 'css', ''))
     core = next(f['content'] for f in out['files'] if f['path'] == f'{kind}.js')
     (FORGE / f'{kind}.js').write_text(core)

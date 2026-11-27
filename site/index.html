@@ -9,7 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f3efe6'/%3E%3Crect x='4' y='4' width='11' height='11' fill='%2315130f'/%3E%3Crect x='17' y='4' width='11' height='11' fill='%23c64a2e'/%3E%3Crect x='4' y='17' width='11' height='11' fill='%230d2340'/%3E%3Crect x='17' y='17' width='11' height='11' fill='%2315130f'/%3E%3C/svg%3E">
   <link rel="preload" href="fonts/Anton-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/Barlow-Regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=0.7.0">
+  <link rel="stylesheet" href="styles.css?v=0.8.0">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -299,8 +299,8 @@ index.tsx          React adapter
     <section class="forge-lab wrap" id="forge-lab">
       <div class="section-head reveal">
         <p class="eyebrow">Run the forge</p>
-        <h2>Four states,<br>actually running.</h2>
-        <p>These are generated custom elements from the forge, mounted on this page. The code is not a video. Press, drag, check and send.</p>
+        <h2>Six states,<br>actually running.</h2>
+        <p>These are generated custom elements from the forge, mounted on this page. The code is not a video. Press, drag, check, send, pull and look.</p>
       </div>
       <div class="lab-grid">
         <article class="lab-panel reveal">
@@ -331,6 +331,20 @@ index.tsx          React adapter
           <mosaic-checklist label="Preflight"></mosaic-checklist>
           <p class="lab-status">Native checkboxes, a strike, a progress rail and a remaining-count announcement.</p>
           <footer><span>keyboard native</span><span>aria-live</span></footer>
+        </article>
+        <article class="lab-panel reveal">
+          <header><span class="lab-kicker">FORGE / MAGNETIC LINK</span><span class="lab-tag">follow</span></header>
+          <h3>Follow the signal</h3>
+          <mosaic-magnetic-link label="Follow the signal"></mosaic-magnetic-link>
+          <p class="lab-status">The control leans toward the pointer, then settles. The label and state remain legible without motion.</p>
+          <footer><span>pointer + keyboard</span><span>settles on leave</span></footer>
+        </article>
+        <article class="lab-panel reveal">
+          <header><span class="lab-kicker">FORGE / CURSOR LENS</span><span class="lab-tag">look</span></header>
+          <h3>Read through glass</h3>
+          <mosaic-cursor-lens label="Aa"></mosaic-cursor-lens>
+          <p class="lab-status">A real lens over the specimen, hidden on touch and reduced motion. The type stays the primary object.</p>
+          <footer><span>pointer lens</span><span>touch fallback</span></footer>
         </article>
       </div>
     </section>
@@ -406,7 +420,7 @@ index.tsx          React adapter
       <div class="section-head reveal">
         <p class="eyebrow">Component index</p>
         <h2>Twenty<br>specimens.</h2>
-        <p>Public observations, kept as state and motion notes. Ten live pieces above are the proof; this is the grammar behind them.</p>
+        <p>Public observations, kept as state and motion notes. Twelve live pieces above are the proof; this is the grammar behind them.</p>
       </div>
       <div class="component-tools reveal">
         <div class="component-filters" id="component-filters" role="group" aria-label="Filter component families"></div>
@@ -422,12 +436,12 @@ index.tsx          React adapter
       </div>
       <div class="evidence-grid reveal">
         <table>
-          <caption>Mosaic 0.7.0</caption>
+          <caption>Mosaic 0.8.0</caption>
           <tbody>
             <tr><th scope="row">Skills</th><td>21</td><td>master + twelve families + components + study + design + critique + score + visual + forge + invent</td></tr>
             <tr><th scope="row">Tools</th><td>12</td><td>index, study, design, components, stacks, forge, invent, recipe, audit, critique, score, visual</td></tr>
             <tr><th scope="row">Public components</th><td>20</td><td>state, timing, parameters, a11y</td></tr>
-            <tr><th scope="row">Tests</th><td>39</td><td>stdlib, no network</td></tr>
+            <tr><th scope="row">Tests</th><td>40</td><td>stdlib, no network</td></tr>
             <tr><th scope="row">Network</th><td>00</td><td>local reads only</td></tr>
           </tbody>
         </table>
@@ -482,17 +496,19 @@ python scripts/install_skills.py
     </div>
   </footer>
 
-  <script src="visual-samples.js?v=0.7.0" defer></script>
-  <script src="director-samples.js?v=0.7.0" defer></script>
-  <script src="forge-samples.js?v=0.7.0" defer></script>
-  <script src="invent-samples.js?v=0.7.0" defer></script>
-  <script src="component-gallery.js?v=0.7.0" defer></script>
-  <script src="app.js?v=0.7.0" defer></script>
-  <script type="module" src="forge/paper-plane.js?v=0.7.0"></script>
-  <script type="module" src="forge/swipe-confirm.js?v=0.7.0"></script>
-  <script type="module" src="forge/download-ring.js?v=0.7.0"></script>
-  <script type="module" src="forge/checklist.js?v=0.7.0"></script>
-  <script type="module" src="forge/ascii-field.js?v=0.7.0"></script>
-  <script type="module" src="forge/glass-stack.js?v=0.7.0"></script>
+  <script src="visual-samples.js?v=0.8.0" defer></script>
+  <script src="director-samples.js?v=0.8.0" defer></script>
+  <script src="forge-samples.js?v=0.8.0" defer></script>
+  <script src="invent-samples.js?v=0.8.0" defer></script>
+  <script src="component-gallery.js?v=0.8.0" defer></script>
+  <script src="app.js?v=0.8.0" defer></script>
+  <script type="module" src="forge/paper-plane.js?v=0.8.0"></script>
+  <script type="module" src="forge/swipe-confirm.js?v=0.8.0"></script>
+  <script type="module" src="forge/download-ring.js?v=0.8.0"></script>
+  <script type="module" src="forge/checklist.js?v=0.8.0"></script>
+  <script type="module" src="forge/ascii-field.js?v=0.8.0"></script>
+  <script type="module" src="forge/glass-stack.js?v=0.8.0"></script>
+  <script type="module" src="forge/magnetic-link.js?v=0.8.0"></script>
+  <script type="module" src="forge/cursor-lens.js?v=0.8.0"></script>
 </body>
 </html>
