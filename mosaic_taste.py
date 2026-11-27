@@ -123,8 +123,13 @@ def taste_source(source: str, brief: str = "", label: str = "<source>") -> dict:
     craft = _clamp(3 + (1 if focus else 0) + (1 if reduced else 0) + (1 if line_height else 0)
                    + (1 if max_width else 0) + (1 if h1 else 0) + (1 if alt or not imgs else 0)
                    + (1 if aria else 0) + (1 if semantic else 0))
-    restraint = _clamp(9 - max(0, len(colors) - 6) * .5 - max(0, len(families) - 3) * 1.0
-                       - max(0, radii - 3) * .5 - min(3, shadows * .3 + gradients * .6))
+    restraint = _clamp(
+        9
+        - min(4.0, max(0, len(colors) - 10) * .15)
+        - min(2.0, max(0, len(families) - 4) * .5)
+        - min(2.0, max(0, radii - 6) * .25)
+        - min(2.0, shadows * .15 + gradients * .3)
+    )
     specificity = _clamp(4 + min(3, slots * .4) + min(2, custom) + min(2, artifact)
                          - (2 if generic else 0))
     tension = _clamp(4 + min(4, max(0, display_ratio - 3) * .8) + min(2, absolutes * .3))
