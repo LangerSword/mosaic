@@ -127,7 +127,7 @@ The page is verified at 1440 and 390, with no horizontal overflow and no console
 
 ## 60 second film
 
-[Watch the demo](https://github.com/LangerSword/mosaic/releases/tag/v0.5.0): a kinetic intro, real footage of the live site, the Forge playground, the generated component lab, the Taste lab and the end card. Source and build steps are in `demo/`.
+[Read the 0.8.0 release](https://github.com/LangerSword/mosaic/releases/tag/v0.8.0): strict visual-gate notes, new specimens and the catalog pin. The earlier 60-second film is at [v0.5.0](https://github.com/LangerSword/mosaic/releases/tag/v0.5.0); source and build steps are in `demo/`.
 
 ## Reference study and independence
 
