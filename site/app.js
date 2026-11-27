@@ -542,6 +542,7 @@
   const contrast = document.querySelector('[data-visual-contrast]');
   const overlap = document.querySelector('[data-visual-overlap]');
   const focus = document.querySelector('[data-visual-focus]');
+  const soft = document.querySelector('[data-visual-soft]');
   const note = document.querySelector('[data-visual-note]');
   const desktop = document.querySelector('[data-visual-desktop]');
   const mobile = document.querySelector('[data-visual-mobile]');
@@ -557,7 +558,8 @@
   if (contrast) contrast.textContent = sum('contrast') ? `${sum('contrast')} fail` : '0 fail';
   if (overlap) overlap.textContent = sum('overlaps') ? `${sum('overlaps')} fail` : '0';
   if (focus) focus.textContent = views.length && views.every((view) => view.focus) ? 'visible' : 'check';
-  if (note) note.textContent = data.note || 'Measured in Chromium.';
+  if (soft) soft.textContent = data.soft_total ? `${data.soft_passed}/${data.soft_total}` : '—';
+  if (note) note.textContent = data.warnings?.length ? `${data.note || 'Measured in Chromium.'} Warning: ${data.warnings.join('; ')}.` : (data.note || 'Measured in Chromium.');
   if (desktop && data.screenshots?.desktop) desktop.src = data.screenshots.desktop;
   if (mobile && data.screenshots?.mobile) mobile.src = data.screenshots.mobile;
 })();

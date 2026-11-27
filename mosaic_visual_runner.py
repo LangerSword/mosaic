@@ -393,8 +393,10 @@ def main() -> int:
     report["soft_total"] = len(soft)
     report["soft_passed"] = sum(1 for c in soft if c["ok"])
     report["blockers"] = [c["detail"] for c in hard if not c["ok"]]
+    report["warnings"] = [c["detail"] for c in soft if not c["ok"]]
     report["status"] = "pass" if not report["blockers"] and report.get("ok") else "fail"
     report["visual_guarantee"] = report["status"] == "pass"
+    report["strict_visual_guarantee"] = report["visual_guarantee"] and not report["warnings"]
     report["note"] = ("Hard visual gates only: rendered layout, text contrast, overlap, first-screen h1, "
                       "focus visibility, reduced-motion, control size and a non-blank screenshot. "
                       "This is not a judgement of taste or originality.")

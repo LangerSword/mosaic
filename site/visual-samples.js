@@ -2,7 +2,13 @@ window.MOSAIC_VISUAL = {
   "target": "generated / A quiet portfolio for a type designer",
   "status": "pass",
   "visual_guarantee": true,
-  "evidence_id": "v1-14cb00065fe82888",
+  "strict_visual_guarantee": false,
+  "soft_passed": 2,
+  "soft_total": 3,
+  "warnings": [
+    "9 controls under 44px"
+  ],
+  "evidence_id": "v1-66dc5e2020405967",
   "gates_passed": 16,
   "gates_total": 16,
   "blockers": [],

@@ -70,7 +70,7 @@ The recipe is a starting direction, not an answer. It deliberately returns a the
 python mosaic_cli.py visual --target http://127.0.0.1:4322/
 ```
 
-One Chromium launch, two viewports (`1440x900`, `390x844`), two screenshots and a hard pass/fail. It measures console errors, overflow, first-screen `h1`, text overlaps, WCAG contrast, focus visibility, reduced motion, control size and a non-blank screenshot. `visual_guarantee` is true only when every hard gate passes.
+One Chromium launch, two viewports (`1440x900`, `390x844`), two screenshots and a hard pass/fail. It measures console errors, overflow, first-screen `h1`, text overlaps, WCAG contrast, focus visibility, reduced motion, control size and a non-blank screenshot. `visual_guarantee` is true only when every hard gate passes; `strict_visual_guarantee` also requires the soft 44px mobile target rule and is reported honestly when it fails.
 
 The tool returns paths to the screenshots instead of base64, so a normal call stays small. It needs Playwright Chromium in a browser-capable Python; on a machine without one it returns `status: "needs_browser"` and refuses to claim a pass.
 
