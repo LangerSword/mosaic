@@ -29,7 +29,7 @@ jobs:
       - name: Strict visual gates
         env:
           MOSAIC_BROWSER_PYTHON: python
-        run: python scripts/check_visual.py --site http://127.0.0.1:4322/ --generated
+        run: python scripts/check_visual.py --site http://127.0.0.1:4322/ --layouts
       - name: Stop server
         if: always()
         run: kill "$(cat /tmp/mosaic-site.pid)" 2>/dev/null || true

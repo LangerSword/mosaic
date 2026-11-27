@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from mosaic_audit import audit_source
+from mosaic_data import MOODS
 from mosaic_design import _tokens
 from mosaic_forge import KINDS
 from mosaic_tools import (TOOL_SPECS, h_audit, h_components, h_critique, h_design, h_forge,
@@ -164,13 +165,15 @@ class DesignTests(unittest.TestCase):
         self.assertNotIn("{{", page["content"])
         self.assertIn("data-slot", page["content"])
         self.assertIn("--field", page["content"])
+        self.assertIn("layout-", page["content"])
         self.assertIn("prefers-reduced-motion", page["content"])
 
     def test_tokens_meet_text_contrast_for_every_mood(self):
-        for mood in ("quiet", "editorial", "technical", "tactile"):
+        for mood in MOODS:
             contrast = _tokens(mood, {})["--contrast"]
             self.assertGreaterEqual(contrast["ink_on_field"], 4.5, mood)
             self.assertGreaterEqual(contrast["signal_on_field"], 4.5, mood)
+            self.assertGreaterEqual(contrast["signal_on_surface"], 4.5, mood)
             self.assertGreaterEqual(contrast["muted_on_field"], 4.5, mood)
 
     def test_design_rejects_bad_inputs(self):

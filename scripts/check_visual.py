@@ -34,11 +34,12 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--site", help="URL of the built site")
     parser.add_argument("--generated", action="store_true", help="also render a generated page")
+    parser.add_argument("--layouts", action="store_true", help="render all six domain layouts")
     parser.add_argument("--strict", action="store_true", default=True,
                         help="require strict_visual_guarantee (default)")
     args = parser.parse_args()
-    if not args.site and not args.generated:
-        parser.error("pass --site and/or --generated")
+    if not args.site and not args.generated and not args.layouts:
+        parser.error("pass --site, --generated and/or --layouts")
     results = []
     if args.site:
         results.append(report(args.site, json.loads(h_visual({"target": args.site}))))
@@ -50,6 +51,19 @@ def main() -> int:
         results.append(report("generated", json.loads(h_visual({
             "source": page["page"]["files"][0]["content"],
         }))))
+    if args.layouts:
+        briefs = [
+            "A quiet portfolio for a type designer",
+            "An agent that streams its work while it reads files",
+            "A collectible racing deck for a design conference",
+            "A data room for climate researchers",
+            "A programme for an independent film festival",
+            "A reading room for essays about cities",
+        ]
+        for brief in briefs:
+            page = json.loads(h_design({"brief": brief, "mode": "page"}))
+            result = json.loads(h_visual({"source": page["page"]["files"][0]["content"]}))
+            results.append(report(f"layout/{page['chosen']['id']}", result))
     return 0 if all(results) else 1
 
 

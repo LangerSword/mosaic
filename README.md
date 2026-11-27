@@ -127,7 +127,7 @@ The page is verified at 1440 and 390, with no horizontal overflow and no console
 
 ## 60 second film
 
-[Read the 0.8.1 release](https://github.com/LangerSword/mosaic/releases/tag/v0.8.1): strict visual-gate notes, new specimens, layout variants and the catalog pin. The earlier 60-second film is at [v0.5.0](https://github.com/LangerSword/mosaic/releases/tag/v0.5.0); source and build steps are in `demo/`.
+[Read the 0.8.2 release](https://github.com/LangerSword/mosaic/releases/tag/v0.8.2): strict visual-gate notes, all six layout gates, new specimens and the catalog pin. The earlier 60-second film is at [v0.5.0](https://github.com/LangerSword/mosaic/releases/tag/v0.5.0); source and build steps are in `demo/`.
 
 ## Reference study and independence
 

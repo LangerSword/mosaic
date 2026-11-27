@@ -477,6 +477,12 @@ def _darken(value: str, amount: float = .18) -> str:
     return "#" + "".join(f"{max(0, round(c * (1 - amount))):02x}" for c in channels)
 
 
+def _lighten(value: str, amount: float = .08) -> str:
+    value = value.lstrip("#")
+    channels = [int(value[i:i + 2], 16) for i in (0, 2, 4)]
+    return "#" + "".join(f"{min(255, round(c + (255 - c) * amount)):02x}" for c in channels)
+
+
 def _tokens(mood: str, flags: dict) -> dict:
     palette = MOODS[mood]
     field, ink = palette["field"], palette["ink"]
@@ -488,8 +494,10 @@ def _tokens(mood: str, flags: dict) -> dict:
     line = "#30302e" if dark else "#ddd8cc"
     surface = "#141414" if dark else "#f7f3ea"
     signal = palette["accent"]
-    if _contrast(signal, field) < 4.5:
-        signal = _darken(signal, .2)
+    for _ in range(7):
+        if _contrast(signal, field) >= 4.5 and _contrast(signal, surface) >= 4.5:
+            break
+        signal = _lighten(signal) if dark else _darken(signal, .08)
     focus = signal
     return {
         "--field": field,
@@ -515,6 +523,7 @@ def _tokens(mood: str, flags: dict) -> dict:
         "--contrast": {
             "ink_on_field": _contrast(ink, field),
             "signal_on_field": _contrast(signal, field),
+            "signal_on_surface": _contrast(signal, surface),
             "muted_on_field": _contrast(muted, field),
         },
     }
@@ -721,9 +730,9 @@ button {{ font: inherit; color: inherit; }}
 .skip:focus {{ left: 8px; z-index: 9; }}
 .shell {{ width: min(100% - 2 * var(--gutter), var(--max)); margin: 0 auto; }}
 .bar {{ display: flex; justify-content: space-between; align-items: center; min-height: 64px; border-bottom: 1px solid var(--line); font-family: var(--utility-font); font-size: var(--mono); }}
-.brand {{ display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; font-weight: 700; letter-spacing: -.04em; }}
+.brand {{ display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; text-decoration: none; font-weight: 700; letter-spacing: -.04em; }}
 .bar nav {{ display: flex; gap: 18px; }}
-.bar nav a {{ display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; border-bottom: 1px solid transparent; }}
+.bar nav a {{ display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; text-decoration: none; border-bottom: 1px solid transparent; }}
 .bar nav a:hover {{ border-color: var(--signal); }}
 main {{ overflow: clip; }}
 @media (prefers-reduced-motion: no-preference) {{
@@ -754,7 +763,7 @@ h1 {{ max-width: 9ch; margin: 0; font-family: var(--display-font); font-size: va
 .typeface-slot {{ display: inline-block; margin-top: 8px; color: var(--muted); font: var(--mono)/1.2 var(--utility-font); letter-spacing: .08em; text-transform: uppercase; }}
 .specimen-line {{ margin: 14px 0 10px; font-family: var(--display-font); font-size: var(--specimen-size, 4.5rem); line-height: .9; letter-spacing: var(--specimen-tracking, -.03em); white-space: nowrap; max-width: 100%; overflow: hidden; }}
 .specimen-controls {{ display: flex; flex-wrap: wrap; gap: 12px 20px; margin: 10px 0 16px; color: var(--muted); font: var(--mono)/1.2 var(--utility-font); text-transform: uppercase; }}
-.specimen-controls label {{ display: flex; align-items: center; min-height: 44px; gap: 8px; }}
+.specimen-controls label {{ display: flex; align-items: center; min-height: 44px; min-width: 44px; gap: 8px; }}
 .specimen-controls input {{ width: 88px; height: 44px; accent-color: var(--signal); }}
 .specimen-scale, .excerpt-meta {{ display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid var(--line); padding-top: 8px; color: var(--muted); font: var(--mono)/1.3 var(--utility-font); text-transform: uppercase; }}
 .trace, .programme-list {{ display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }}
