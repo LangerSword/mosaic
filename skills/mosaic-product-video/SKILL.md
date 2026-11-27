@@ -1,112 +1,143 @@
 ---
 name: mosaic-product-video
 description: Use when producing a Mosaic product film, not a slide demo.
-version: 0.3.0
+version: 0.4.0
 author: Lakshaya Sharma (LangerSword), Hermes Agent
 license: MIT
 platforms: [linux, macos]
 metadata:
   hermes:
-    tags: [video, demo, product, mosaic, playwright, ffmpeg, pty]
+    tags: [video, demo, product, mosaic, playwright, ffmpeg, vhs]
     related_skills: [mosaic, mosaic-visual, demo-video-production, webreel, interactive-tty-automation]
 ---
 
 # Mosaic Product Video
 
-A short film where the **product does the work on screen**. No gradient stage,
-floating card, redesign poster, lower-third manifesto or fake UI.
+A **live split-screen** product demo: the real generated page on the left, the
+real gate/terminal on the right, one continuous take. No stage, no floating
+card, no lower-third manifesto, no redline gimmick.
 
-## Status: Redline was rejected
+## The accepted cut
 
-The 18-second Redline cut was pulled from the release. It was a design-critique
-poster with a redline gimmick: no real interaction, no cause-and-effect, and the
-lower-third carried the story. Do not make another one.
-
-The next film must show a real Mosaic task from the actual tools:
-
-> brief → generated page → real visual gate → fix → pass.
-
-The Mosaic site and langersword.in are demos of what Mosaic can create. Use them
-as artifacts, not as the product.
-
-## The correct 20s cut
-
-**Runtime:** 20s. **Viewport:** 1920×1080. **Source:** real terminal/PTY and real
-browser capture. No staging.
+**Runtime:** 20s. **Viewport:** 1920×1080. **Source:** real page captures and a
+real VHS terminal recording.
 
 ```text
-0.0-2.0   terminal: a real command starts from a brief
-2.0-5.0   generated page opens; the viewer sees the actual output
-5.0-8.0   real cursor changes type / selects a specimen
-8.0-12.0  terminal: mosaic_visual runs; 14/16, failing rule named
-12.0-15.0 the token is changed; same page reloads
-15.0-17.5 terminal: 16/16, evidence id
-17.5-20.0 end card with URL and one command
+0.0-2.0    terminal: copy fail.html -> candidate.html
+2.0-9.0    page: failing candidate; terminal types the gate command
+           gate returns FAIL / 14/16 and names contrast + 16px target
+9.0-14.0   terminal: two real sed edits; page still failing
+14.0-16.8  terminal: gate re-run begins
+16.8-19.2  page: fixed candidate; terminal returns PASS / 16/16
+19.2-20.0  black end line: URL only
 ```
 
-If the screen is split, the split must be earned: terminal on the left, actual
-site on the right, both live. No title card after a static screenshot.
+No added type, no labels over the product, no motion graphics. The only motion
+is the actual terminal typing and the real page state change.
 
-## Capture-first pipeline
+## Build
 
-### 1. Record the real terminal
+### 1. Candidate pages
 
-Use a real PTY, not retyped text. Record the exact command sequence and timings
-with `scripts`/`asciinema`-style cast data; replay actual bytes. If a cast is
-not possible, use VHS against the real shell. Do not render a fake terminal.
+```bash
+cd ~/projects/mosaic
+python scripts/build_redline.py
+```
 
-### 2. Record the real page
+This creates `demo/redline/fail.html` (real generated page with a 2.23:1 token
+and 16px range target) and `fixed.html`. Verify with the real gate:
 
-Use Playwright at 1920×1080 against the generated page. Capture the actual
-cursor, scroll to the failing element, change the control, reload fixed page.
-No browser chrome. No injected fake state.
+```bash
+python scripts/demo_gate.py demo/redline/fail.html   # 14/16, exit 1
+python scripts/demo_gate.py demo/redline/fixed.html  # 16/16, exit 0
+```
 
-### 3. Compose
+### 2. Real page footage
 
-Use a **side-by-side or full-screen cut**, whichever shows the cause and effect
-better. The product must be readable; crop/zoom into the exact failing control
-when it changes. No stage, no floating card, no giant headline not present in
-the product.
+```bash
+/home/lakshaya/.venv/bin/python demo/record_redline.py
+```
 
-### 4. Sound
+Writes `demo/raw/redline/fail.webm` and `fixed.webm` at 1920×1080. Same scroll
+path. No browser chrome.
 
-Use real terminal clicks and browser interactions plus the in-repo synth bed.
-No TTS. If the product is genuinely quiet, do not add a banger just to hide it.
+### 3. Real terminal footage (VHS)
 
-### 5. QA
+```bash
+vhs demo/redline.tape
+```
 
-- The command in the film must be a command that actually ran.
-- The gate result in the film must come from a real `mosaic_visual` run.
-- The before and after must show the same page and the same location.
-- `ffprobe`: 20.0s, 1920×1080, 30fps, H.264, AAC.
+`demo/redline.tape` types the real commands and captures their real output into
+`demo/raw/redline/terminal.mp4`. The terminal output comes from
+`scripts/demo_gate.py`, which calls the real `mosaic_visual` handler. It is not
+retyped text.
+
+### 4. Split-screen composition
+
+`demo/live-gate-film.html`:
+
+- 60% page pane / 40% terminal pane
+- page pane `object-fit: contain` on cream; full page visible
+- terminal pane cropped to the left 170% so commands are readable
+- fixed page swaps in at 16.8s, matching the terminal PASS beat
+- end line only: `langersword.github.io/mosaic`
+- no stage, no floating card, no lower-third
+
+Record:
+
+```bash
+/home/lakshaya/.venv/bin/python demo/record_live_gate.py
+```
+
+### 5. Mux
+
+```bash
+ffmpeg -y -ss 0.25 -i demo/raw/redline/live-gate.webm -t 20.0 \
+  -i demo/raw/bed.wav -map 0:v:0 -map 1:a:0 -t 20 \
+  -vf "fps=30,scale=1920:1080,format=yuv420p" \
+  -af "atrim=0:20,volume=0.6,afade=t=in:st=0:d=0.5,afade=t=out:st=18.7:d=1.3,loudnorm=I=-18:TP=-2:LRA=11" \
+  -c:v libx264 -crf 18 -preset medium -c:a aac -b:a 160k -movflags +faststart \
+  ~/Videos/mosaic/mosaic-live-gate.mp4
+```
+
+Low bed only. No banger, no TTS, no narration.
+
+### 6. QA
+
+- 20.0s, 1920×1080, 30fps, H.264, AAC.
 - Decode whole file; zero errors.
-- First 2s has product, not a logo; last 2s has a clean end card.
-- Contact sheet: no dead frames, no text over the failing control.
+- 3s: page fully visible, terminal readable, command in progress.
+- 18s: fixed page and PASS/16/16 terminal visible together.
+- Check that the terminal actually says FAIL then PASS; not a staged frame.
+- Check that the page pane is not clipped by the split.
 
 ## Rules
 
-- **Show a task, not a taste claim.** A viewer should be able to describe what
-  changed between the first and last frame.
-- **No lower-third as narrator.** Use small labels only when the product itself
-  cannot carry the state.
-- **No mockup browser frame.** Use the real page.
-- **No redline gimmick.** If a rule fails, show the actual gate output and the
-  actual fix.
-- **No “evidence, not vibes” poster.** Show evidence.
-- **No gradient/floating-card stage.** That grammar is rejected.
+- **Show the tool, not a poster.** The page and terminal must be live together.
+- **Causal beat:** the page switches to fixed at the same beat the terminal
+  returns PASS.
+- **No overlays.** No arrows, redlines, captions or labels over the product.
+- **No stage.** No gradient, no floating browser card, no mockup.
+- **No fake terminal.** VHS drives the real shell; no retyped output.
+- **No fake page.** The failing and fixed pages are real generated pages with
+  controlled faults, and the gate is a real handler run.
 
-## What remains unbuilt
+## Pitfalls
 
-The capture-first 20s film is **not yet built**. The Redline assets remain only
-as a rejected experiment; do not ship them as the product film. The plugin and
-release can ship without a film; a bad film is worse than none.
+- A `contain` page leaves cream letterboxing; keep the pane background cream.
+- Terminal at 40% is unreadable if you scale the full 1920 frame down. Crop to
+  the left 170% in the pane.
+- If the page switches before the terminal PASS, causality breaks. Use 16.8s.
+- VHS tape total duration must cover both gate runs; check `ffprobe` before
+  composing.
+- Do not use banger.wav for this cut; low `bed.wav` only.
+- If the terminal is still typing at 3s, that is fine; do not cut away from a
+  command mid-beat.
 
 ## Verification
 
-When built, report:
-- exact command that ran
-- exact gate result before/after
-- path to the real captures
-- duration/fps/codec/audio
-- contact sheet path
-- what a viewer can actually verify by watching
+- `~/Videos/mosaic/mosaic-live-gate.mp4`
+- `demo/live-gate-film.html`
+- `demo/record_live_gate.py`
+- `demo/record_redline.py`, `demo/redline.tape`, `scripts/demo_gate.py`
+- Report the real gate results: FAIL 14/16 → PASS 16/16.

@@ -95,7 +95,7 @@ A bounded guarantee: rendered layout, contrast, interaction affordance and inter
 | `mosaic-glass` | One glass material with a real fallback |
 | `mosaic-score` | Pre-awards design, usability and originality gate |
 | `mosaic-taste` | Taste proxies, confidence and pairwise calibration |
-| `mosaic-product-video` | Capture-first product-film recipe (Redline rejected) |
+| `mosaic-product-video` | Live split-screen gate film (real terminal + page) |
 | `mosaic-visual` | Render a page and pass or fail measured visual gates |
 | `mosaic-select` | Segmented controls, tabs, small pickers |
 | `mosaic-shader` | Atmospheric shaders with static fallbacks |
@@ -131,7 +131,7 @@ The page is verified at 1440 and 390, with no horizontal overflow and no console
 
 ## 60 second film
 
-[Read the 0.9.1 release](https://github.com/LangerSword/mosaic/releases/tag/v0.9.1): taste profiles, strict visual gates, all six layout gates, new specimens and the catalog pin. The 60-second film is at [v0.5.0](https://github.com/LangerSword/mosaic/releases/tag/v0.5.0); the Redline cut was rejected and pulled, and the capture-first replacement is still to be built. Source and build steps are in `demo/`.
+[Read the 0.9.1 release](https://github.com/LangerSword/mosaic/releases/tag/v0.9.1): taste profiles, the 20s live split-screen gate film, strict visual gates, all six layout gates, new specimens and the catalog pin. The earlier 60-second film is at [v0.5.0](https://github.com/LangerSword/mosaic/releases/tag/v0.5.0). Source and build steps are in `demo/`.
 
 ## Reference study and independence
 

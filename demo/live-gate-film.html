@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mosaic / live gate</title>
+<style>
+@font-face{font-family:Plex;src:url("../site/fonts/IBMPlexMono-Regular.ttf");font-weight:400;font-display:swap}
+*{box-sizing:border-box}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#0a0b0a;color:#f3efe6;font-family:Plex,monospace}
+.film{position:fixed;inset:0;background:#0a0b0a}
+.top{position:absolute;z-index:4;inset:0 0 auto 0;height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid rgba(243,239,230,.16);font:700 10px/1 Plex,monospace;letter-spacing:.12em;text-transform:uppercase;color:#b7afa2;background:#0a0b0a}
+.top b{color:#f3efe6;font-weight:400}
+.split{position:absolute;inset:42px 0 0 0;display:grid;grid-template-columns:60% 40%}
+.pane{position:relative;overflow:hidden;background:#0a0b0a}
+.pane.page{border-right:1px solid rgba(243,239,230,.2);background:#f3efe6}
+.pane video{position:absolute;left:0;top:0;height:100%;object-fit:cover;object-position:top left}
+.pane.page video{width:100%;height:100%;object-fit:contain;object-position:top center}
+.pane.term video{width:170%;filter:contrast(1.05)}
+.pane.fail{display:block}.pane.fixed{display:none}
+.end{position:absolute;inset:0;z-index:8;display:grid;place-items:center;background:#0a0b0a;opacity:0;pointer-events:none}
+.end p{margin:0;font:400 16px/1.5 Plex,monospace;letter-spacing:.12em;color:#f3efe6;text-transform:uppercase}
+.end p span{color:#a79f92}
+</style>
+</head>
+<body>
+<div class="film">
+  <div class="top"><span><b>Mosaic</b> / live gate</span><span id="tc">00:00:00</span></div>
+  <div class="split">
+    <div class="pane page fail" id="fail"><video id="vfn" src="raw/redline/fail.webm" muted playsinline loop preload="auto"></video></div>
+    <div class="pane page fixed" id="fixed"><video id="vfx" src="raw/redline/fixed.webm" muted playsinline loop preload="auto"></video></div>
+    <div class="pane term"><video id="vterm" src="raw/redline/terminal.mp4" muted playsinline loop preload="auto"></video></div>
+  </div>
+  <div class="end" id="end"><p>langersword.github.io/mosaic<br><span>real page / real gate / real fix</span></p></div>
+</div>
+<script>
+const fail = document.getElementById('fail'), fixed = document.getElementById('fixed');
+const vfn = document.getElementById('vfn'), vfx = document.getElementById('vfx'), vterm = document.getElementById('vterm');
+const end = document.getElementById('end'), tc = document.getElementById('tc');
+const clamp = v => Math.max(0, Math.min(1, v));
+function render(t) {
+  const fixedPhase = t >= 16.8;
+  fail.style.display = fixedPhase ? 'none' : 'block';
+  fixed.style.display = fixedPhase ? 'block' : 'none';
+  tc.textContent = `00:${String(Math.floor(t)).padStart(2,'0')}:${String(Math.floor((t%1)*30)).padStart(2,'0')}`;
+  end.style.opacity = t >= 19.2 ? String(clamp((t - 19.2) / .3)) : '0';
+  if (fixedPhase) {
+    if (vfx.paused) { vfx.currentTime = 0; vfx.play().catch(()=>{}); }
+  }
+  if (t >= 19) {
+    vfn.pause(); vfx.pause(); vterm.pause();
+  }
+}
+function start() {
+  vfn.currentTime = 0; vfx.currentTime = 0; vterm.currentTime = 0;
+  vfn.playbackRate = .5; vfx.playbackRate = .7; vterm.playbackRate = 1;
+  vfn.play().catch(()=>{}); vterm.play().catch(()=>{});
+  const t0 = performance.now();
+  const tick = now => { const t = (now-t0)/1000; render(t); if (t < 20.4) requestAnimationFrame(tick); };
+  requestAnimationFrame(tick);
+}
+window.__render = render; window.__startFilm = start; window.__filmReady = true;
+</script>
+</body>
+</html>
