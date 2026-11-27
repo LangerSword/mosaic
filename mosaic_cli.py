@@ -9,7 +9,7 @@ import argparse
 import json
 
 from mosaic_tools import (TOOL_SPECS, h_audit, h_components, h_critique, h_design, h_forge,
-                         h_index, h_invent, h_recipe, h_score, h_stacks, h_study, h_visual)
+                         h_index, h_invent, h_recipe, h_score, h_stacks, h_study, h_taste, h_visual)
 
 
 def main() -> int:
@@ -50,6 +50,11 @@ def main() -> int:
     score.add_argument("--path")
     score.add_argument("--source")
     score.add_argument("--brief", default="")
+
+    taste = sub.add_parser("taste", help="profile design taste proxies")
+    taste.add_argument("--path")
+    taste.add_argument("--source")
+    taste.add_argument("--brief", default="")
 
     visual = sub.add_parser("visual", help="render and measure the visual gates")
     visual.add_argument("--target", help="URL or local .html file")
@@ -108,6 +113,8 @@ def main() -> int:
         out = h_critique({"path": args.path, "source": args.source, "brief": args.brief})
     elif args.cmd == "score":
         out = h_score({"path": args.path, "source": args.source, "brief": args.brief})
+    elif args.cmd == "taste":
+        out = h_taste({"path": args.path, "source": args.source, "brief": args.brief})
     elif args.cmd == "visual":
         out = h_visual({"target": args.target, "source": args.source})
     else:

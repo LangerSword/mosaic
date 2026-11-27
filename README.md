@@ -6,8 +6,8 @@ It is not a template library, a cloner, or a moodboard generator. It gives the a
 
 ## What is in the box
 
-- **21 Hermes skills**: one master method, twelve interaction families (including cast, ASCII and glass), a component grammar, study, design, critique and score methods, a measured visual gate, a forge and an inventor.
-- **12 local tools**:
+- **22 Hermes skills**: one master method, twelve interaction families (including cast, ASCII and glass), a component grammar, study, design, critique and score methods, a measured visual gate, a taste profiler, a forge and an inventor.
+- **13 local tools**:
   - `mosaic_index`: the reference families, skills and base tokens.
   - `mosaic_study`: reference observations → principles, transfer candidates and a do-not-copy contract (a URL alone returns a checklist, not invented facts).
   - `mosaic_design`: the design director: three concepts, transparent selection, tokens, type, composition and an optional complete page starter.
@@ -19,6 +19,7 @@ It is not a template library, a cloner, or a moodboard generator. It gives the a
   - `mosaic_audit`: a local text scan for generic gradients, `transition: all`, missing reduced-motion and similar slop.
   - `mosaic_critique`: design-specific source critique for prompt leakage, copy, focus, slots, radius/font noise.
   - `mosaic_score`: a transparent pre-awards text score with blockers and next moves.
+  - `mosaic_taste`: deterministic taste proxies with confidence, evidence and a calibration contract; never a universal verdict.
   - `mosaic_visual`: render a URL or local page in Chromium; return two screenshots, hard-gate results, contrast/overlap/focus/reduced-motion evidence and a bounded `visual_guarantee`.
 - **A CLI** over the same handlers, for a demo or CI without Hermes.
 
@@ -47,6 +48,7 @@ python mosaic_cli.py forge --kind swipe-confirm --stack react --motion gsap
 python mosaic_cli.py invent --brief "A quiet onboarding for a design tool" --count 3
 python mosaic_cli.py critique --path src/app.css
 python mosaic_cli.py audit --path src/app.css
+python mosaic_cli.py taste --path src/index.html --brief "A quiet portfolio for a type designer"
 python mosaic_cli.py visual --target http://127.0.0.1:4322/
 ```
 
@@ -92,6 +94,7 @@ A bounded guarantee: rendered layout, contrast, interaction affordance and inter
 | `mosaic-ascii` | Monospace character fields and ASCII atmosphere |
 | `mosaic-glass` | One glass material with a real fallback |
 | `mosaic-score` | Pre-awards design, usability and originality gate |
+| `mosaic-taste` | Taste proxies, confidence and pairwise calibration |
 | `mosaic-visual` | Render a page and pass or fail measured visual gates |
 | `mosaic-select` | Segmented controls, tabs, small pickers |
 | `mosaic-shader` | Atmospheric shaders with static fallbacks |
@@ -127,7 +130,7 @@ The page is verified at 1440 and 390, with no horizontal overflow and no console
 
 ## 60 second film
 
-[Read the 0.8.2 release](https://github.com/LangerSword/mosaic/releases/tag/v0.8.2): strict visual-gate notes, all six layout gates, new specimens and the catalog pin. The earlier 60-second film is at [v0.5.0](https://github.com/LangerSword/mosaic/releases/tag/v0.5.0); source and build steps are in `demo/`.
+[Read the 0.9.0 release](https://github.com/LangerSword/mosaic/releases/tag/v0.9.0): taste profiles, strict visual gates, all six layout gates, new specimens and the catalog pin. The earlier 60-second film is at [v0.5.0](https://github.com/LangerSword/mosaic/releases/tag/v0.5.0); source and build steps are in `demo/`.
 
 ## Reference study and independence
 
@@ -137,8 +140,8 @@ Construct is a useful reference precisely because it is plural: a quiet gallery 
 
 ## Evidence
 
-- 40 unit tests pass with stdlib only.
-- `smoke_load.py` loads the real entry point against a recording context, asserts 12 tools and dispatches them.
+- 42 unit tests pass with stdlib only.
+- `smoke_load.py` loads the real entry point against a recording context, asserts 13 tools and dispatches them.
 - `hermes plugins validate` and `hermes plugins doctor` are the admission gates.
 - CLI outputs are deterministic and JSON.
 - 20 public component observations are included; six second-row components were account-gated, and the rest of the catalog requires an account. None were bypassed.

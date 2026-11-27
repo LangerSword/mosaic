@@ -14,6 +14,7 @@ try:
     from .mosaic_invent import invent
     from .mosaic_score import score_path, score_source
     from .mosaic_study import study_reference
+    from .mosaic_taste import taste_path, taste_source
     from .mosaic_visual import visual, visual_source
 except ImportError:  # standalone CLI / tests
     from mosaic_audit import audit_path, audit_source
@@ -24,6 +25,7 @@ except ImportError:  # standalone CLI / tests
     from mosaic_invent import invent
     from mosaic_score import score_path, score_source
     from mosaic_study import study_reference
+    from mosaic_taste import taste_path, taste_source
     from mosaic_visual import visual, visual_source
 
 DIRECTIONS = ["The Quiet Instrument", "Paper Teeth", "Soft Machinery", "The Long Table",
@@ -150,7 +152,7 @@ def h_index(args: dict) -> str:
     return _j({
         "ok": True,
         "plugin": "mosaic",
-        "version": "0.8.2",
+        "version": "0.9.0",
         "families": [
             {"id": f["id"], "name": f["name"], "skill": f["skill"],
              "signature": f["signature"], "use_when": f["use_when"], "avoid": f["avoid"]}
@@ -165,6 +167,8 @@ def h_index(args: dict) -> str:
              "purpose": "Critique the source against design specificity, copy, focus and content-slot discipline."},
             {"id": "score", "skill": "mosaic-score", "tool": "mosaic_score",
              "purpose": "Run a transparent pre-awards score across design, usability, creativity, content and originality."},
+            {"id": "taste", "skill": "mosaic-taste", "tool": "mosaic_taste",
+             "purpose": "Measure hierarchy, rhythm, craft, restraint, specificity, tension, fit and originality proxies; report confidence, never a universal verdict."},
             {"id": "visual", "skill": "mosaic-visual", "tool": "mosaic_visual",
              "purpose": "Render the built page in Chromium and pass or fail hard visual gates with screenshot evidence."},
         ],
@@ -198,6 +202,17 @@ def h_visual(args: dict) -> str:
     if source:
         return _j(visual_source(_text(source, "source", 300_000)))
     return _j(visual(_text(target, "target", 1000)))
+
+
+def h_taste(args: dict) -> str:
+    source = args.get("source")
+    path = args.get("path")
+    if bool(source) == bool(path):
+        raise ValueError("pass exactly one of source or path")
+    brief = _optional(args.get("brief"), 2000)
+    if path:
+        return _j(taste_path(_text(path, "path", 1000), brief))
+    return _j(taste_source(_text(source, "source", 300_000), brief))
 
 
 def h_recipe(args: dict) -> str:
@@ -461,6 +476,20 @@ TOOL_SPECS = [
                 "constraints": {"type": "string", "description": "Hard constraints: brand, content, a11y, performance."},
             },
             "required": ["brief"],
+        },
+    },
+    {
+        "name": "mosaic_taste",
+        "handler": h_taste,
+        "emoji": "🧬",
+        "description": "Measure deterministic taste proxies (hierarchy, rhythm, craft, restraint, specificity, tension, fit, originality) with confidence and calibration requirements. Never claims a universal taste verdict.",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "path": {"type": "string", "description": "Local text file to profile."},
+                "source": {"type": "string", "description": "Source text to profile instead of a path."},
+                "brief": {"type": "string", "description": "The product brief; improves fit and confidence."},
+            },
         },
     },
     {

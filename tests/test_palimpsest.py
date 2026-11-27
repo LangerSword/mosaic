@@ -8,7 +8,8 @@ from mosaic_data import MOODS
 from mosaic_design import _tokens
 from mosaic_forge import KINDS
 from mosaic_tools import (TOOL_SPECS, h_audit, h_components, h_critique, h_design, h_forge,
-                         h_index, h_invent, h_recipe, h_score, h_stacks, h_study, h_visual)
+                         h_index, h_invent, h_recipe, h_score, h_stacks, h_study, h_taste, h_visual)
+from mosaic_taste import taste_source
 from mosaic_visual import _target
 
 
@@ -18,13 +19,13 @@ class IndexTests(unittest.TestCase):
         self.assertTrue(out["ok"])
         self.assertEqual(len(out["families"]), 13)
         self.assertIn("paper-ink", [f["id"] for f in out["families"]])
-        self.assertEqual(len(out["methods"]), 5)
+        self.assertEqual(len(out["methods"]), 6)
 
     def test_tool_specs_are_named(self):
         self.assertEqual([s["name"] for s in TOOL_SPECS],
                          ["mosaic_index", "mosaic_study", "mosaic_design", "mosaic_components",
                           "mosaic_stacks", "mosaic_forge", "mosaic_invent", "mosaic_recipe",
-                          "mosaic_visual", "mosaic_audit", "mosaic_critique", "mosaic_score"])
+                          "mosaic_taste", "mosaic_visual", "mosaic_audit", "mosaic_critique", "mosaic_score"])
 
     def test_components_filter(self):
         out = json.loads(h_components({"family": "press"}))
@@ -259,6 +260,26 @@ class VisualTests(unittest.TestCase):
             h_visual({})
         with self.assertRaises(ValueError):
             h_visual({"target": "https://example.com", "source": "<h1>x</h1>"})
+
+
+class TasteTests(unittest.TestCase):
+    def test_taste_is_deterministic_and_never_a_verdict(self):
+        page = json.loads(h_design({"brief": DesignTests.brief, "mode": "page"}))["page"]["files"][0]["content"]
+        one = json.loads(h_taste({"source": page, "brief": DesignTests.brief}))
+        two = json.loads(h_taste({"source": page, "brief": DesignTests.brief}))
+        self.assertEqual(one, two)
+        self.assertEqual(set(one["dimensions"]), {"hierarchy", "rhythm", "craft", "restraint", "specificity", "tension", "fit", "originality"})
+        self.assertIn(one["confidence"], {"low", "medium"})
+        self.assertEqual(one["calibration"]["status"], "unpaired")
+        self.assertIn("not a universal", one["calibration"]["note"].lower())
+
+    def test_generic_copy_reduces_specificity_and_originality(self):
+        page = json.loads(h_design({"brief": DesignTests.brief, "mode": "page"}))["page"]["files"][0]["content"]
+        generic = "<html><body><h1>We unlock seamless growth</h1><p>World-class next-generation platform.</p><button>Start</button></body></html>"
+        good = taste_source(page, DesignTests.brief)
+        bad = taste_source(generic, "A growth product")
+        self.assertGreater(good["dimensions"]["specificity"], bad["dimensions"]["specificity"])
+        self.assertGreater(good["dimensions"]["originality"], bad["dimensions"]["originality"])
 
 
 class ScoreTests(unittest.TestCase):
