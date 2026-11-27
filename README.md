@@ -6,8 +6,8 @@ It is not a template library, a cloner, or a moodboard generator. It gives the a
 
 ## What is in the box
 
-- **19 Hermes skills**: one master method, twelve interaction families (including cast, ASCII and glass), a component grammar, study, design and critique methods, a forge and an inventor.
-- **10 local tools**:
+- **20 Hermes skills**: one master method, twelve interaction families (including cast, ASCII and glass), a component grammar, study, design, critique and score methods, a forge and an inventor.
+- **11 local tools**:
   - `mosaic_index`: the reference families, skills and base tokens.
   - `mosaic_study`: reference observations → principles, transfer candidates and a do-not-copy contract (a URL alone returns a checklist, not invented facts).
   - `mosaic_design`: the design director: three concepts, transparent selection, tokens, type, composition and an optional complete page starter.
@@ -74,6 +74,7 @@ The recipe is a starting direction, not an answer. It deliberately returns a the
 | `mosaic-critique` | Source review for specificity and honesty |
 | `mosaic-ascii` | Monospace character fields and ASCII atmosphere |
 | `mosaic-glass` | One glass material with a real fallback |
+| `mosaic-score` | Pre-awards design, usability and originality gate |
 | `mosaic-select` | Segmented controls, tabs, small pickers |
 | `mosaic-shader` | Atmospheric shaders with static fallbacks |
 | `mosaic-type` | Editorial type, wordmarks, labels, numerals |
@@ -118,8 +119,8 @@ Construct is a useful reference precisely because it is plural: a quiet gallery 
 
 ## Evidence
 
-- 31 unit tests pass with stdlib only.
-- `smoke_load.py` loads the real entry point against a recording context, asserts 10 tools and dispatches them.
+- 34 unit tests pass with stdlib only.
+- `smoke_load.py` loads the real entry point against a recording context, asserts 11 tools and dispatches them.
 - `hermes plugins validate` and `hermes plugins doctor` are the admission gates.
 - CLI outputs are deterministic and JSON.
 - 20 public component observations are included; six second-row components were account-gated, and the rest of the catalog requires an account. None were bypassed.

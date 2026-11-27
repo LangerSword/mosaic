@@ -386,7 +386,7 @@
       directorPanel.replaceChildren();
       const top = add(directorPanel, 'div', 'director-panel__top');
       add(top, 'span', '', `selected / ${selectedSample.label}`);
-      add(top, 'span', '', `${selectedSample.domain} / ${selectedSample.action} / ${selectedSample.critique.verdict}`);
+      add(top, 'span', '', `${selectedSample.domain} / ${selectedSample.action} / ${selectedSample.awwwards.verdict}`);
       add(directorPanel, 'h3', '', selectedConcept.name);
       add(directorPanel, 'p', 'director-panel__thesis', selectedConcept.thesis);
       const grid = add(directorPanel, 'div', 'director-panel__grid');
@@ -423,8 +423,13 @@
       const ul = add(contract, 'ul');
       slots.forEach(([key, value]) => add(ul, 'li', '', `${key} — ${value.rule}`));
 
+      const score = add(grid, 'div', 'director-block');
+      add(score, 'h4', '', 'pre-awards / 0–10');
+      const scoreList = add(score, 'ul');
+      Object.entries(selectedSample.awwwards.scores).forEach(([key, value]) => add(scoreList, 'li', '', `${key} — ${value}`));
+
       const actions = add(directorPanel, 'div', 'director-actions');
-      add(actions, 'span', 'mono-label', `critique ${selectedSample.critique.score}/100`);
+      add(actions, 'span', 'mono-label', `pre-awards ${selectedSample.awwwards.overall}/10 · critique ${selectedSample.critique.score}/100`);
       const open = add(actions, 'button', 'director-btn', 'Open page starter');
       open.type = 'button';
       open.addEventListener('click', () => {

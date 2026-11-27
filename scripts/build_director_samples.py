@@ -13,7 +13,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from mosaic_tools import h_critique, h_design
+from mosaic_tools import h_critique, h_design, h_score
 
 OUT = Path(__file__).resolve().parents[1] / "site" / "director-samples.js"
 
@@ -94,6 +94,7 @@ def main() -> None:
         }))
         page = out["page"]["files"][0]["content"]
         critique = json.loads(h_critique({"source": page, "brief": case["brief"]}))
+        awwwards = json.loads(h_score({"source": page, "brief": case["brief"], "references": out["reference_map"]}))
         samples.append({
             "id": case["id"],
             "label": case["label"],
@@ -113,6 +114,12 @@ def main() -> None:
                 "verdict": critique["verdict"],
                 "strengths": critique["strengths"],
                 "findings": critique["findings"],
+            },
+            "awwwards": {
+                "overall": awwwards["overall"],
+                "verdict": awwwards["verdict"],
+                "scores": awwwards["scores"],
+                "blockers": awwwards["blockers"],
             },
         })
     OUT.write_text(

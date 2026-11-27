@@ -12,6 +12,7 @@ try:
     from .mosaic_design import design
     from .mosaic_forge import KINDS, STACKS, forge
     from .mosaic_invent import invent
+    from .mosaic_score import score_path, score_source
     from .mosaic_study import study_reference
 except ImportError:  # standalone CLI / tests
     from mosaic_audit import audit_path, audit_source
@@ -20,6 +21,7 @@ except ImportError:  # standalone CLI / tests
     from mosaic_design import design
     from mosaic_forge import KINDS, STACKS, forge
     from mosaic_invent import invent
+    from mosaic_score import score_path, score_source
     from mosaic_study import study_reference
 
 DIRECTIONS = ["The Quiet Instrument", "Paper Teeth", "Soft Machinery", "The Long Table",
@@ -157,11 +159,29 @@ def h_index(args: dict) -> str:
              "purpose": "Read the brief, propose three concepts, choose one and define the system and page."},
             {"id": "critique", "skill": "mosaic-critique", "tool": "mosaic_critique",
              "purpose": "Critique the source against design specificity, copy, focus and content-slot discipline."},
+            {"id": "score", "skill": "mosaic-score", "tool": "mosaic_score",
+             "purpose": "Run a transparent pre-awards score across design, usability, creativity, content and originality."},
         ],
         "base_tokens": BASE_TOKENS,
         "moods": sorted(MOODS),
         "note": "Families are moves, not templates. Study the brief and references before writing code.",
     })
+
+
+def h_score(args: dict) -> str:
+    source = args.get("source")
+    path = args.get("path")
+    if bool(source) == bool(path):
+        raise ValueError("pass exactly one of source or path")
+    brief = _optional(args.get("brief"), 2000)
+    references = args.get("references") or []
+    if isinstance(references, (str, dict)):
+        references = [references]
+    if not isinstance(references, list) or len(references) > 6:
+        raise ValueError("references must be an array of at most 6 objects")
+    if path:
+        return _j(score_path(_text(path, "path", 1000), brief, references))
+    return _j(score_source(_text(source, "source", 300_000), brief, references))
 
 
 def h_recipe(args: dict) -> str:
@@ -451,6 +471,21 @@ TOOL_SPECS = [
                 "path": {"type": "string", "description": "Local text file to critique."},
                 "source": {"type": "string", "description": "Source text to critique instead of a path."},
                 "brief": {"type": "string"},
+            },
+        },
+    },
+    {
+        "name": "mosaic_score",
+        "handler": h_score,
+        "emoji": "🏁",
+        "description": "Score a built source before an awards-style review: design, usability, creativity, content and originality, with blockers and next moves.",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "path": {"type": "string", "description": "Local text file to score."},
+                "source": {"type": "string", "description": "Source text to score instead of a path."},
+                "brief": {"type": "string"},
+                "references": {"type": "array", "maxItems": 6, "items": {"type": "object"}},
             },
         },
     },

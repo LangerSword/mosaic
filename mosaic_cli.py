@@ -9,7 +9,7 @@ import argparse
 import json
 
 from mosaic_tools import (TOOL_SPECS, h_audit, h_components, h_critique, h_design, h_forge,
-                         h_index, h_invent, h_recipe, h_stacks, h_study)
+                         h_index, h_invent, h_recipe, h_score, h_stacks, h_study)
 
 
 def main() -> int:
@@ -45,6 +45,11 @@ def main() -> int:
     critique.add_argument("--path")
     critique.add_argument("--source")
     critique.add_argument("--brief", default="")
+
+    score = sub.add_parser("score", help="score a local source before an awards review")
+    score.add_argument("--path")
+    score.add_argument("--source")
+    score.add_argument("--brief", default="")
 
     audit = sub.add_parser("audit", help="scan a local text source")
     audit.add_argument("--path")
@@ -97,6 +102,8 @@ def main() -> int:
                         "mode": args.mode, "seed": args.seed})
     elif args.cmd == "critique":
         out = h_critique({"path": args.path, "source": args.source, "brief": args.brief})
+    elif args.cmd == "score":
+        out = h_score({"path": args.path, "source": args.source, "brief": args.brief})
     else:
         out = h_audit({"path": args.path, "source": args.source})
     print(out)

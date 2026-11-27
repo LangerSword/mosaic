@@ -8,7 +8,7 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, web, reference, system, frontend]
-    related_skills: [mosaic-cards, mosaic-press, mosaic-drag, mosaic-hover, mosaic-cast, mosaic-select, mosaic-shader, mosaic-ascii, mosaic-glass, mosaic-type, mosaic-scroll, mosaic-loading, mosaic-components, mosaic-forge, mosaic-invent, mosaic-study, mosaic-design, mosaic-critique]
+    related_skills: [mosaic-cards, mosaic-press, mosaic-drag, mosaic-hover, mosaic-cast, mosaic-select, mosaic-shader, mosaic-ascii, mosaic-glass, mosaic-type, mosaic-scroll, mosaic-loading, mosaic-components, mosaic-forge, mosaic-invent, mosaic-study, mosaic-design, mosaic-critique, mosaic-score]
 ---
 
 # Mosaic
@@ -124,4 +124,4 @@ If `mosaic_recipe` is available, use it as a starting direction, then apply this
 
 ## See Also
 
-`mosaic-cards`, `mosaic-press`, `mosaic-drag`, `mosaic-hover`, `mosaic-cast`, `mosaic-select`, `mosaic-shader`, `mosaic-ascii`, `mosaic-glass`, `mosaic-type`, `mosaic-scroll`, `mosaic-loading`, `mosaic-components`, `mosaic-forge`, `mosaic-invent`, `mosaic-study`, `mosaic-design`, `mosaic-critique`. The reference notes are in `references/construct-teardown.md`.
+`mosaic-cards`, `mosaic-press`, `mosaic-drag`, `mosaic-hover`, `mosaic-cast`, `mosaic-select`, `mosaic-shader`, `mosaic-ascii`, `mosaic-glass`, `mosaic-type`, `mosaic-scroll`, `mosaic-loading`, `mosaic-components`, `mosaic-forge`, `mosaic-invent`, `mosaic-study`, `mosaic-design`, `mosaic-critique`, `mosaic-score`. The reference notes are in `references/construct-teardown.md`.

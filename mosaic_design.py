@@ -726,6 +726,10 @@ button {{ font: inherit; color: inherit; }}
 .bar nav a {{ text-decoration: none; border-bottom: 1px solid transparent; }}
 .bar nav a:hover {{ border-color: var(--signal); }}
 main {{ overflow: clip; }}
+@media (prefers-reduced-motion: no-preference) {{
+  html.js [data-reveal] {{ opacity: 0; transform: translateY(10px); transition: opacity .5s var(--ease), transform .5s var(--ease); }}
+  html.js [data-reveal].is-in {{ opacity: 1; transform: none; }}
+}}
 .arrival {{ display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr); gap: var(--gutter); padding: clamp(56px, 10vw, 144px) 0 72px; border-bottom: 1px solid var(--line); }}
 .kicker {{ margin: 0 0 24px; color: var(--signal); font: 700 var(--mono)/1 var(--utility-font); letter-spacing: .12em; text-transform: uppercase; }}
 h1 {{ max-width: 9ch; margin: 0; font-family: var(--display-font); font-size: var(--display); font-weight: 500; line-height: .84; letter-spacing: -.075em; }}
@@ -790,13 +794,13 @@ h2 {{ max-width: 14ch; margin: 0; font-family: var(--display-font); font-size: c
 <a class="skip" href="#main">skip to content</a>
 <header class="shell bar"><a class="brand" href="#main" data-slot="brand">{subject}</a><nav aria-label="sections"><a href="#proof">{nav[0]}</a><a href="#signature">{nav[1]}</a><a href="#close">{nav[2]}</a></nav></header>
 <main id="main">
-  <section class="shell arrival" aria-labelledby="title">
+  <section class="shell arrival" data-reveal aria-labelledby="title">
     <div><p class="kicker" data-slot="audience">{audience}</p><h1 id="title" data-slot="headline">{headline}</h1><p class="deck" data-slot="thesis">{subhead}</p><a class="act" href="#proof" data-slot="action">{cta} ↗</a></div>
     <aside class="artifact" data-artifact="{html.escape(copy['artifact'])}" aria-label="design artifact">{artifact}</aside>
   </section>
-  <section class="shell proof" id="proof" aria-labelledby="proof-title"><p class="eyebrow">evidence / 01–03</p><h2 id="proof-title" data-slot="proof-title">Three artifacts, not three feature cards.</h2><div class="proof-grid">{''.join(f'<div class="proof-item"><span>0{i+1} / {html.escape(obj)}</span><b>{html.escape(obj.title())}</b></div>' for i, obj in enumerate(objects))}</div></section>
-  <section class="shell signature" id="signature" aria-labelledby="signature-title"><div><p class="eyebrow">signature / scan to specimen</p><h2 id="signature-title" data-slot="signature-title">One input. One change.</h2><div>{options}</div></div><div class="readout" aria-live="polite"><span class="eyebrow">selected</span><strong data-readout-title>{html.escape(objects[0].title())}</strong><p data-readout-note>Replace this note with the real artifact. No invented metrics.</p></div></section>
-  <section class="shell close" id="close"><p class="eyebrow">the next move</p><h2>{cta}.</h2><a class="act" href="#main" data-slot="close-action">{copy['secondary']} ↗</a></section>
+  <section class="shell proof" id="proof" data-reveal aria-labelledby="proof-title"><p class="eyebrow">evidence / 01–03</p><h2 id="proof-title" data-slot="proof-title">Three artifacts, not three feature cards.</h2><div class="proof-grid">{''.join(f'<div class="proof-item"><span>0{i+1} / {html.escape(obj)}</span><b>{html.escape(obj.title())}</b></div>' for i, obj in enumerate(objects))}</div></section>
+  <section class="shell signature" id="signature" data-reveal aria-labelledby="signature-title"><div><p class="eyebrow">signature / scan to specimen</p><h2 id="signature-title" data-slot="signature-title">One input. One change.</h2><div>{options}</div></div><div class="readout" aria-live="polite"><span class="eyebrow">selected</span><strong data-readout-title>{html.escape(objects[0].title())}</strong><p data-readout-note>Replace this note with the real artifact. No invented metrics.</p></div></section>
+  <section class="shell close" id="close" data-reveal><p class="eyebrow">the next move</p><h2>{cta}.</h2><a class="act" href="#main" data-slot="close-action">{copy['secondary']} ↗</a></section>
 </main>
 <footer class="shell foot"><span>one principle / one artifact / one action</span><span>replace the content slots before shipping</span></footer>
 <script>
@@ -832,6 +836,24 @@ const syncSpecimen = () => {{
 }};
 [specimenSize, specimenTracking].forEach((control) => control?.addEventListener('input', syncSpecimen));
 syncSpecimen();
+document.documentElement.classList.add('js');
+const revealEls = [...document.querySelectorAll('[data-reveal]')];
+const reducedReveal = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (reducedReveal || !('IntersectionObserver' in window)) {{
+  revealEls.forEach((element) => element.classList.add('is-in'));
+}} else {{
+  const revealObserver = new IntersectionObserver((entries) => {{
+    entries.forEach((entry) => {{
+      if (entry.isIntersecting) {{
+        entry.target.classList.add('is-in');
+        revealObserver.unobserve(entry.target);
+      }}
+    }});
+  }}, {{threshold: .08, rootMargin: '0px 0px -8% 0px'}});
+  revealEls.forEach((element) => revealObserver.observe(element));
+  requestAnimationFrame(() => document.querySelector('.arrival')?.classList.add('is-in'));
+  setTimeout(() => revealEls.forEach((element) => element.classList.add('is-in')), 2400);
+}}
 </script>
 </body>
 </html>

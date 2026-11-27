@@ -6,7 +6,7 @@ from pathlib import Path
 from mosaic_audit import audit_source
 from mosaic_forge import KINDS
 from mosaic_tools import (TOOL_SPECS, h_audit, h_components, h_critique, h_design, h_forge,
-                         h_index, h_invent, h_recipe, h_stacks, h_study)
+                         h_index, h_invent, h_recipe, h_score, h_stacks, h_study)
 
 
 class IndexTests(unittest.TestCase):
@@ -15,13 +15,13 @@ class IndexTests(unittest.TestCase):
         self.assertTrue(out["ok"])
         self.assertEqual(len(out["families"]), 13)
         self.assertIn("paper-ink", [f["id"] for f in out["families"]])
-        self.assertEqual(len(out["methods"]), 3)
+        self.assertEqual(len(out["methods"]), 4)
 
     def test_tool_specs_are_named(self):
         self.assertEqual([s["name"] for s in TOOL_SPECS],
                          ["mosaic_index", "mosaic_study", "mosaic_design", "mosaic_components",
                           "mosaic_stacks", "mosaic_forge", "mosaic_invent", "mosaic_recipe",
-                          "mosaic_audit", "mosaic_critique"])
+                          "mosaic_audit", "mosaic_critique", "mosaic_score"])
 
     def test_components_filter(self):
         out = json.loads(h_components({"family": "press"}))
@@ -211,6 +211,31 @@ class MaterialTests(unittest.TestCase):
         self.assertIn("backdrop-filter", js)
         self.assertIn("@supports not (backdrop-filter", js)
         self.assertIn("aria-pressed", js)
+
+
+class ScoreTests(unittest.TestCase):
+    def test_score_passes_a_strong_generated_page(self):
+        page = json.loads(h_design({"brief": DesignTests.brief, "mode": "page"}))["page"]["files"][0]["content"]
+        out = json.loads(h_score({"source": page, "brief": DesignTests.brief}))
+        self.assertTrue(out["ok"])
+        self.assertGreaterEqual(out["overall"], 8.0)
+        self.assertIn(out["verdict"], {"ship", "revise"})
+        self.assertFalse(out["blockers"])
+
+    def test_score_rejects_generic_copy_and_missing_states(self):
+        source = "<html><body><h1>We unlock seamless growth</h1><button>Start</button></body></html>"
+        out = json.loads(h_score({"source": source, "brief": "A quiet archive"}))
+        self.assertLess(out["overall"], 8)
+        self.assertIn(out["verdict"], {"revise", "reject"})
+        self.assertIn("No focus-visible path.", out["blockers"])
+
+    def test_score_accepts_a_path(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "page.html"
+            path.write_text("<h1>Read the room.</h1><p data-slot=\"body\">One real note.</p>", encoding="utf-8")
+            out = json.loads(h_score({"path": str(path), "brief": "An archive"}))
+            self.assertTrue(out["ok"])
+            self.assertIn("scores", out)
 
 
 class AuditTests(unittest.TestCase):
