@@ -1,19 +1,19 @@
 name: mosaic
 repo: https://github.com/LangerSword/mosaic
-sha: 43dda5e6dcbfac6934b5b29eb16e865d3c99065f
+sha: 0c2b44a5dd8ba1d63fb4b44a006e8e8eba385dc9
 title: Mosaic
 description: "A design reference engine for Hermes Agent. Mosaic turns a studied reference or a product brief into an original interface direction: a base field, one accent, a type pairing, two signature moves, a composition order, motion rules and an audit checklist. It ships 23 skills and 13 local tools: mosaic_index, mosaic_study, mosaic_design, mosaic_components, mosaic_stacks, mosaic_forge, mosaic_invent, mosaic_recipe, mosaic_audit, mosaic_critique, mosaic_score, mosaic_taste and mosaic_visual. mosaic_forge emits an original component starter for HTML, React, Next, Svelte, Vue or Astro, with CSS or GSAP motion. mosaic_taste reports deterministic taste proxies with confidence and an explicit pairwise calibration contract. mosaic_visual renders a caller-built URL or local HTML page in local Chromium and returns measured hard gates, screenshots and an evidence id. It does not clone a reference, copy paid code or call a network. Disclosure: local only; no network from the plugin, no telemetry, no credentials; mosaic_audit and mosaic_score read caller-selected local text; the visual gate launches a local browser and a page may load its own assets; the recipe and component index are bundled data; no hooks or middleware."
 maintainer: LangerSword
 tier: community
 category: tools
 version: "0.9.1"
-image: "https://raw.githubusercontent.com/LangerSword/mosaic/43dda5e6dcbfac6934b5b29eb16e865d3c99065f/docs/banner.png"
+image: "https://raw.githubusercontent.com/LangerSword/mosaic/0c2b44a5dd8ba1d63fb4b44a006e8e8eba385dc9/docs/banner.png"
 requires_hermes: ">=0.23.0"
 docs_url: https://github.com/LangerSword/mosaic
 platforms: [linux, macos, windows]
 screenshots:
-  - https://raw.githubusercontent.com/LangerSword/mosaic/43dda5e6dcbfac6934b5b29eb16e865d3c99065f/docs/site-1440.png
-  - https://raw.githubusercontent.com/LangerSword/mosaic/43dda5e6dcbfac6934b5b29eb16e865d3c99065f/docs/site-390.png
+  - https://raw.githubusercontent.com/LangerSword/mosaic/0c2b44a5dd8ba1d63fb4b44a006e8e8eba385dc9/docs/site-1440.png
+  - https://raw.githubusercontent.com/LangerSword/mosaic/0c2b44a5dd8ba1d63fb4b44a006e8e8eba385dc9/docs/site-390.png
 readme: true
 capabilities:
   provides_tools:
