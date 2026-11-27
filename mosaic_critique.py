@@ -17,42 +17,6 @@ except ImportError:  # standalone CLI / tests
 
 MAX_CHARS = 300_000
 
-GENERIC_COPY = (
-    "seamless", "unlock", "empower", "revolutionary", "next-generation", "next generation",
-    "world-class", "cutting-edge", "game-changing", "effortless", "we build", "we make",
-    "built different", "reimagine", "supercharge",
-)
-
-DESIGN_RULES = (
-    ("generic-copy", r"\b(seamless|unlock|empower|revolutionary|next[ -]generation|world[ -]class|cutting[ -]edge|game[ -]changing|effortless|supercharge)\b",
-     "Generic product copy is doing the work of a specific claim.",
-     "Replace it with the product's actual action, object and evidence."),
-    ("heading-count", r"<h1\b",
-     "More than one h1 makes the page hierarchy ambiguous.",
-     "Keep one h1; use h2/h3 for sections.", 2),
-    ("no-focus-visible", r"(?!)",
-     "No explicit focus-visible treatment was found.",
-     "Add a visible focus ring and verify it against the actual ground colour."),
-    ("no-slot-contract", r"(?!)",
-     "No data-slot contract was found in an HTML source.",
-     "Mark editable content slots so the design can be filled with real content without guessing."),
-    ("radius-noise", r"border-radius\s*:\s*([^;}]+)",
-     "Too many unrelated radius values weaken the material system.",
-     "Use one radius token per object family.", 4),
-    ("font-noise", r"font-family\s*:\s*([^;}]+)",
-     "Too many families are competing for the same voice.",
-     "Use one display face, one body face and one utility face.", 4),
-)
-
-STRENGTHS = (
-    "Has a visible content contract",
-    "Has a focus-visible path",
-    "Has a reduced-motion path",
-    "Uses named colour tokens",
-    "Keeps one primary heading",
-    "Avoids generic product copy",
-)
-
 
 def _path_source(path: str) -> tuple[str | None, str]:
     p = Path(path).expanduser().resolve()

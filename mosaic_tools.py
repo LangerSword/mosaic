@@ -8,7 +8,7 @@ import json
 try:
     from .mosaic_audit import audit_path, audit_source
     from .mosaic_critique import critique_path, critique_source
-    from .mosaic_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS, SKILL_BY_FAMILY
+    from .mosaic_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS
     from .mosaic_design import design
     from .mosaic_forge import KINDS, STACKS, forge
     from .mosaic_invent import invent
@@ -16,7 +16,7 @@ try:
 except ImportError:  # standalone CLI / tests
     from mosaic_audit import audit_path, audit_source
     from mosaic_critique import critique_path, critique_source
-    from mosaic_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS, SKILL_BY_FAMILY
+    from mosaic_data import BASE_TOKENS, COMPONENTS, FAMILIES, MOODS
     from mosaic_design import design
     from mosaic_forge import KINDS, STACKS, forge
     from mosaic_invent import invent

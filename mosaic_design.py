@@ -7,17 +7,16 @@ starter. It never fetches a reference, invents visual facts or copies assets.
 """
 from __future__ import annotations
 
-import hashlib
 import html
 import json
 import re
 from typing import Any
 
 try:
-    from .mosaic_data import COMPONENTS, MOODS
+    from .mosaic_data import MOODS
     from .mosaic_study import normalize_reference, study_reference
 except ImportError:  # standalone CLI / tests
-    from mosaic_data import COMPONENTS, MOODS
+    from mosaic_data import MOODS
     from mosaic_study import normalize_reference, study_reference
 
 DOMAINS = {
