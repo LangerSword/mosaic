@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mosaic / Redline</title>
+<style>
+@font-face{font-family:Anton;src:url("../site/fonts/Anton-Regular.ttf");font-weight:400;font-display:swap}
+@font-face{font-family:Playfair;src:url("../site/fonts/PlayfairDisplay-Italic.ttf");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:Plex;src:url("../site/fonts/IBMPlexMono-Regular.ttf");font-weight:400;font-display:swap}
+@font-face{font-family:Plex;src:url("../site/fonts/IBMPlexMono-Bold.ttf");font-weight:700;font-display:swap}
+*{box-sizing:border-box}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#0b0d0c;color:#f3efe6;font-family:Plex,monospace}
+.film{position:fixed;inset:0;overflow:hidden;background:#0b0d0c}
+.shot{position:absolute;inset:0 0 108px 0;overflow:hidden;background:#f3efe6}
+.shot video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;filter:saturate(.92) contrast(1.02)}
+.shot.fixed{display:none}
+.scan{position:absolute;top:0;bottom:108px;left:8%;width:1px;background:#c8402c;box-shadow:0 0 0 1px rgba(200,64,44,.18),0 0 28px rgba(200,64,44,.28);z-index:3;will-change:left}
+.scan:before,.scan:after{content:"";position:absolute;left:-6px;width:13px;height:1px;background:#c8402c}
+.scan:before{top:12%}.scan:after{bottom:12%}
+.tag{position:absolute;z-index:4;display:inline-flex;align-items:center;gap:8px;padding:7px 9px;background:#c8402c;color:#fff;font:700 11px/1 Plex,monospace;letter-spacing:.08em;text-transform:uppercase;box-shadow:5px 5px 0 rgba(11,13,12,.22)}
+.tag:before{content:"";width:6px;height:6px;background:#fff}
+.tag.a{left:8%;top:22%}.tag.b{left:8%;top:33%}.tag.c{left:8%;top:44%}
+.tag.good{background:#1d4b38}.tag.good:before{background:#a9e6bd}
+.note{position:absolute;z-index:4;max-width:240px;padding:10px 12px;background:#0b0d0c;color:#f3efe6;font:11px/1.45 Plex,monospace;box-shadow:6px 6px 0 rgba(200,64,44,.32)}
+.note b{display:block;color:#f0a37b;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.note.a{left:8%;top:25%}.note.b{left:8%;top:36%}.note.c{left:8%;top:47%}
+.low{position:absolute;z-index:4;left:0;right:0;bottom:108px;height:108px;background:#0b0d0c;display:flex;align-items:center;justify-content:space-between;padding:0 46px;border-top:1px solid rgba(243,239,230,.18)}
+.low .left{display:flex;align-items:baseline;gap:22px;min-width:0}
+.low .idx{font:700 10px/1 Plex,monospace;color:#f0a37b;letter-spacing:.12em}
+.low h1{margin:0;font-family:Anton,Impact,sans-serif;font-size:64px;font-weight:400;line-height:.84;letter-spacing:-.02em;text-transform:uppercase;white-space:nowrap}
+.low h1 em{font-family:Playfair,Georgia,serif;font-weight:400;text-transform:none;letter-spacing:-.05em;color:#f0a37b}
+.low .right{text-align:right;color:#b8afa2;font:10px/1.5 Plex,monospace;letter-spacing:.1em;text-transform:uppercase}
+.low .right b{display:block;color:#f3efe6;font:400 26px/1 Anton,Impact,sans-serif;letter-spacing:.02em}
+.end{position:absolute;inset:0;z-index:9;display:grid;place-items:center;text-align:center;background:#0b0d0c;opacity:0;pointer-events:none}
+.end h2{margin:0;font-family:Anton,Impact,sans-serif;font-size:112px;line-height:.82;letter-spacing:-.03em;text-transform:uppercase}
+.end h2 em{font-family:Playfair,Georgia,serif;font-weight:400;text-transform:none;color:#f0a37b;letter-spacing:-.06em}
+.end p{margin:26px 0 0;color:#b8afa2;font:11px/1.5 Plex,monospace;letter-spacing:.12em;text-transform:uppercase}
+.end .url{margin-top:30px;color:#f3efe6;font-size:13px}
+</style>
+</head>
+<body>
+<div class="film">
+  <div class="shot fail" id="fail"><video id="vfn" src="raw/redline/fail.webm" muted playsinline preload="auto"></video></div>
+  <div class="shot fixed" id="fixed"><video id="vfx" src="raw/redline/fixed.webm" muted playsinline preload="auto"></video></div>
+  <div class="scan" id="scan"></div>
+  <span class="tag a" id="ta">CONTRAST 2.23 / 4.5</span>
+  <span class="tag b" id="tb">TARGET 16 / 24</span>
+  <span class="tag c" id="tc">14 / 16 GATES</span>
+  <span class="tag good" id="tg" style="display:none">16 / 16 GATES</span>
+  <div class="note a" id="na"><b>Visual gate</b>Signal colour fails AA on the field.</div>
+  <div class="note b" id="nb"><b>Mobile target</b>The range control is 16px tall.</div>
+  <div class="note c" id="nc"><b>Blocked</b>Two hard failures. No ship.</div>
+  <div class="low">
+    <div class="left"><span class="idx" id="idx">01 / CANDIDATE</span><h1 id="head">A PAGE CAN LOOK <em>FINISHED.</em></h1></div>
+    <div class="right"><b id="score">14/16</b><span id="meta">hard gates / 1440 + 390</span></div>
+  </div>
+  <div class="end" id="end">
+    <div><h2>EVIDENCE,<br><em>NOT VIBES.</em></h2><p>a generated page / a real browser / a real gate</p><div class="url">langersword.github.io/mosaic</div></div>
+  </div>
+</div>
+<script>
+const fail = document.getElementById('fail'), fixed = document.getElementById('fixed');
+const vfn = document.getElementById('vfn'), vfx = document.getElementById('vfx');
+const scan = document.getElementById('scan'), head = document.getElementById('head');
+const idx = document.getElementById('idx'), score = document.getElementById('score'), meta = document.getElementById('meta');
+const tags = ['ta','tb','tc'].map(id => document.getElementById(id));
+const notes = ['na','nb','nc'].map(id => document.getElementById(id));
+const good = document.getElementById('tg'), end = document.getElementById('end');
+const clamp = v => Math.max(0, Math.min(1, v));
+const ease = p => 1 - Math.pow(1 - p, 3);
+function show(list, on) { list.forEach(el => el.style.opacity = on ? '1' : '0'); }
+function render(t) {
+  const failPhase = t < 7;
+  fail.style.display = failPhase ? 'block' : 'none';
+  fixed.style.display = failPhase ? 'none' : 'block';
+  if (t > 7 && vfx.paused) { vfx.currentTime = Math.max(0, t - 7); vfx.play().catch(()=>{}); }
+  if (!failPhase) {
+    scan.style.background = '#3b8d65';
+    scan.style.boxShadow = '0 0 0 1px rgba(59,141,101,.2),0 0 28px rgba(59,141,101,.24)';
+    tags.forEach(el => el.style.opacity = '0');
+    notes.forEach(el => el.style.opacity = '0');
+    good.style.display = 'inline-flex'; good.style.opacity = '1';
+    idx.textContent = '02 / FIXED'; score.textContent = '16/16'; meta.textContent = 'hard + soft gates / 1440 + 390';
+  } else {
+    scan.style.background = '#c8402c';
+    scan.style.boxShadow = '0 0 0 1px rgba(200,64,44,.18),0 0 28px rgba(200,64,44,.28)';
+    good.style.display = 'none';
+    tags.forEach((el, i) => el.style.opacity = t > 2.2 + i * 1.2 ? '1' : '0');
+    notes.forEach((el, i) => el.style.opacity = t > 2.6 + i * 1.2 ? '1' : '0');
+    idx.textContent = '01 / CANDIDATE'; score.textContent = '14/16'; meta.textContent = 'hard gates / 1440 + 390';
+  }
+  const p = t <= 7 ? t / 7 : (t - 7) / 7;
+  scan.style.left = `${8 + clamp(p) * 78}%`;
+  head.style.opacity = t > 17 ? '0' : '1';
+  end.style.opacity = t > 16.6 ? String(clamp((t - 16.6) / .5)) : '0';
+  if (t < 3.4) head.innerHTML = 'A PAGE CAN LOOK <em>FINISHED.</em>';
+  else if (t < 7) head.innerHTML = 'THE GATE <em>SAYS NO.</em>';
+  else if (t < 12) head.innerHTML = 'THE SAME PAGE. <em>FIXED.</em>';
+  else head.innerHTML = 'EVIDENCE, <em>NOT VIBES.</em>';
+  if (t > 17) end.style.pointerEvents = 'auto';
+}
+function start() {
+  vfn.currentTime = 0; vfx.currentTime = 0;
+  vfn.play().catch(()=>{});
+  const t0 = performance.now();
+  const tick = now => { const t = (now - t0) / 1000; render(t); if (t < 18) requestAnimationFrame(tick); };
+  requestAnimationFrame(tick);
+}
+window.__render = render;
+window.__startFilm = start;
+window.__filmReady = true;
+</script>
+</body>
+</html>
