@@ -1,13 +1,13 @@
 name: mosaic
 repo: https://github.com/LangerSword/mosaic
-sha: f441addc1bb4ad590575f17acbe55bf6b6bad6dc
+sha: 520a841829620f191690e75ebb860021f4698e3c
 title: Mosaic
 description: "A design reference engine for Hermes Agent. Mosaic turns a studied reference or a product brief into an original interface direction: a base field, one accent, a type pairing, two signature moves, a composition order, motion rules and an audit checklist. It ships 19 skills and 10 local tools: mosaic_index, mosaic_study, mosaic_design, mosaic_components, mosaic_stacks, mosaic_forge, mosaic_invent, mosaic_recipe, mosaic_audit and mosaic_critique. mosaic_forge emits an original component starter for HTML, React, Next, Svelte, Vue or Astro, with CSS or GSAP motion. It does not clone a reference, copy paid code or call a network. Disclosure: local only; no network, no telemetry, no credentials; mosaic_audit reads a caller-selected local text file; the recipe and component index are bundled data; no hooks or middleware."
 maintainer: LangerSword
 tier: community
 category: tools
 version: "0.6.0"
-image: "https://raw.githubusercontent.com/LangerSword/mosaic/f441addc1bb4ad590575f17acbe55bf6b6bad6dc/docs/banner.png"
+image: "https://raw.githubusercontent.com/LangerSword/mosaic/520a841829620f191690e75ebb860021f4698e3c/docs/banner.png"
 requires_hermes: ">=0.23.0"
 docs_url: https://github.com/LangerSword/mosaic
 platforms: [linux, macos, windows]
