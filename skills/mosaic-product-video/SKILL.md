@@ -1,138 +1,112 @@
 ---
 name: mosaic-product-video
 description: Use when producing a Mosaic product film, not a slide demo.
-version: 0.2.0
+version: 0.3.0
 author: Lakshaya Sharma (LangerSword), Hermes Agent
 license: MIT
 platforms: [linux, macos]
 metadata:
   hermes:
-    tags: [video, demo, product, mosaic, playwright, ffmpeg]
-    related_skills: [mosaic, mosaic-visual, demo-video-production, webreel]
+    tags: [video, demo, product, mosaic, playwright, ffmpeg, pty]
+    related_skills: [mosaic, mosaic-visual, demo-video-production, webreel, interactive-tty-automation]
 ---
 
 # Mosaic Product Video
 
-A short product film where the **page is the stage**. No gradient backdrop, no
-floating browser card, no cute mockup. The film is a live audit:
+A short film where the **product does the work on screen**. No gradient stage,
+floating card, redesign poster, lower-third manifesto or fake UI.
 
-> a candidate page looks finished -> the visual gate finds two real failures ->
-> the page is fixed -> 16/16 -> evidence, not vibes.
+## Status: Redline was rejected
 
-The Mosaic site and langersword.in are demos of what Mosaic can create. The
-film must show that creation and verification, not advertise the demo page.
+The 18-second Redline cut was pulled from the release. It was a design-critique
+poster with a redline gimmick: no real interaction, no cause-and-effect, and the
+lower-third carried the story. Do not make another one.
 
-## The cut
+The next film must show a real Mosaic task from the actual tools:
 
-**Runtime:** 18s. **Viewport:** 1920×1080. **Source:** two real captures of a
-generated candidate page: `fail.webm` and `fixed.webm`.
+> brief → generated page → real visual gate → fix → pass.
 
-```text
-0.0-2.0  A PAGE CAN LOOK FINISHED.       real candidate page
-2.0-4.0  CONTRAST 2.23 / 4.5             redline + callout
-4.0-7.0  TARGET 16 / 24  /  14/16        redline + callout
-7.0-9.0  THE SAME PAGE. FIXED.           hard cut to fixed capture
-9.0-12.0 16/16                            green scan + pass
-12.0-16.6 EVIDENCE, NOT VIBES.            lower-third narrative
-16.6-18.0 end card                        black, lockup, URL
-```
+The Mosaic site and langersword.in are demos of what Mosaic can create. Use them
+as artifacts, not as the product.
 
-No gradient stage. No floating UI card. One black lower-third bar. One thin
-scanline. Three callouts. One hard cut from failure to fixed.
+## The correct 20s cut
 
-## Pipeline
-
-### 1. Build the candidate pair
-
-```bash
-cd ~/projects/mosaic
-python scripts/build_redline.py
-```
-
-`demo/redline/fixed.html` is the real generated page. `demo/redline/fail.html`
-is the same page with a failing signal token and a 16px range control. This is
-a candidate fixture, not a fake product screenshot. Run the actual gate:
+**Runtime:** 20s. **Viewport:** 1920×1080. **Source:** real terminal/PTY and real
+browser capture. No staging.
 
 ```text
-mosaic_visual(target="demo/redline/fail.html")  -> 14/16 hard
-mosaic_visual(target="demo/redline/fixed.html") -> 16/16 hard
+0.0-2.0   terminal: a real command starts from a brief
+2.0-5.0   generated page opens; the viewer sees the actual output
+5.0-8.0   real cursor changes type / selects a specimen
+8.0-12.0  terminal: mosaic_visual runs; 14/16, failing rule named
+12.0-15.0 the token is changed; same page reloads
+15.0-17.5 terminal: 16/16, evidence id
+17.5-20.0 end card with URL and one command
 ```
 
-### 2. Capture real footage
+If the screen is split, the split must be earned: terminal on the left, actual
+site on the right, both live. No title card after a static screenshot.
 
-```bash
-/home/lakshaya/.venv/bin/python demo/record_redline.py
-```
+## Capture-first pipeline
 
-Writes `demo/raw/redline/fail.webm` and `fixed.webm` at 1920×1080. Each clip
-scrolls the real page to the failing signature and controls. No browser chrome.
+### 1. Record the real terminal
 
-### 3. Compose and record
+Use a real PTY, not retyped text. Record the exact command sequence and timings
+with `scripts`/`asciinema`-style cast data; replay actual bytes. If a cast is
+not possible, use VHS against the real shell. Do not render a fake terminal.
 
-`demo/redline-film.html`:
+### 2. Record the real page
 
-- full-bleed page footage
-- redline scan and three anchored callouts
-- black lower-third bar (`A PAGE CAN LOOK FINISHED.` → `THE GATE SAYS NO.` →
-  `THE SAME PAGE. FIXED.` → `EVIDENCE, NOT VIBES.`)
-- hard cut at 7s; green scan and 16/16 after
-- end card on black
+Use Playwright at 1920×1080 against the generated page. Capture the actual
+cursor, scroll to the failing element, change the control, reload fixed page.
+No browser chrome. No injected fake state.
 
-```bash
-/home/lakshaya/.venv/bin/python demo/record_redline_film.py
-```
+### 3. Compose
 
-### 4. Sound and mux
+Use a **side-by-side or full-screen cut**, whichever shows the cause and effect
+better. The product must be readable; crop/zoom into the exact failing control
+when it changes. No stage, no floating card, no giant headline not present in
+the product.
 
-```bash
-python ~/.hermes/skills/creative/demo-video-production/scripts/make_banger.py \
-  demo/raw/redline/banger.wav 20
+### 4. Sound
 
-ffmpeg -y -ss 0.35 -i demo/raw/redline/redline-film.webm -t 18.0 \
-  -i demo/raw/redline/banger.wav \
-  -map 0:v:0 -map 1:a:0 -t 18 \
-  -vf "fps=30,scale=1920:1080,format=yuv420p,fade=t=in:st=0:d=0.2,fade=t=out:st=17.2:d=0.8" \
-  -af "atrim=0:18,afade=t=in:st=0:d=0.3,afade=t=out:st=16.2:d=1.8,loudnorm=I=-15:TP=-1.5:LRA=10" \
-  -c:v libx264 -crf 18 -preset medium -c:a aac -b:a 192k -movflags +faststart \
-  ~/Videos/mosaic/mosaic-redline.mp4
-```
-
-No TTS. Sound-on, in-repo synth.
+Use real terminal clicks and browser interactions plus the in-repo synth bed.
+No TTS. If the product is genuinely quiet, do not add a banger just to hide it.
 
 ### 5. QA
 
-- `ffprobe`: 18.0s, 1920×1080, 30fps, H.264, AAC.
-- Decode whole file: `ffmpeg -v error -i OUT -f null -`; require zero errors.
-- 5s frame: failure obvious (pale accent, redline, 14/16), page readable.
-- 9s frame: fixed state clearly different, green 16/16, no clipping.
-- Contact sheet: no black/missing frames; end card readable.
+- The command in the film must be a command that actually ran.
+- The gate result in the film must come from a real `mosaic_visual` run.
+- The before and after must show the same page and the same location.
+- `ffprobe`: 20.0s, 1920×1080, 30fps, H.264, AAC.
+- Decode whole file; zero errors.
+- First 2s has product, not a logo; last 2s has a clean end card.
+- Contact sheet: no dead frames, no text over the failing control.
 
 ## Rules
 
-- **No gradient stage, no floating card.** That is the old, rejected grammar.
-- **The page is the stage.** Full-bleed real footage.
-- **One concrete failure, one concrete fix.** Show the number.
-- **Redlines must sit in margins**, not cover the proof.
-- **Hard cut, not crossfade**, at the fix.
-- **No feature list.** One proof loop.
-- **No fake UI.** The candidate pages are real generated pages with controlled
-  faults; the gate result is real.
+- **Show a task, not a taste claim.** A viewer should be able to describe what
+  changed between the first and last frame.
+- **No lower-third as narrator.** Use small labels only when the product itself
+  cannot carry the state.
+- **No mockup browser frame.** Use the real page.
+- **No redline gimmick.** If a rule fails, show the actual gate output and the
+  actual fix.
+- **No “evidence, not vibes” poster.** Show evidence.
+- **No gradient/floating-card stage.** That grammar is rejected.
 
-## Pitfalls
+## What remains unbuilt
 
-- A pale failing token (`#d89a84`) is a real 2.23:1 failure and is visible;
-  a 4.35 token is too subtle on screen.
-- The `fail` and `fixed` captures must have identical scroll paths or the cut
-  reads as a different page.
-- Don't put the lower-third over the failing controls; it covers the proof.
-- The redline scan is 1px; add a faint glow, not a thick bar.
-- Re-record both source clips after changing the candidate pages.
-- Keep the film under 20s; this concept gets weaker when repeated.
+The capture-first 20s film is **not yet built**. The Redline assets remain only
+as a rejected experiment; do not ship them as the product film. The plugin and
+release can ship without a film; a bad film is worse than none.
 
 ## Verification
 
-- `~/Videos/mosaic/mosaic-redline.mp4`
-- `demo/redline-film.html`
-- `demo/record_redline.py` / `demo/record_redline_film.py`
-- `scripts/build_redline.py`
-- Report the exact gate results: 14/16 fail, 16/16 fixed.
+When built, report:
+- exact command that ran
+- exact gate result before/after
+- path to the real captures
+- duration/fps/codec/audio
+- contact sheet path
+- what a viewer can actually verify by watching
