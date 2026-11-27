@@ -153,7 +153,7 @@ def score_source(source: str, brief: str = "", references: list | None = None, l
             "Add one authored motion cue, not five hover effects.",
             "Remove any decoration that cannot explain a state or a relationship.",
         ],
-        "note": "A text-only pre-awards score. It cannot judge composition, motion feel, imagery or true visual craft.",
+        "note": "A text-only pre-awards score. It cannot judge composition, motion feel, imagery or true visual craft. Follow it with mosaic_visual for rendered hard gates.",
     }
 
 

@@ -4,9 +4,11 @@ import unittest
 from pathlib import Path
 
 from mosaic_audit import audit_source
+from mosaic_design import _tokens
 from mosaic_forge import KINDS
 from mosaic_tools import (TOOL_SPECS, h_audit, h_components, h_critique, h_design, h_forge,
-                         h_index, h_invent, h_recipe, h_score, h_stacks, h_study)
+                         h_index, h_invent, h_recipe, h_score, h_stacks, h_study, h_visual)
+from mosaic_visual import _target
 
 
 class IndexTests(unittest.TestCase):
@@ -15,13 +17,13 @@ class IndexTests(unittest.TestCase):
         self.assertTrue(out["ok"])
         self.assertEqual(len(out["families"]), 13)
         self.assertIn("paper-ink", [f["id"] for f in out["families"]])
-        self.assertEqual(len(out["methods"]), 4)
+        self.assertEqual(len(out["methods"]), 5)
 
     def test_tool_specs_are_named(self):
         self.assertEqual([s["name"] for s in TOOL_SPECS],
                          ["mosaic_index", "mosaic_study", "mosaic_design", "mosaic_components",
                           "mosaic_stacks", "mosaic_forge", "mosaic_invent", "mosaic_recipe",
-                          "mosaic_audit", "mosaic_critique", "mosaic_score"])
+                          "mosaic_visual", "mosaic_audit", "mosaic_critique", "mosaic_score"])
 
     def test_components_filter(self):
         out = json.loads(h_components({"family": "press"}))
@@ -164,6 +166,13 @@ class DesignTests(unittest.TestCase):
         self.assertIn("--field", page["content"])
         self.assertIn("prefers-reduced-motion", page["content"])
 
+    def test_tokens_meet_text_contrast_for_every_mood(self):
+        for mood in ("quiet", "editorial", "technical", "tactile"):
+            contrast = _tokens(mood, {})["--contrast"]
+            self.assertGreaterEqual(contrast["ink_on_field"], 4.5, mood)
+            self.assertGreaterEqual(contrast["signal_on_field"], 4.5, mood)
+            self.assertGreaterEqual(contrast["muted_on_field"], 4.5, mood)
+
     def test_design_rejects_bad_inputs(self):
         with self.assertRaises(ValueError):
             h_design({"brief": "short"})
@@ -217,6 +226,29 @@ class MaterialTests(unittest.TestCase):
         js = next(f["content"] for f in out["files"] if f["path"].endswith(".js"))
         self.assertIn("calc(var(--p) * 360deg)", js)
         self.assertNotIn("calc(var(--p) * 3.6deg)", js)
+
+
+class VisualTests(unittest.TestCase):
+    def test_target_accepts_a_local_html_file(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "page.html"
+            path.write_text("<h1>Read the room.</h1>", encoding="utf-8")
+            url, label = _target(str(path))
+            self.assertTrue(url.startswith("file://"))
+            self.assertEqual(label, str(path.resolve()))
+
+    def test_target_rejects_non_html(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "notes.txt"
+            path.write_text("not a page", encoding="utf-8")
+            with self.assertRaises(ValueError):
+                _target(str(path))
+
+    def test_visual_requires_one_input(self):
+        with self.assertRaises(ValueError):
+            h_visual({})
+        with self.assertRaises(ValueError):
+            h_visual({"target": "https://example.com", "source": "<h1>x</h1>"})
 
 
 class ScoreTests(unittest.TestCase):

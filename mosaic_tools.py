@@ -14,6 +14,7 @@ try:
     from .mosaic_invent import invent
     from .mosaic_score import score_path, score_source
     from .mosaic_study import study_reference
+    from .mosaic_visual import visual, visual_source
 except ImportError:  # standalone CLI / tests
     from mosaic_audit import audit_path, audit_source
     from mosaic_critique import critique_path, critique_source
@@ -23,6 +24,7 @@ except ImportError:  # standalone CLI / tests
     from mosaic_invent import invent
     from mosaic_score import score_path, score_source
     from mosaic_study import study_reference
+    from mosaic_visual import visual, visual_source
 
 DIRECTIONS = ["The Quiet Instrument", "Paper Teeth", "Soft Machinery", "The Long Table",
               "Field Notes", "After Hours", "The Slow Signal", "Open Studio"]
@@ -45,6 +47,8 @@ KEYWORDS = {
     "type": ("type", "wordmark", "editorial", "font", "headline", "label", "quote"),
     "scroll": ("scroll", "story", "chapter", "pinned", "timeline", "parallax"),
     "loading": ("agent", "loading", "thinking", "wait", "job", "stream", "status"),
+    "ascii": ("ascii", "terminal", "monospace", "night", "field", "text field"),
+    "glass": ("glass", "translucent", "lens", "material", "frosted"),
 }
 
 
@@ -146,7 +150,7 @@ def h_index(args: dict) -> str:
     return _j({
         "ok": True,
         "plugin": "mosaic",
-        "version": "0.6.0",
+        "version": "0.7.0",
         "families": [
             {"id": f["id"], "name": f["name"], "skill": f["skill"],
              "signature": f["signature"], "use_when": f["use_when"], "avoid": f["avoid"]}
@@ -161,6 +165,8 @@ def h_index(args: dict) -> str:
              "purpose": "Critique the source against design specificity, copy, focus and content-slot discipline."},
             {"id": "score", "skill": "mosaic-score", "tool": "mosaic_score",
              "purpose": "Run a transparent pre-awards score across design, usability, creativity, content and originality."},
+            {"id": "visual", "skill": "mosaic-visual", "tool": "mosaic_visual",
+             "purpose": "Render the built page in Chromium and pass or fail hard visual gates with screenshot evidence."},
         ],
         "base_tokens": BASE_TOKENS,
         "moods": sorted(MOODS),
@@ -182,6 +188,16 @@ def h_score(args: dict) -> str:
     if path:
         return _j(score_path(_text(path, "path", 1000), brief, references))
     return _j(score_source(_text(source, "source", 300_000), brief, references))
+
+
+def h_visual(args: dict) -> str:
+    target = args.get("target") or args.get("url") or args.get("path")
+    source = args.get("source")
+    if bool(target) == bool(source):
+        raise ValueError("pass exactly one of target or source")
+    if source:
+        return _j(visual_source(_text(source, "source", 300_000)))
+    return _j(visual(_text(target, "target", 1000)))
 
 
 def h_recipe(args: dict) -> str:
@@ -445,6 +461,19 @@ TOOL_SPECS = [
                 "constraints": {"type": "string", "description": "Hard constraints: brand, content, a11y, performance."},
             },
             "required": ["brief"],
+        },
+    },
+    {
+        "name": "mosaic_visual",
+        "handler": h_visual,
+        "emoji": "👁️",
+        "description": "Render a URL or local HTML page in Chromium and return a measured visual guarantee: screenshots, contrast, overlap, overflow, focus, reduced motion, control size and explicit blockers.",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "target": {"type": "string", "description": "A public http(s) URL or a local .html file."},
+                "source": {"type": "string", "description": "Complete HTML source to render instead of a target."},
+            },
         },
     },
     {

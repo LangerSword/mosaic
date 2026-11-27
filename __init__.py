@@ -1,8 +1,9 @@
 """Mosaic: design direction for Hermes.
 
-The plugin is deliberately small: an index of reference families, a
-deterministic recipe builder and a local source audit. It does not render,
-fetch, execute or publish anything.
+The plugin is deliberately focused: reference families, a design director,
+a deterministic forge, and a measured browser gate. It does not fetch
+references or publish anything; the visual gate renders a page the caller
+already built and reports its own evidence.
 """
 
 from __future__ import annotations
@@ -11,7 +12,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-__version__ = "0.6.0"
+__version__ = "0.7.0"
 TOOLSET = "mosaic"
 
 

@@ -531,3 +531,33 @@
     renderDetail();
   }
 })();
+
+(() => {
+  const data = window.MOSAIC_VISUAL;
+  if (!data) return;
+  const status = document.querySelector('[data-visual-status]');
+  const target = document.querySelector('[data-visual-target]');
+  const evidence = document.querySelector('[data-visual-id]');
+  const gates = document.querySelector('[data-visual-gates]');
+  const contrast = document.querySelector('[data-visual-contrast]');
+  const overlap = document.querySelector('[data-visual-overlap]');
+  const focus = document.querySelector('[data-visual-focus]');
+  const note = document.querySelector('[data-visual-note]');
+  const desktop = document.querySelector('[data-visual-desktop]');
+  const mobile = document.querySelector('[data-visual-mobile]');
+  const views = data.viewports || [];
+  const sum = (key) => views.reduce((total, view) => total + (view[key] || 0), 0);
+  if (status) {
+    status.textContent = data.visual_guarantee ? 'PASS' : 'FAIL';
+    status.classList.toggle('is-fail', !data.visual_guarantee);
+  }
+  if (target) target.textContent = data.target || 'rendered page';
+  if (evidence) evidence.textContent = data.evidence_id ? `evidence ${data.evidence_id}` : 'evidence pending';
+  if (gates) gates.textContent = `${data.gates_passed}/${data.gates_total}`;
+  if (contrast) contrast.textContent = sum('contrast') ? `${sum('contrast')} fail` : '0 fail';
+  if (overlap) overlap.textContent = sum('overlaps') ? `${sum('overlaps')} fail` : '0';
+  if (focus) focus.textContent = views.length && views.every((view) => view.focus) ? 'visible' : 'check';
+  if (note) note.textContent = data.note || 'Measured in Chromium.';
+  if (desktop && data.screenshots?.desktop) desktop.src = data.screenshots.desktop;
+  if (mobile && data.screenshots?.mobile) mobile.src = data.screenshots.mobile;
+})();

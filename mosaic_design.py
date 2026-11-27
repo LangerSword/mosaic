@@ -497,7 +497,7 @@ def _tokens(mood: str, flags: dict) -> dict:
         "--ink": ink,
         "--muted": muted,
         "--line": line,
-        "--signal": palette["accent"],
+        "--signal": signal,
         "--deep": palette["deep"],
         "--focus": focus,
         "--measure": "62ch",
@@ -736,15 +736,16 @@ h1 {{ max-width: 9ch; margin: 0; font-family: var(--display-font); font-size: va
 .deck {{ max-width: var(--measure); margin: 28px 0 0; color: var(--muted); font-size: var(--body); line-height: 1.55; }}
 .act {{ display: inline-flex; min-height: 46px; align-items: center; margin-top: 30px; padding: 0 16px; border: 1px solid var(--ink); background: var(--ink); color: var(--field); font: 700 var(--mono)/1 var(--utility-font); letter-spacing: .1em; text-decoration: none; text-transform: uppercase; }}
 .artifact {{ align-self: end; border-top: 1px solid var(--ink); padding-top: 12px; }}
+.arrival > *, .signature > * {{ min-width: 0; }}
 .artifact-head {{ display: flex; justify-content: space-between; color: var(--muted); font: var(--mono)/1.3 var(--utility-font); text-transform: uppercase; }}
 .type-specimen {{ padding: 18px 0 4px; }}
 .type-specimen .glyph {{ display: block; font-family: var(--display-font); font-size: clamp(6rem, 18vw, 15rem); line-height: .7; letter-spacing: -.1em; color: var(--ink); }}
 .type-specimen .specimen-note {{ max-width: 28ch; margin: 22px 0 16px; color: var(--muted); line-height: 1.5; }}
 .typeface-slot {{ display: inline-block; margin-top: 8px; color: var(--muted); font: var(--mono)/1.2 var(--utility-font); letter-spacing: .08em; text-transform: uppercase; }}
-.specimen-line {{ margin: 14px 0 10px; font-family: var(--display-font); font-size: var(--specimen-size, 4.5rem); line-height: .9; letter-spacing: var(--specimen-tracking, -.03em); white-space: nowrap; }}
+.specimen-line {{ margin: 14px 0 10px; font-family: var(--display-font); font-size: var(--specimen-size, 4.5rem); line-height: .9; letter-spacing: var(--specimen-tracking, -.03em); white-space: nowrap; max-width: 100%; overflow: hidden; }}
 .specimen-controls {{ display: flex; flex-wrap: wrap; gap: 12px 20px; margin: 10px 0 16px; color: var(--muted); font: var(--mono)/1.2 var(--utility-font); text-transform: uppercase; }}
 .specimen-controls label {{ display: flex; align-items: center; gap: 8px; }}
-.specimen-controls input {{ width: 88px; accent-color: var(--signal); }}
+.specimen-controls input {{ width: 88px; height: 24px; accent-color: var(--signal); }}
 .specimen-scale, .excerpt-meta {{ display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid var(--line); padding-top: 8px; color: var(--muted); font: var(--mono)/1.3 var(--utility-font); text-transform: uppercase; }}
 .trace, .programme-list {{ display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }}
 .trace li, .programme-list li {{ display: grid; grid-template-columns: 34px 1fr auto; gap: 8px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--line); }}
@@ -784,6 +785,8 @@ h2 {{ max-width: 14ch; margin: 0; font-family: var(--display-font); font-size: c
   .bar nav {{ gap: 10px; }}
   .bar nav a:nth-child(n+3) {{ display: none; }}
   .proof-item {{ min-height: 110px; }}
+  .specimen-line {{ white-space: normal; overflow-wrap: anywhere; font-size: clamp(2.2rem, 11vw, 3.4rem); }}
+  .type-specimen .glyph {{ font-size: clamp(5rem, 20vw, 9rem); }}
 }}
 @media (prefers-reduced-motion: reduce) {{
   *, *::before, *::after {{ scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }}

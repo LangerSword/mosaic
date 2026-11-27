@@ -6,8 +6,8 @@ It is not a template library, a cloner, or a moodboard generator. It gives the a
 
 ## What is in the box
 
-- **20 Hermes skills**: one master method, twelve interaction families (including cast, ASCII and glass), a component grammar, study, design, critique and score methods, a forge and an inventor.
-- **11 local tools**:
+- **21 Hermes skills**: one master method, twelve interaction families (including cast, ASCII and glass), a component grammar, study, design, critique and score methods, a measured visual gate, a forge and an inventor.
+- **12 local tools**:
   - `mosaic_index`: the reference families, skills and base tokens.
   - `mosaic_study`: reference observations → principles, transfer candidates and a do-not-copy contract (a URL alone returns a checklist, not invented facts).
   - `mosaic_design`: the design director: three concepts, transparent selection, tokens, type, composition and an optional complete page starter.
@@ -18,9 +18,11 @@ It is not a template library, a cloner, or a moodboard generator. It gives the a
   - `mosaic_recipe`: a deterministic direction for a brief.
   - `mosaic_audit`: a local text scan for generic gradients, `transition: all`, missing reduced-motion and similar slop.
   - `mosaic_critique`: design-specific source critique for prompt leakage, copy, focus, slots, radius/font noise.
+  - `mosaic_score`: a transparent pre-awards text score with blockers and next moves.
+  - `mosaic_visual`: render a URL or local page in Chromium; return two screenshots, hard-gate results, contrast/overlap/focus/reduced-motion evidence and a bounded `visual_guarantee`.
 - **A CLI** over the same handlers, for a demo or CI without Hermes.
 
-No network calls, no API keys, no telemetry, no rendering, no copied assets.
+No network calls, no API keys, no telemetry, no copied assets. The visual gate is the only renderer: it runs a page the caller already built, locally, and needs Playwright Chromium in a browser-capable Python.
 
 ## Install
 
@@ -45,6 +47,7 @@ python mosaic_cli.py forge --kind swipe-confirm --stack react --motion gsap
 python mosaic_cli.py invent --brief "A quiet onboarding for a design tool" --count 3
 python mosaic_cli.py critique --path src/app.css
 python mosaic_cli.py audit --path src/app.css
+python mosaic_cli.py visual --target http://127.0.0.1:4322/
 ```
 
 In a Hermes session:
@@ -58,6 +61,20 @@ mosaic_critique(path="src/components/Hero.tsx")
 `mosaic_design` is the design-director pass. It returns three structural concepts, the selected concept with transparent scores, a reference map, the design system, a content contract and — in `page` mode — a complete static starter. A reference URL alone is not a study; `mosaic_study` returns a capture checklist until observations are supplied.
 
 The recipe is a starting direction, not an answer. It deliberately returns a thesis, a token table, two moves, a build order and acceptance checks; the agent still has to study the reference, write original code and verify in a browser.
+
+## Visual gate
+
+`mosaic_score` is a text score. It is not a visual guarantee. `mosaic_visual` is the browser-backed half:
+
+```bash
+python mosaic_cli.py visual --target http://127.0.0.1:4322/
+```
+
+One Chromium launch, two viewports (`1440x900`, `390x844`), two screenshots and a hard pass/fail. It measures console errors, overflow, first-screen `h1`, text overlaps, WCAG contrast, focus visibility, reduced motion, control size and a non-blank screenshot. `visual_guarantee` is true only when every hard gate passes.
+
+The tool returns paths to the screenshots instead of base64, so a normal call stays small. It needs Playwright Chromium in a browser-capable Python; on a machine without one it returns `status: "needs_browser"` and refuses to claim a pass.
+
+A bounded guarantee: rendered layout, contrast, interaction affordance and interaction state. It does not judge taste.
 
 ## Skills
 
@@ -75,6 +92,7 @@ The recipe is a starting direction, not an answer. It deliberately returns a the
 | `mosaic-ascii` | Monospace character fields and ASCII atmosphere |
 | `mosaic-glass` | One glass material with a real fallback |
 | `mosaic-score` | Pre-awards design, usability and originality gate |
+| `mosaic-visual` | Render a page and pass or fail measured visual gates |
 | `mosaic-select` | Segmented controls, tabs, small pickers |
 | `mosaic-shader` | Atmospheric shaders with static fallbacks |
 | `mosaic-type` | Editorial type, wordmarks, labels, numerals |
@@ -119,8 +137,8 @@ Construct is a useful reference precisely because it is plural: a quiet gallery 
 
 ## Evidence
 
-- 35 unit tests pass with stdlib only.
-- `smoke_load.py` loads the real entry point against a recording context, asserts 11 tools and dispatches them.
+- 39 unit tests pass with stdlib only.
+- `smoke_load.py` loads the real entry point against a recording context, asserts 12 tools and dispatches them.
 - `hermes plugins validate` and `hermes plugins doctor` are the admission gates.
 - CLI outputs are deterministic and JSON.
 - 20 public component observations are included; six second-row components were account-gated, and the rest of the catalog requires an account. None were bypassed.

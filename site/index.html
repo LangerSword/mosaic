@@ -9,7 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f3efe6'/%3E%3Crect x='4' y='4' width='11' height='11' fill='%2315130f'/%3E%3Crect x='17' y='4' width='11' height='11' fill='%23c64a2e'/%3E%3Crect x='4' y='17' width='11' height='11' fill='%230d2340'/%3E%3Crect x='17' y='17' width='11' height='11' fill='%2315130f'/%3E%3C/svg%3E">
   <link rel="preload" href="fonts/Anton-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/Barlow-Regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=0.6.0">
+  <link rel="stylesheet" href="styles.css?v=0.7.0">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -26,6 +26,7 @@
       <a href="#forge">Forge</a>
       <a href="#materials">Materials</a>
       <a href="#taste">Taste</a>
+      <a href="#visual">Visual</a>
       <a href="#evidence">Evidence</a>
       <a href="#install">Install</a>
     </nav>
@@ -43,8 +44,8 @@
           <a class="btn btn-ghost" href="#method">See the method</a>
         </div>
         <dl class="hero-stats">
-          <div><dt>Skills</dt><dd>20</dd></div>
-          <div><dt>Tools</dt><dd>11</dd></div>
+          <div><dt>Skills</dt><dd>21</dd></div>
+          <div><dt>Tools</dt><dd>12</dd></div>
           <div><dt>Public components</dt><dd>20</dd></div>
           <div><dt>Network</dt><dd>0</dd></div>
         </dl>
@@ -372,6 +373,34 @@ index.tsx          React adapter
       <p class="taste-foot">Scores are a transparent heuristic. The browser test and the user still decide. <code>mosaic_invent</code></p>
     </section>
 
+    <section class="visual wrap" id="visual">
+      <div class="section-head reveal">
+        <p class="eyebrow">Visual gate</p>
+        <h2>Measured,<br>not asserted.</h2>
+        <p>One real browser run. Two viewports. Contrast, overlap, overflow, focus, reduced motion and a non-blank frame. A pass is a hard-gate result, not a promise about taste.</p>
+      </div>
+      <div class="visual-result reveal">
+        <div class="visual-copy">
+          <div class="visual-headline">
+            <span class="visual-status" data-visual-status>RUNNING</span>
+            <span class="visual-target" data-visual-target>rendered page</span>
+            <span class="visual-id" data-visual-id>evidence pending</span>
+          </div>
+          <dl class="visual-facts">
+            <div><dt>Gates</dt><dd data-visual-gates>—</dd></div>
+            <div><dt>Contrast</dt><dd data-visual-contrast>—</dd></div>
+            <div><dt>Overlap</dt><dd data-visual-overlap>—</dd></div>
+            <div><dt>Focus</dt><dd data-visual-focus>—</dd></div>
+          </dl>
+          <p class="visual-note" data-visual-note>Loading measured evidence.</p>
+        </div>
+        <div class="visual-shots">
+          <figure><img data-visual-desktop alt="Generated page at 1440 pixels" width="1440" height="900" loading="lazy"><figcaption>1440 / desktop</figcaption></figure>
+          <figure><img data-visual-mobile alt="Generated page at 390 pixels" width="390" height="844" loading="lazy"><figcaption>390 / mobile</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
     <section class="components wrap" id="components">
       <div class="section-head reveal">
         <p class="eyebrow">Component index</p>
@@ -392,18 +421,18 @@ index.tsx          React adapter
       </div>
       <div class="evidence-grid reveal">
         <table>
-          <caption>Mosaic 0.6.0</caption>
+          <caption>Mosaic 0.7.0</caption>
           <tbody>
-            <tr><th scope="row">Skills</th><td>20</td><td>master + twelve families + components + study + design + critique + score + forge + invent</td></tr>
-            <tr><th scope="row">Tools</th><td>11</td><td>index, study, design, components, stacks, forge, invent, recipe, audit, critique, score</td></tr>
+            <tr><th scope="row">Skills</th><td>21</td><td>master + twelve families + components + study + design + critique + score + visual + forge + invent</td></tr>
+            <tr><th scope="row">Tools</th><td>12</td><td>index, study, design, components, stacks, forge, invent, recipe, audit, critique, score, visual</td></tr>
             <tr><th scope="row">Public components</th><td>20</td><td>state, timing, parameters, a11y</td></tr>
-            <tr><th scope="row">Tests</th><td>35</td><td>stdlib, no network</td></tr>
+            <tr><th scope="row">Tests</th><td>39</td><td>stdlib, no network</td></tr>
             <tr><th scope="row">Network</th><td>00</td><td>local reads only</td></tr>
           </tbody>
         </table>
         <div class="limits">
           <p><strong>Not a clone.</strong> The public Construct study reads catalog copy, live previews, computed styles and recorded states. Paid code and gated components were not accessed.</p>
-          <p><strong>Not a guarantee.</strong> The audit is a text heuristic. A browser, a keyboard and a contrast measurement still need to run.</p>
+          <p><strong>Not an aesthetic guarantee.</strong> The visual gate renders the page and checks hard layout, contrast, focus and motion gates. It does not judge taste; a human still decides that.</p>
           <p><strong>Not an autopilot.</strong> The recipe returns a direction and the forge returns a starter. The page still needs an author.</p>
         </div>
       </div>
@@ -433,6 +462,8 @@ python scripts/install_skills.py
             <li><code>mosaic_invent</code><span>interaction candidates + taste scores</span></li>
             <li><code>mosaic_recipe</code><span>a direction from a brief</span></li>
             <li><code>mosaic_audit</code><span>generic-pattern scan</span></li>
+            <li><code>mosaic_score</code><span>pre-awards text score</span></li>
+            <li><code>mosaic_visual</code><span>real browser hard gates</span></li>
           </ul>
           <p class="mono-label">The promise</p>
           <p class="small">References in. Original out. Study the evidence, keep the principles, refuse the skin.</p>
@@ -450,16 +481,17 @@ python scripts/install_skills.py
     </div>
   </footer>
 
-  <script src="director-samples.js?v=0.6.0" defer></script>
-  <script src="forge-samples.js?v=0.6.0" defer></script>
-  <script src="invent-samples.js?v=0.6.0" defer></script>
-  <script src="component-gallery.js?v=0.6.0" defer></script>
-  <script src="app.js?v=0.6.0" defer></script>
-  <script type="module" src="forge/paper-plane.js?v=0.6.0"></script>
-  <script type="module" src="forge/swipe-confirm.js?v=0.6.0"></script>
-  <script type="module" src="forge/download-ring.js?v=0.6.0"></script>
-  <script type="module" src="forge/checklist.js?v=0.6.0"></script>
-  <script type="module" src="forge/ascii-field.js?v=0.6.0"></script>
-  <script type="module" src="forge/glass-stack.js?v=0.6.0"></script>
+  <script src="visual-samples.js?v=0.7.0" defer></script>
+  <script src="director-samples.js?v=0.7.0" defer></script>
+  <script src="forge-samples.js?v=0.7.0" defer></script>
+  <script src="invent-samples.js?v=0.7.0" defer></script>
+  <script src="component-gallery.js?v=0.7.0" defer></script>
+  <script src="app.js?v=0.7.0" defer></script>
+  <script type="module" src="forge/paper-plane.js?v=0.7.0"></script>
+  <script type="module" src="forge/swipe-confirm.js?v=0.7.0"></script>
+  <script type="module" src="forge/download-ring.js?v=0.7.0"></script>
+  <script type="module" src="forge/checklist.js?v=0.7.0"></script>
+  <script type="module" src="forge/ascii-field.js?v=0.7.0"></script>
+  <script type="module" src="forge/glass-stack.js?v=0.7.0"></script>
 </body>
 </html>

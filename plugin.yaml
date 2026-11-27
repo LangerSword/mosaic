@@ -1,24 +1,29 @@
 name: mosaic
 label: Mosaic
 kind: standalone
-version: 0.6.0
+version: 0.7.0
 author: Lakshaya Sharma (LangerSword)
 homepage: https://github.com/LangerSword/mosaic
 description: >
   Design direction for Hermes. Mosaic turns a brief or a studied reference
   into an original interface recipe: a base field, one accent, a type pairing,
   two signature moves, a composition order, motion rules and an audit
-  checklist. It also indexes the reference families and audits a local
-  HTML/CSS/JS source for generic or inaccessible patterns. Local only: no
-  network, no keys, no telemetry.
+  checklist. It also indexes the reference families, forges component starters
+  for six stacks, scores a source before review, and can render a page in
+  Chromium for hard visual gates. Local tools: no network, no keys, no telemetry.
 requires_hermes: ">=0.23.0"
 python_dependencies: []
 provides_hooks: []
 provides_tools:
   - mosaic_index
+  - mosaic_study
+  - mosaic_design
   - mosaic_components
   - mosaic_stacks
   - mosaic_forge
   - mosaic_invent
   - mosaic_recipe
   - mosaic_audit
+  - mosaic_critique
+  - mosaic_score
+  - mosaic_visual

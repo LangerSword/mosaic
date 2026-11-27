@@ -2,11 +2,11 @@ name: mosaic
 repo: https://github.com/LangerSword/mosaic
 sha: 0513155a184eb9c893cefb5d91132f89484f05ef
 title: Mosaic
-description: "A design reference engine for Hermes Agent. Mosaic turns a studied reference or a product brief into an original interface direction: a base field, one accent, a type pairing, two signature moves, a composition order, motion rules and an audit checklist. It ships 20 skills and 11 local tools: mosaic_index, mosaic_study, mosaic_design, mosaic_components, mosaic_stacks, mosaic_forge, mosaic_invent, mosaic_recipe, mosaic_audit, mosaic_critique and mosaic_score. mosaic_forge emits an original component starter for HTML, React, Next, Svelte, Vue or Astro, with CSS or GSAP motion. It does not clone a reference, copy paid code or call a network. Disclosure: local only; no network, no telemetry, no credentials; mosaic_audit reads a caller-selected local text file; the recipe and component index are bundled data; no hooks or middleware."
+description: "A design reference engine for Hermes Agent. Mosaic turns a studied reference or a product brief into an original interface direction: a base field, one accent, a type pairing, two signature moves, a composition order, motion rules and an audit checklist. It ships 21 skills and 12 local tools: mosaic_index, mosaic_study, mosaic_design, mosaic_components, mosaic_stacks, mosaic_forge, mosaic_invent, mosaic_recipe, mosaic_audit, mosaic_critique, mosaic_score and mosaic_visual. mosaic_forge emits an original component starter for HTML, React, Next, Svelte, Vue or Astro, with CSS or GSAP motion. mosaic_visual renders a caller-built URL or local HTML page in local Chromium and returns measured hard gates, screenshots and an evidence id. It does not clone a reference, copy paid code or call a network. Disclosure: local only; no network from the plugin, no telemetry, no credentials; mosaic_audit and mosaic_score read caller-selected local text; the visual gate launches a local browser and a page may load its own assets; the recipe and component index are bundled data; no hooks or middleware."
 maintainer: LangerSword
 tier: community
 category: tools
-version: "0.6.0"
+version: "0.7.0"
 image: "https://raw.githubusercontent.com/LangerSword/mosaic/61839dd9dd20d8dbbb4f800d65346fa51e1f9add/docs/banner.png"
 requires_hermes: ">=0.23.0"
 docs_url: https://github.com/LangerSword/mosaic
