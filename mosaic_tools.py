@@ -152,7 +152,7 @@ def h_index(args: dict) -> str:
     return _j({
         "ok": True,
         "plugin": "mosaic",
-        "version": "0.9.0",
+        "version": "0.9.1",
         "families": [
             {"id": f["id"], "name": f["name"], "skill": f["skill"],
              "signature": f["signature"], "use_when": f["use_when"], "avoid": f["avoid"]}

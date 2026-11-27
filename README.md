@@ -6,7 +6,7 @@ It is not a template library, a cloner, or a moodboard generator. It gives the a
 
 ## What is in the box
 
-- **22 Hermes skills**: one master method, twelve interaction families (including cast, ASCII and glass), a component grammar, study, design, critique and score methods, a measured visual gate, a taste profiler, a forge and an inventor.
+- **23 Hermes skills**: one master method, twelve interaction families (including cast, ASCII and glass), a component grammar, study, design, critique, score, taste, visual and product-film methods, a forge and an inventor.
 - **13 local tools**:
   - `mosaic_index`: the reference families, skills and base tokens.
   - `mosaic_study`: reference observations → principles, transfer candidates and a do-not-copy contract (a URL alone returns a checklist, not invented facts).
@@ -95,6 +95,7 @@ A bounded guarantee: rendered layout, contrast, interaction affordance and inter
 | `mosaic-glass` | One glass material with a real fallback |
 | `mosaic-score` | Pre-awards design, usability and originality gate |
 | `mosaic-taste` | Taste proxies, confidence and pairwise calibration |
+| `mosaic-product-video` | Real-capture 26s Mosaic product film |
 | `mosaic-visual` | Render a page and pass or fail measured visual gates |
 | `mosaic-select` | Segmented controls, tabs, small pickers |
 | `mosaic-shader` | Atmospheric shaders with static fallbacks |
@@ -130,7 +131,7 @@ The page is verified at 1440 and 390, with no horizontal overflow and no console
 
 ## 60 second film
 
-[Read the 0.9.0 release](https://github.com/LangerSword/mosaic/releases/tag/v0.9.0): taste profiles, strict visual gates, all six layout gates, new specimens and the catalog pin. The earlier 60-second film is at [v0.5.0](https://github.com/LangerSword/mosaic/releases/tag/v0.5.0); source and build steps are in `demo/`.
+[Read the 0.9.1 release](https://github.com/LangerSword/mosaic/releases/tag/v0.9.1): taste profiles, the 26s product film, strict visual gates, all six layout gates, new specimens and the catalog pin. The earlier 60-second film is at [v0.5.0](https://github.com/LangerSword/mosaic/releases/tag/v0.5.0); source and build steps are in `demo/`.
 
 ## Reference study and independence
 
