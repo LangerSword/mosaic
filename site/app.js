@@ -501,7 +501,7 @@
           row.type = 'button';
           row.setAttribute('aria-pressed', String(component.id === active?.id));
           add(row, 'span', 'component-index', String(gallery.indexOf(component) + 1).padStart(2, '0'));
-          const codes = { 'flow-canvas': 'FL', 'face-card': 'FA', 'live-card': 'LC', 'glass-title-card': 'GT', 'card-arc': 'CA', 'script-over': 'SO', 'channel-rail': 'CR', 'publish-bar': 'PB', 'beat-wordmark': 'BW', 'join-group': 'JG', 'live-cursors': 'LU', 'story-pills': 'SP', 'hold-to-confirm': 'HC', 'segmented-control': 'SG', 'thinking-shimmer': 'TH', 'quanta': 'QT', 'paper-plane': 'PP', 'swipe-confirm': 'SW', 'download-ring': 'DR', 'checklist': 'CK' };
+          const codes = { 'flow-canvas': 'FL', 'face-card': 'FA', 'live-card': 'LC', 'glass-month': 'GM', 'card-arc': 'CA', 'script-over': 'SO', 'channel-rail': 'CR', 'publish-bar': 'PB', 'beat-wordmark': 'BW', 'join-group': 'JG', 'live-cursors': 'LU', 'story-pills': 'SP', 'hold-to-confirm': 'HC', 'segmented-control': 'SG', 'thinking-shimmer': 'TH', 'quanta': 'QT', 'paper-plane': 'PP', 'swipe-confirm': 'SW', 'download-ring': 'DR', 'checklist': 'CK' };
           add(row, 'span', 'component-code', codes[component.id] || component.name.slice(0, 2).toUpperCase());
           const name = add(row, 'span', 'component-name');
           add(name, 'b', '', component.name);

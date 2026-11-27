@@ -56,7 +56,9 @@ check("ring negative control fails", not ring_source_ok(mutated_ring), "mutated 
 # 2. Component index is a unique row ledger, not repeated specimen cards.
 app_js = (ROOT / "site/app.js").read_text(encoding="utf-8")
 codes = code_map(app_js)
+ids = re.findall(r'"id": "([a-z-]+)"', (ROOT / "site/component-gallery.js").read_text(encoding="utf-8"))
 check("component renderer uses rows", "'component-row'" in app_js, "component-row present")
+check("component codes cover every id", set(ids) == set(codes), f"{len(set(ids) & set(codes))}/{len(ids)} ids covered")
 check("component codes are complete", len(codes) == 20, f"{len(codes)} codes")
 check("component codes are unique", len(set(codes.values())) == 20, f"{len(set(codes.values()))} unique")
 check("component grid has no specimen renderer", "'specimen-art'" not in app_js, "no specimen-art render path")
