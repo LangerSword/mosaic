@@ -164,7 +164,7 @@ customElements.define('{tag}', {tag});
 '''
     if kind == "download-ring":
         return f'''const CSS = `{COMMON_CSS}
-:host{{--p:0;--ring:var(--clay)}} .ring{{--deg:calc(var(--p) * 3.6deg);width:132px;height:132px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--ring) var(--deg), var(--line) 0);position:relative}} .ring:before{{content:"";position:absolute;inset:10px;border-radius:50%;background:var(--paper)}} .inner{{position:relative;z-index:1;text-align:center}} strong{{display:block;font-size:25px;line-height:1}} span,p{{font:10px/1.4 ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}} p{{margin:10px 0 0;font-size:12px;text-transform:none;letter-spacing:0}}`;
+:host{{--p:0;--ring:var(--clay)}} .ring{{--deg:calc(var(--p) * 360deg);width:132px;height:132px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--ring) var(--deg), var(--line) 0);position:relative}} .ring:before{{content:"";position:absolute;inset:10px;border-radius:50%;background:var(--paper)}} .inner{{position:relative;z-index:1;text-align:center}} strong{{display:block;font-size:25px;line-height:1}} span,p{{font:10px/1.4 ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}} p{{margin:10px 0 0;font-size:12px;text-transform:none;letter-spacing:0}}`;
 class {tag} extends HTMLElement {{
   static get observedAttributes(){{ return ['value','label']; }}
   connectedCallback() {{

@@ -268,7 +268,17 @@ h1 em{font-family:var(--serif);font-weight:400;text-transform:none;letter-spacin
 .taste-total strong{font-family:var(--display);font-size:26px;font-weight:400;color:var(--clay)}
 .taste-foot{margin:18px 0 0;color:var(--muted);font-size:12px}
 .taste-foot code{font-family:var(--mono);font-size:10px;color:var(--clay)}
-.component-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.component-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.component-row{display:grid;grid-template-columns:30px 34px minmax(0,1fr);gap:10px;align-items:center;min-height:62px;padding:10px 12px;border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper);color:var(--ink);text-align:left;cursor:pointer;transition:background .18s,color .18s}
+.component-row:hover{background:var(--paper-2)}
+.component-row[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.component-index{color:var(--clay);font:700 9px/1 var(--mono)}
+.component-code{display:grid;place-items:center;width:30px;height:26px;border:1px solid var(--line);color:var(--muted);font:700 8px/1 var(--mono);letter-spacing:.04em}
+.component-row[aria-pressed="true"] .component-code{border-color:rgba(243,239,230,.4);color:var(--paper)}
+.component-name{min-width:0}
+.component-name b{display:block;overflow:hidden;font:400 17px/1 var(--display);text-overflow:ellipsis;text-transform:uppercase;white-space:nowrap}
+.component-name em{display:block;margin-top:4px;color:var(--muted);font:8px/1.2 var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.component-row[aria-pressed="true"] .component-name em{color:rgba(243,239,230,.78)}
 .component-tools{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:20px;align-items:start;margin-bottom:18px;padding-top:14px;border-top:1px solid var(--line)}
 .component-filters{display:flex;flex-wrap:wrap;gap:4px}
 .component-filters button{min-height:29px;padding:4px 7px;border:1px solid var(--line);background:var(--paper);color:var(--muted);font:700 8px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}

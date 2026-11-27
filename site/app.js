@@ -497,17 +497,16 @@
       gallery
         .filter((component) => family === 'all' || component.family === family)
         .forEach((component) => {
-          const card = add(galleryGrid, 'button', 'specimen');
-          card.type = 'button';
-          card.setAttribute('aria-pressed', String(component.id === active?.id));
-          const art = add(card, 'div', 'specimen-art');
-          art.dataset.family = component.family;
-          const body = add(card, 'div', 'specimen-body');
-          add(body, 'b', '', component.name);
-          add(body, 'span', '', component.family);
-          add(body, 'p', '', component.state.length > 142 ? component.state.slice(0, 139) + '...' : component.state);
-          add(body, 'small', '', component.use_when);
-          card.addEventListener('click', () => {
+          const row = add(galleryGrid, 'button', 'component-row');
+          row.type = 'button';
+          row.setAttribute('aria-pressed', String(component.id === active?.id));
+          add(row, 'span', 'component-index', String(gallery.indexOf(component) + 1).padStart(2, '0'));
+          const codes = { 'flow-canvas': 'FL', 'face-card': 'FA', 'live-card': 'LC', 'glass-title-card': 'GT', 'card-arc': 'CA', 'script-over': 'SO', 'channel-rail': 'CR', 'publish-bar': 'PB', 'beat-wordmark': 'BW', 'join-group': 'JG', 'live-cursors': 'LU', 'story-pills': 'SP', 'hold-to-confirm': 'HC', 'segmented-control': 'SG', 'thinking-shimmer': 'TH', 'quanta': 'QT', 'paper-plane': 'PP', 'swipe-confirm': 'SW', 'download-ring': 'DR', 'checklist': 'CK' };
+          add(row, 'span', 'component-code', codes[component.id] || component.name.slice(0, 2).toUpperCase());
+          const name = add(row, 'span', 'component-name');
+          add(name, 'b', '', component.name);
+          add(name, 'em', '', component.family);
+          row.addEventListener('click', () => {
             active = component;
             renderGrid();
             renderDetail();

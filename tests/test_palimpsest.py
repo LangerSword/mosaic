@@ -212,6 +212,12 @@ class MaterialTests(unittest.TestCase):
         self.assertIn("@supports not (backdrop-filter", js)
         self.assertIn("aria-pressed", js)
 
+    def test_download_ring_uses_a_full_circle(self):
+        out = json.loads(h_forge({"kind": "download-ring", "stack": "html", "motion": "css"}))
+        js = next(f["content"] for f in out["files"] if f["path"].endswith(".js"))
+        self.assertIn("calc(var(--p) * 360deg)", js)
+        self.assertNotIn("calc(var(--p) * 3.6deg)", js)
+
 
 class ScoreTests(unittest.TestCase):
     def test_score_passes_a_strong_generated_page(self):
