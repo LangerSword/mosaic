@@ -731,6 +731,16 @@ main {{ overflow: clip; }}
   html.js [data-reveal].is-in {{ opacity: 1; transform: none; }}
 }}
 .arrival {{ display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr); gap: var(--gutter); padding: clamp(56px, 10vw, 144px) 0 72px; border-bottom: 1px solid var(--line); }}
+.layout-bench .arrival {{ grid-template-columns: minmax(0, 1fr); }}
+.layout-bench .artifact {{ max-width: 760px; margin-top: 28px; }}
+.layout-field-guide .arrival {{ display: block; text-align: center; }}
+.layout-field-guide .artifact {{ max-width: 760px; margin: 48px auto 0; text-align: left; }}
+.layout-field-guide h1 {{ margin-inline: auto; }}
+.layout-programme .arrival {{ grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }}
+.layout-programme .artifact {{ border-top-color: var(--signal); }}
+.layout-signal-room .arrival {{ background: var(--surface); padding-inline: var(--gutter); }}
+.layout-specimen-table .arrival {{ grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }}
+.layout-reading-room .arrival {{ grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); }}
 .kicker {{ margin: 0 0 24px; color: var(--signal); font: 700 var(--mono)/1 var(--utility-font); letter-spacing: .12em; text-transform: uppercase; }}
 h1 {{ max-width: 9ch; margin: 0; font-family: var(--display-font); font-size: var(--display); font-weight: 500; line-height: .84; letter-spacing: -.075em; }}
 .deck {{ max-width: var(--measure); margin: 28px 0 0; color: var(--muted); font-size: var(--body); line-height: 1.55; }}
@@ -793,7 +803,7 @@ h2 {{ max-width: 14ch; margin: 0; font-family: var(--display-font); font-size: c
 }}
 </style>
 </head>
-<body>
+<body class="layout-{concept.get('id', 'index')}">
 <a class="skip" href="#main">skip to content</a>
 <header class="shell bar"><a class="brand" href="#main" data-slot="brand">{subject}</a><nav aria-label="sections"><a href="#proof">{nav[0]}</a><a href="#signature">{nav[1]}</a><a href="#close">{nav[2]}</a></nav></header>
 <main id="main">
