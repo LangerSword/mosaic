@@ -13,9 +13,15 @@ metadata:
 
 # Mosaic Product Video
 
-A **live split-screen** product demo: the real generated page on the left, the
-real gate/terminal on the right, one continuous take. No stage, no floating
-card, no lower-third manifesto, no redline gimmick.
+> **Both shipped cuts were rejected.** Redline was a poster with redline
+> gimmicks. The live split-screen was a debug view: readable terminal, but a
+> letterboxed page and no visual direction. Neither is a product film.
+>
+> There is no current Mosaic film. Do not call a split-screen capture a film.
+> A new attempt must start with a designed storyboard, one real product action,
+> and a motion pass that makes the page state change the event.
+
+A short product film where the **product does the work on screen**.
 
 ## The accepted cut
 
