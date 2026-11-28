@@ -95,7 +95,7 @@ A bounded guarantee: rendered layout, contrast, interaction affordance and inter
 | `mosaic-glass` | One glass material with a real fallback |
 | `mosaic-score` | Pre-awards design, usability and originality gate |
 | `mosaic-taste` | Taste proxies, confidence and pairwise calibration |
-| `mosaic-product-video` | Kinetic 3D plugin demo, rendered through Klieg |
+| `mosaic-product-video` | Kinetic 3D plugin demo + working-component reel |
 | `mosaic-visual` | Render a page and pass or fail measured visual gates |
 | `mosaic-select` | Segmented controls, tabs, small pickers |
 | `mosaic-shader` | Atmospheric shaders with static fallbacks |
@@ -131,7 +131,7 @@ The page is verified at 1440 and 390, with no horizontal overflow and no console
 
 ## 60 second film
 
-[Read the 0.9.1 release](https://github.com/LangerSword/mosaic/releases/tag/v0.9.1): taste profiles, strict visual gates, all six layout gates, new specimens and the catalog pin. The 60-second website film is at [v0.5.0](https://github.com/LangerSword/mosaic/releases/tag/v0.5.0). The current plugin demo is a 30-second kinetic 3D cut: one brief, three directions, one chosen, 16/16 gates, taste profile, 20 components — rendered frame by frame through Klieg's motion renderer, with no Blender.
+[Read the 0.9.1 release](https://github.com/LangerSword/mosaic/releases/tag/v0.9.1): taste profiles, strict visual gates, all six layout gates, new specimens and the catalog pin. The 60-second website film is at [v0.5.0](https://github.com/LangerSword/mosaic/releases/tag/v0.5.0). There are two current cuts: a 30-second kinetic 3D plugin film rendered frame by frame through Klieg's motion renderer (no Blender), and a 21-second component reel recorded from the live forge: paper plane, swipe confirm, download ring, checklist, magnetic link and cursor lens.
 
 ## Reference study and independence
 

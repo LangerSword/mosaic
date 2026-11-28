@@ -89,6 +89,21 @@ Blender for this cut.
 - Do not use `recordVideo`; Klieg's deterministic seek is the point.
 - A 30s 30fps Klieg render is 900 screenshots; budget a few minutes.
 
+## Component reel
+
+The second cut is **21s**, 1920×1080, 30fps, recorded from the live forge:
+paper plane (press), swipe confirm (drag), download ring (five 20% events),
+checklist (select), magnetic link + cursor lens (pointer). It uses
+`demo/record_component_segments.py`; each segment is centred before recording
+so the state is visible, then cut with a chapter bar. Intro/outro are black
+title cards. Mux with the same low bed.
+
+```bash
+cd ~/projects/mosaic
+/home/lakshaya/.venv/bin/python demo/record_component_segments.py
+# compose intro + five chapter clips + outro, then mux
+```
+
 ## Verification
 
 - `~/Videos/mosaic/mosaic-plugin-kinetic-3d.mp4`
