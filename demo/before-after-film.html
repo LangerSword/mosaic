@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mosaic / Before and after</title>
+<style>
+@font-face{font-family:Anton;src:url("../site/fonts/Anton-Regular.ttf");font-weight:400;font-display:swap}
+@font-face{font-family:Plex;src:url("../site/fonts/IBMPlexMono-Regular.ttf");font-weight:400;font-display:swap}
+@font-face{font-family:Plex;src:url("../site/fonts/IBMPlexMono-Bold.ttf");font-weight:700;font-display:swap}
+*{box-sizing:border-box}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#0a0b0a;color:#f3efe6;font-family:Plex,monospace}
+.film{position:fixed;inset:0;overflow:hidden;background:#0a0b0a}
+.page{position:absolute;inset:0;overflow:hidden;background:#f3efe6}
+.page video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;filter:saturate(.92) contrast(1.03)}
+.page.after{z-index:2;clip-path:inset(0 0 0 100%)}
+.veil{position:absolute;inset:0;z-index:3;background:#0a0b0a;opacity:0}
+.divider{position:absolute;z-index:5;top:0;bottom:0;left:100%;width:2px;background:#c64a2e;box-shadow:0 0 30px rgba(198,74,46,.35)}
+.divider:before{content:"";position:absolute;left:-18px;top:50%;width:38px;height:38px;border:2px solid #c64a2e;border-radius:50%;background:#0a0b0a;transform:translateY(-50%)}
+.divider:after{content:"↔";position:absolute;left:-10px;top:50%;transform:translateY(-50%);color:#c64a2e;font:700 14px/1 Plex,monospace}
+.tag{position:absolute;z-index:6;top:38px;padding:8px 10px;font:700 11px/1 Plex,monospace;letter-spacing:.14em;text-transform:uppercase}
+.before{left:38px;background:#0a0b0a;color:#f3efe6}
+.after{right:38px;background:#c64a2e;color:#fff}
+.score{position:absolute;z-index:6;bottom:44px;font-family:Anton,Impact,sans-serif;font-size:clamp(110px,12vw,220px);line-height:.78;letter-spacing:-.04em}
+.score.before{left:38px;color:#f3efe6;text-shadow:0 4px 28px rgba(10,11,10,.5)}
+.score.after{right:38px;color:#fff;text-align:right}
+.score small{display:block;font:700 11px/1.4 Plex,monospace;letter-spacing:.14em;color:#e8b79e;text-transform:uppercase;margin-top:12px;text-shadow:none}
+.copy{position:absolute;z-index:6;left:38px;top:92px;max-width:640px}
+.copy p{margin:0;font:700 11px/1.5 Plex,monospace;letter-spacing:.12em;text-transform:uppercase;color:#f3efe6;background:rgba(10,11,10,.78);padding:8px 10px}
+.black{position:absolute;inset:0;z-index:8;background:#0a0b0a;opacity:0;display:grid;place-items:center;text-align:center}
+.black h1{margin:0;font:400 110px/.82 Anton,Impact,sans-serif;letter-spacing:-.03em;text-transform:uppercase}
+.black h1 em{font-family:Playfair,Georgia,serif;font-weight:400;text-transform:none;color:#e8b79e;letter-spacing:-.06em}
+.black p{margin:26px 0 0;font:11px/1.5 Plex,monospace;letter-spacing:.13em;text-transform:uppercase;color:#a79f92}
+</style>
+</head>
+<body>
+<div class="film" id="film">
+  <div class="page before" id="pbefore"><video id="vbefore" src="raw/redline/fail.webm" muted playsinline loop preload="auto"></video></div>
+  <div class="page after" id="pafter"><video id="vafter" src="raw/redline/fixed.webm" muted playsinline loop preload="auto"></video></div>
+  <div class="divider" id="divider"></div>
+  <span class="tag before" id="tbefore">BEFORE / 14/16</span>
+  <span class="tag after" id="tafter">AFTER / 16/16</span>
+  <div class="copy" id="copy"><p id="copyp">The page is the same. The gate is not.</p></div>
+  <div class="score before" id="sbefore">14/16<small>hard gates / rejected</small></div>
+  <div class="score after" id="safter">16/16<small>hard + soft / passed</small></div>
+  <div class="black" id="end"><div><h1>REFERENCE IN.<br><em>ORIGINAL OUT.</em></h1><p>langersword.github.io/mosaic</p></div></div>
+</div>
+<script src="vendor/gsap.min.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const vbefore = $('vbefore'), vafter = $('vafter'), pafter = $('pafter'), divider = $('divider');
+const tbefore = $('tbefore'), tafter = $('tafter'), sbefore = $('sbefore'), safter = $('safter');
+const copy = $('copy'), end = $('end');
+gsap.set([tbefore, tafter, sbefore, safter, copy], {opacity:0});
+gsap.set(pafter, {clipPath:'inset(0 0 0 100%)'});
+gsap.set(divider, {left:'100%'});
+gsap.set(end, {opacity:0});
+
+const tl = gsap.timeline({paused:true, defaults:{ease:'power2.inOut'}});
+
+// 0-2.2: failing page, BEFORE
+tl.fromTo('#pbefore video', {scale:1.12}, {scale:1, duration:8.5, ease:'none'}, 0)
+  .to(tbefore, {opacity:1, duration:.3}, .2)
+  .to(sbefore, {opacity:1, duration:.4}, .35)
+  .to(copy, {opacity:1, duration:.4}, .4);
+
+// 2.2-6.8: sweep the divider across; AFTER enters
+tl.to(pafter, {clipPath:'inset(0 0 0 0%)', duration:4.6, ease:'power3.inOut'}, 2.2)
+  .to(divider, {left:'0%', duration:4.6, ease:'power3.inOut'}, 2.2)
+  .to(tafter, {opacity:1, duration:.4}, 2.4)
+  .to(safter, {opacity:1, duration:.4}, 2.6)
+  .to(copy, {opacity:0, duration:.3}, 2.3);
+
+// 6.8-10.2: full AFTER; hold
+tl.to(divider, {opacity:0, duration:.3}, 6.7)
+  .to(tbefore, {opacity:0, duration:.3}, 6.7)
+  .to(sbefore, {opacity:0, duration:.3}, 6.7);
+
+// 10.2-14.2: return to a 50/50 comparison
+tl.to(pafter, {clipPath:'inset(0 0 0 50%)', duration:2.4, ease:'power3.inOut'}, 10.2)
+  .to(divider, {left:'50%', opacity:1, duration:2.4, ease:'power3.inOut'}, 10.2)
+  .to(tbefore, {opacity:1, duration:.3}, 10.4)
+  .to(sbefore, {opacity:1, duration:.3}, 10.4)
+  .to(copy, {opacity:1, duration:.3}, 10.5);
+
+// 14.2-17.2: full AFTER; evidence
+tl.to(pafter, {clipPath:'inset(0 0 0 0%)', duration:2.0, ease:'power3.inOut'}, 14.2)
+  .to(divider, {left:'0%', duration:2.0, ease:'power3.inOut'}, 14.2)
+  .to(tbefore, {opacity:0, duration:.3}, 14.4)
+  .to(sbefore, {opacity:0, duration:.3}, 14.4)
+  .to(copy, {opacity:0, duration:.3}, 14.4)
+  .to(safter, {opacity:1, duration:.3}, 14.6);
+
+// 17.2-20: end
+tl.to(end, {opacity:1, duration:.45}, 17.2)
+  .to([tafter, safter], {opacity:0, duration:.3}, 17.2);
+
+function start() {
+  vbefore.currentTime = 0; vafter.currentTime = 0;
+  vbefore.playbackRate = .72; vafter.playbackRate = .72;
+  vbefore.play().catch(()=>{}); vafter.play().catch(()=>{});
+  tl.play(0);
+}
+window.__filmReady = true; window.__startFilm = start; window.__tl = tl;
+</script>
+</body>
+</html>
