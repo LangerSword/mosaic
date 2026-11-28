@@ -95,7 +95,7 @@ A bounded guarantee: rendered layout, contrast, interaction affordance and inter
 | `mosaic-glass` | One glass material with a real fallback |
 | `mosaic-score` | Pre-awards design, usability and originality gate |
 | `mosaic-taste` | Taste proxies, confidence and pairwise calibration |
-| `mosaic-product-video` | No shipped film; split-screen and Redline cuts rejected |
+| `mosaic-product-video` | Plugin terminal demo: design → visual gate → taste → components |
 | `mosaic-visual` | Render a page and pass or fail measured visual gates |
 | `mosaic-select` | Segmented controls, tabs, small pickers |
 | `mosaic-shader` | Atmospheric shaders with static fallbacks |
@@ -131,7 +131,7 @@ The page is verified at 1440 and 390, with no horizontal overflow and no console
 
 ## 60 second film
 
-[Read the 0.9.1 release](https://github.com/LangerSword/mosaic/releases/tag/v0.9.1): taste profiles, strict visual gates, all six layout gates, new specimens and the catalog pin. The 60-second film is at [v0.5.0](https://github.com/LangerSword/mosaic/releases/tag/v0.5.0). Redline and the live split-screen cuts were rejected and pulled. Source and build steps are in `demo/`, but there is no current film.
+[Read the 0.9.1 release](https://github.com/LangerSword/mosaic/releases/tag/v0.9.1): taste profiles, strict visual gates, all six layout gates, new specimens and the catalog pin. The 60-second website film is at [v0.5.0](https://github.com/LangerSword/mosaic/releases/tag/v0.5.0). The current plugin demo records the actual CLI workflow: 13 tools, 23 skills, 16/16 visual gates and 20 public component records.
 
 ## Reference study and independence
 

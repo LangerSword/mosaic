@@ -1,134 +1,119 @@
 ---
 name: mosaic-product-video
-description: Use when producing a Mosaic product film, not a slide demo.
-version: 0.5.0
+description: Use when producing a demo for the Mosaic plugin itself.
+version: 0.6.0
 author: Lakshaya Sharma (LangerSword), Hermes Agent
 license: MIT
 platforms: [linux, macos]
 metadata:
   hermes:
-    tags: [video, demo, product, mosaic, playwright, ffmpeg, gsap, motion-index]
-    related_skills: [mosaic, mosaic-visual, demo-video-production, webreel, kinetic-product-demo]
+    tags: [video, demo, plugin, mosaic, vhs, ffmpeg, terminal]
+    related_skills: [mosaic, mosaic-visual, demo-video-production, interactive-tty-automation]
 ---
 
-# Mosaic Product Video
+# Mosaic Plugin Video
 
-A **before/after reveal** of the same generated page: `14/16` failing state on
-the left, `16/16` fixed state on the right, separated by a sweep divider. Real
-page footage; the gate scores are real. No split-screen terminal, no gradient
-stage, no lower-third manifesto.
+A **terminal demo of the plugin**, not a tour of the showcase site. The viewer
+sees the actual `mosaic` CLI commands and the actual JSON output: help surface,
+reference families, a directed page, the visual gate, a taste profile and the
+component count.
 
-The direction comes from **Motion Index / “Before and after”** (Shaan Johari,
-animation styles for Claude). Credit the reference; the assets are original.
+**Runtime:** 31s. **Viewport:** 1920×1080. **Source:** VHS terminal recording.
 
-## The cut
-
-**Runtime:** 20s. **Viewport:** 1920×1080. **Source:** `demo/raw/redline/fail.webm`
-and `fixed.webm` at the same scroll position.
+## Sequence
 
 ```text
-0.0-2.2   failing page; BEFORE / 14/16 appears
-2.2-6.8   divider sweeps from right to left; fixed page enters
-6.8-10.2  AFTER / 16/16, full fixed page
-10.2-14.2 divider returns to 50/50; both scores held
-14.2-17.2 fixed page full; AFTER held
-17.2-20.0 black end card / URL
+00-03  ./mosaic --help
+       index / stacks / recipe / study / design / critique / score / taste
+       visual / audit / components / forge / invent
+03-06  ./mosaic index
+       thirteen reference families
+06-12  ./mosaic design --mode page --seed 7
+       chosen: The Field Guide / overall 9.0
+12-16  extract .page.files[0].content to /tmp/mosaic.html
+16-22  ./mosaic visual --target /tmp/mosaic.html
+       status: pass / 16 gates passed / 16 total
+22-25  ./mosaic taste --path /tmp/mosaic.html
+       taste_index 7.9 / confidence low
+25-28  ./mosaic components
+       20 public component records
+28-31  MOSAIC / 13 TOOLS / 23 SKILLS
 ```
-
-The viewer sees the exact same page, the exact same crop and the exact same
-coordinates in both states. The only thing that changes is the token and the
-target height.
 
 ## Build
 
-### 1. Candidate pair
+### 1. Real CLI
+
+`./mosaic` is a thin wrapper around `mosaic_cli.py`:
 
 ```bash
 cd ~/projects/mosaic
-python scripts/build_redline.py
+./mosaic --help
 ```
 
-`fail.html` is a real generated page with a 2.23:1 token and 16px range target.
-`fixed.html` is the same page fixed. Verify:
+The demo must use this CLI, not the site UI.
+
+### 2. VHS tape
+
+`demo/plugin.tape` holds the exact commands. Every command and every line of
+output is real. Do not paste fabricated JSON.
 
 ```bash
-python scripts/demo_gate.py demo/redline/fail.html   # 14/16
-python scripts/demo_gate.py demo/redline/fixed.html  # 16/16
+vhs demo/plugin.tape
 ```
 
-### 2. Page footage
+Writes `demo/raw/plugin/plugin.mp4` at 1920×1080, 25fps.
+
+### 3. Mux
 
 ```bash
-/home/lakshaya/.venv/bin/python demo/record_redline.py
+python ~/.hermes/skills/creative/demo-video-production/scripts/make_music.py \
+  demo/raw/plugin/bed.wav 32
+
+ffmpeg -y -i demo/raw/plugin/plugin.mp4 -i demo/raw/plugin/bed.wav \
+  -map 0:v:0 -map 1:a:0 -t 31 \
+  -vf "fps=30,scale=1920:1080,format=yuv420p,fade=t=in:st=0:d=0.3,fade=t=out:st=29.5:d=1.5" \
+  -af "atrim=0:31,volume=0.5,afade=t=in:st=0:d=0.5,afade=t=out:st=29:d=2,loudnorm=I=-18:TP=-2:LRA=12" \
+  -c:v libx264 -crf 18 -preset medium -c:a aac -b:a 160k -movflags +faststart \
+  ~/Videos/mosaic/mosaic-plugin-demo.mp4
 ```
 
-Same scroll path for both. No browser chrome. Use the real capture, not stills.
+No TTS. Low bed only.
 
-### 3. Motion composition
+### 4. QA
 
-`demo/before-after-film.html` + local GSAP (`demo/vendor/gsap.min.js`):
-
-- fail layer full-bleed
-- fixed layer clips in from the right
-- 2px divider with a circular drag handle
-- `BEFORE / 14/16` and `AFTER / 16/16` labels
-- large score blocks outside the main reading area
-- hard cuts only at the end
-
-```bash
-/home/lakshaya/.venv/bin/python demo/record_before_after.py
-```
-
-### 4. Audio and mux
-
-```bash
-python ~/.hermes/skills/creative/demo-video-production/scripts/make_banger.py \
-  demo/raw/redline/before-after.wav 22
-
-ffmpeg -y -ss 0.25 -i demo/raw/redline/before-after.webm -t 20.0 \
-  -i demo/raw/redline/before-after.wav -map 0:v:0 -map 1:a:0 -t 20 \
-  -vf "fps=30,scale=1920:1080,format=yuv420p,fade=t=in:st=0:d=0.2,fade=t=out:st=19.0:d=1.0" \
-  -af "atrim=0:20,afade=t=in:st=0:d=0.3,afade=t=out:st=18.2:d=1.8,loudnorm=I=-15:TP=-1.5:LRA=10" \
-  -c:v libx264 -crf 18 -preset medium -c:a aac -b:a 192k -movflags +faststart \
-  ~/Videos/mosaic/mosaic-before-after.mp4
-```
-
-No TTS.
-
-### 5. QA
-
-- 20.0s, 1920×1080, 30fps, H.264, AAC.
-- Decode whole file; zero errors.
-- 1s: failing page and BEFORE/14/16 visible.
-- 7s: divider clear, fixed page visible, no overlapping score over the headline.
-- 15s: fixed state and AFTER/16/16 clear.
-- Check page crop: same composition in both states.
+- 31.0s, 1920×1080, 30fps, H.264, AAC.
+- Decode zero errors.
+- 4s: `mosaic --help` and families visible.
+- 18s: design command and `The Field Guide / 9.0` visible.
+- 25s: `visual` returns `16 / 16`.
+- 30s: `20` components and `13 TOOLS / 23 SKILLS`.
+- Every command fits the terminal width; break long commands rather than
+  letting the right edge clip the `jq` filter.
 
 ## Rules
 
-- **Same page, same crop, two verdicts.**
-- **Divider is the event.** Sweep it; do not just fade.
-- **Scores are real:** 14/16 and 16/16 from the visual gate.
-- **No terminal in this cut.** The page is the proof.
-- **No overlap over the headline.** Put score blocks in the lower corners or a
-  black band, not across the main type.
-- **No placeholder copy in the visible crop.** Use a generated page whose
-  visible slots are replaced or crop above them.
+- **Plugin, not showcase.** No generated-site tour, no before/after page film.
+- **Real command → real output.** VHS drives the shell; no retyped JSON.
+- **Show the differentiation:** design direction, measured visual gates, taste
+  confidence, public component count.
+- **Keep the terminal plain.** No fake window chrome, no stage, no lower-third.
+- **One take.** The viewer sees the actual workflow, including the gate run.
 
 ## Pitfalls
 
-- The score blocks can cover the evidence headline if placed over the page.
-  Move them to a black lower band or corners.
-- The fixed clip must be the same scroll position as the fail clip; re-record
-  both if the candidate changes.
-- GSAP `clip-path` needs the fixed layer above the fail layer.
-- VHS/Playwright pre-roll must be trimmed; verify first frame.
-- Do not call this a “product film” if the page still shows `replace` slots.
+- `mosaic` is not on PATH; call the repo wrapper `./mosaic` or the Python CLI.
+- VHS cannot parse escaped double quotes inside `Type`; use single-quoted shell
+  arguments.
+- Long commands wrap; shorten the `jq` projection instead of shrinking the font.
+- The VHS file is 25fps; convert to 30fps during mux.
+- Do not use the site's generated page as the demo subject; this video is about
+  the plugin surface and its outputs.
 
 ## Verification
 
-- `~/Videos/mosaic/mosaic-before-after.mp4`
-- `demo/before-after-film.html`
-- `demo/record_before_after.py`
-- `scripts/build_redline.py`, `scripts/demo_gate.py`
-- Report: 14/16 failing state, 16/16 fixed state, 20s, 30fps.
+- `~/Videos/mosaic/mosaic-plugin-demo.mp4`
+- `demo/plugin.tape`
+- `demo/raw/plugin/plugin.mp4`
+- `mosaic` wrapper + `mosaic_cli.py`
+- Report: 13 tools / 23 skills, 16/16 visual gates, 20 components, 31s.
