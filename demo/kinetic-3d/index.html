@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920">
+<title>Mosaic — kinetic 3D plugin demo</title>
+<style>
+@font-face{font-family:Anton;src:url("../../site/fonts/Anton-Regular.ttf");font-weight:400;font-display:swap}
+@font-face{font-family:Playfair;src:url("../../site/fonts/PlayfairDisplay-Italic.ttf");font-style:italic;font-weight:400;font-display:swap}
+@font-face{font-family:Plex;src:url("../../site/fonts/IBMPlexMono-Regular.ttf");font-weight:400;font-display:swap}
+@font-face{font-family:Plex;src:url("../../site/fonts/IBMPlexMono-Bold.ttf");font-weight:700;font-display:swap}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#070605;color:#ece4d6;font-family:Plex,monospace;cursor:none}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.075;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/></svg>")}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:89;background:radial-gradient(120% 90% at 50% 44%,transparent 54%,rgba(0,0,0,.62) 100%)}
+.stage{position:fixed;inset:0;perspective:1600px;perspective-origin:50% 48%;overflow:hidden}
+.world{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.floor{position:absolute;left:50%;top:56%;width:3600px;height:3600px;transform:translate(-50%,-50%) rotateX(76deg) translateZ(-900px);transform-origin:center;background-image:linear-gradient(rgba(212,101,42,.20) 1px,transparent 1px),linear-gradient(90deg,rgba(212,101,42,.20) 1px,transparent 1px);background-size:120px 120px;opacity:.30;mask-image:radial-gradient(closest-side,black 18%,transparent 72%);pointer-events:none}
+.plane{position:absolute;left:50%;top:50%;width:1560px;transform:translate(-50%,-50%);transform-style:preserve-3d;will-change:transform,opacity}
+.micro{font:700 11px/1.4 Plex,monospace;letter-spacing:.16em;text-transform:uppercase;color:#8a8276}
+.accent{color:#d4652a}
+.rule{height:1px;background:#d4652a;transform-origin:left center}
+
+.title{text-align:center}
+.title h1{font:400 210px/.78 Anton,Impact,sans-serif;letter-spacing:-.055em;text-transform:uppercase;color:#ece4d6;text-shadow:0 18px 80px rgba(0,0,0,.55)}
+.title p{margin-top:30px;font:700 12px/1.5 Plex,monospace;letter-spacing:.22em;text-transform:uppercase;color:#8a8276}
+.title .stamp{display:inline-block;margin-top:26px;padding:8px 12px;border:1px solid #3a322b;color:#d4652a;font:700 11px/1 Plex,monospace;letter-spacing:.14em}
+
+.brief{left:50%;width:1180px;padding:48px 54px;border:1px solid #2b2520;background:rgba(12,10,8,.86);box-shadow:0 40px 120px rgba(0,0,0,.45)}
+.brief h2{font:400 92px/.84 Anton,Impact,sans-serif;letter-spacing:-.035em;text-transform:uppercase;color:#ece4d6}
+.brief h2 em{font-family:Playfair,Georgia,serif;font-weight:400;text-transform:none;color:#d4652a;letter-spacing:-.06em}
+.brief .brieftext{margin-top:28px;font:400 17px/1.5 Plex,monospace;color:#c8bdaf;max-width:880px}
+.brief .tags{margin-top:26px;display:flex;gap:8px;flex-wrap:wrap}
+.brief .tags span{padding:6px 9px;border:1px solid #3a322b;font:700 10px/1 Plex,monospace;letter-spacing:.08em;color:#a79f92}
+
+.concepts{width:1500px}
+.concepts h2{font:400 70px/.84 Anton,Impact,sans-serif;letter-spacing:-.03em;text-transform:uppercase;text-align:center;margin-bottom:38px}
+.cards{display:flex;gap:52px;justify-content:center;perspective:1400px;transform-style:preserve-3d}
+.card{width:400px;min-height:330px;padding:28px;border:1px solid #332c25;background:rgba(15,13,10,.92);transform-style:preserve-3d;box-shadow:0 28px 80px rgba(0,0,0,.35)}
+.card:nth-child(1){transform:rotateY(26deg) translateZ(110px)}
+.card:nth-child(2){transform:rotateY(0deg) translateZ(0)}
+.card:nth-child(3){transform:rotateY(-26deg) translateZ(-90px)}
+.card .idx{font:700 10px/1 Plex,monospace;letter-spacing:.15em;color:#d4652a}
+.card h3{font:400 36px/.9 Anton,Impact,sans-serif;letter-spacing:-.02em;text-transform:uppercase;margin-top:20px}
+.card p{margin-top:18px;font:400 13px/1.45 Plex,monospace;color:#9a9084}
+.card .score{margin-top:28px;font:400 64px/.8 Anton,Impact,sans-serif;color:#ece4d6}
+.card .score small{font:700 10px/1 Plex,monospace;letter-spacing:.12em;color:#8a8276;display:block;margin-top:8px}
+.card.chosen{border-color:#d4652a;background:rgba(26,16,11,.96);box-shadow:0 34px 100px rgba(212,101,42,.12)}
+.card.chosen h3{color:#f0b58f}
+
+.chosen{text-align:center;width:1100px}
+.chosen .micro{color:#d4652a}
+.chosen h2{font:400 150px/.78 Anton,Impact,sans-serif;letter-spacing:-.05em;text-transform:uppercase;margin-top:26px}
+.chosen h2 em{font-family:Playfair,Georgia,serif;font-weight:400;text-transform:none;color:#d4652a;letter-spacing:-.08em}
+.chosen .scoreline{margin-top:28px;font:400 42px/1 Anton,Impact,sans-serif;color:#ece4d6}
+.chosen .scoreline small{font:700 11px/1 Plex,monospace;letter-spacing:.13em;color:#8a8276;margin-left:12px}
+
+.code{width:1200px;padding:36px 42px;border:1px solid #3a322b;background:#0b0907;box-shadow:0 30px 100px rgba(0,0,0,.5)}
+.code .micro{margin-bottom:22px}
+.code pre{font:700 26px/1.35 Plex,monospace;color:#ece4d6;white-space:pre-wrap}
+.code pre b{color:#d4652a;font-weight:700}
+.code .out{margin-top:24px;padding-top:18px;border-top:1px solid #2b2520;font:400 15px/1.6 Plex,monospace;color:#9a9084}
+.code .out strong{color:#b7d8c0;font-weight:400}
+
+.proof{text-align:center;width:1200px}
+.proof .micro{color:#d4652a}
+.proof .num{margin-top:12px;font:400 420px/.7 Anton,Impact,sans-serif;letter-spacing:-.06em;color:#ece4d6;text-shadow:0 28px 100px rgba(0,0,0,.6)}
+.proof .num span{color:#d4652a}
+.proof .cap{margin-top:24px;font:700 13px/1.5 Plex,monospace;letter-spacing:.16em;text-transform:uppercase;color:#a79f92}
+
+.profile{width:1240px;display:flex;justify-content:center;gap:64px}
+.pcard{width:480px;padding:30px 32px;border:1px solid #332c25;background:rgba(14,12,9,.94);box-shadow:0 30px 90px rgba(0,0,0,.4)}
+.pcard .micro{color:#d4652a}
+.pcard .big{margin-top:22px;font:400 118px/.78 Anton,Impact,sans-serif;letter-spacing:-.04em}
+.pcard .big small{font:700 11px/1 Plex,monospace;letter-spacing:.12em;color:#8a8276;display:block;margin-top:12px}
+.pcard p{margin-top:16px;font:400 13px/1.5 Plex,monospace;color:#9a9084}
+
+.lockup{text-align:center;width:1400px}
+.lockup h1{font:400 220px/.74 Anton,Impact,sans-serif;letter-spacing:-.06em;text-transform:uppercase}
+.lockup h1 em{font-family:Playfair,Georgia,serif;font-weight:400;text-transform:none;color:#d4652a;letter-spacing:-.08em}
+.lockup .stats{margin-top:34px;display:flex;gap:48px;justify-content:center;align-items:center}
+.lockup .stats b{display:block;font:400 34px/.9 Anton,Impact,sans-serif;letter-spacing:-.02em}
+.lockup .stats span{display:block;margin-top:6px;font:700 9px/1 Plex,monospace;letter-spacing:.14em;color:#8a8276}
+.lockup .url{margin-top:34px;font:700 11px/1 Plex,monospace;letter-spacing:.16em;color:#d4652a}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="world" id="world">
+    <div class="floor"></div>
+    <section class="plane title" id="title">
+      <h1>MOSAIC</h1>
+      <p>design direction for hermes</p>
+      <span class="stamp">13 tools / 23 skills / 20 components</span>
+    </section>
+
+    <section class="plane brief" id="brief">
+      <div class="micro">01 / one brief</div>
+      <h2>A QUIET PORTFOLIO.<br><em>NOT A TEMPLATE.</em></h2>
+      <div class="brieftext">“A quiet portfolio for a type designer who needs clients to trust the process.”</div>
+      <div class="tags"><span>independent studio founders</span><span>accessible</span><span>no hover-only</span><span>mobile-first</span></div>
+    </section>
+
+    <section class="plane concepts" id="concepts">
+      <div class="micro" style="text-align:center;margin-bottom:18px">02 / three directions</div>
+      <h2>THREE SHAPES.<br><span class="accent">ONE BRIEF.</span></h2>
+      <div class="cards">
+        <article class="card chosen"><div class="idx">A / FIELD GUIDE</div><h3>The Field Guide</h3><p>An annotated field guide with specimens and marginal notes.</p><div class="score">9.0<small>selected</small></div></article>
+        <article class="card"><div class="idx">B / BENCH</div><h3>The Bench</h3><p>A workbench with three tools and one live specimen.</p><div class="score">8.9<small>coherent</small></div></article>
+        <article class="card"><div class="idx">C / INDEX</div><h3>The Working Index</h3><p>A working index with a specimen pane.</p><div class="score">8.8<small>useful</small></div></article>
+      </div>
+    </section>
+
+    <section class="plane chosen" id="chosen">
+      <div class="micro">03 / pick one</div>
+      <h2>THE FIELD<br><em>GUIDE.</em></h2>
+      <div class="scoreline">9.0 <small>overall / directed</small></div>
+    </section>
+
+    <section class="plane code" id="code">
+      <div class="micro">04 / one command</div>
+      <pre>./mosaic design <b>--mode page</b>
+  --brief 'A quiet portfolio...'</pre>
+      <div class="out"><strong>page/index.html</strong> · 15,679 bytes · one deterministic seed</div>
+    </section>
+
+    <section class="plane proof" id="proof">
+      <div class="micro">05 / measured, not guessed</div>
+      <div class="num">16<span>/16</span></div>
+      <div class="cap">hard gates passed · contrast · targets · overflow · focus · motion</div>
+    </section>
+
+    <section class="plane profile" id="profile">
+      <div class="pcard"><div class="micro">taste profile</div><div class="big">7.9<small>confidence: low</small></div><p>Not a verdict. A calibration request.</p></div>
+      <div class="pcard"><div class="micro">public components</div><div class="big">20<small>thirteen families</small></div><p>Observations, not a component wall.</p></div>
+    </section>
+
+    <section class="plane lockup" id="lockup">
+      <h1>REFERENCE IN.<br><em>ORIGINAL OUT.</em></h1>
+      <div class="stats"><div><b>13</b><span>local tools</span></div><div><b>23</b><span>skills</span></div><div><b>16/16</b><span>gates</span></div></div>
+      <div class="url">langersword.github.io/mosaic</div>
+    </section>
+  </div>
+</div>
+<script src="../vendor/gsap.min.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const world = $('world');
+const tl = gsap.timeline({paused:true, defaults:{ease:'power3.out'}});
+gsap.set('.plane', {opacity:0});
+gsap.set('#title', {opacity:1, z:-220});
+gsap.set('#world', {z:-820, rotateX:11, rotateY:15});
+gsap.set('#brief', {z:620});
+gsap.set('#concepts', {z:520});
+gsap.set('#chosen', {z:520});
+gsap.set('#code', {z:520});
+gsap.set('#proof', {z:620});
+gsap.set('#profile', {z:520});
+gsap.set('#lockup', {z:620});
+
+// 0-3.4: title plane enters from depth
+tl.to('#world', {z:0, rotateX:0, rotateY:0, duration:3.6, ease:'power2.inOut'}, 0)
+  .to('#title', {z:660, duration:3.4}, 0)
+  .from('#title h1', {y:90, opacity:0, duration:1.1}, .1)
+  .from('#title p', {y:24, opacity:0, duration:.7}, .7)
+  .from('#title .stamp', {y:18, opacity:0, duration:.6}, 1.0)
+  .to('#title', {opacity:0, duration:.35}, 3.1)
+  .to('#world', {rotateY:-9, rotateX:-3, z:-120, duration:1.2}, 3.1)
+  .set('#brief', {opacity:1, z:620}, 3.45)
+  .to('#brief', {z:180, duration:1.4}, 3.45)
+  .from('#brief .micro', {y:20, opacity:0, duration:.5}, 3.5)
+  .from('#brief h2', {y:70, opacity:0, duration:.9}, 3.55)
+  .from('#brief .brieftext', {y:24, opacity:0, duration:.7}, 4.0)
+  .from('#brief .tags', {y:18, opacity:0, duration:.6}, 4.25)
+  .to('#brief', {opacity:0, z:-420, duration:.6}, 6.3)
+  .to('#world', {rotateY:8, rotateX:4, z:-80, duration:1.3}, 6.3)
+
+// 6.6-11: three concept planes fan in
+  .set('#concepts', {opacity:1, z:520}, 6.65)
+  .to('#concepts', {z:80, duration:1.4}, 6.65)
+  .from('#concepts h2', {y:60, opacity:0, duration:.8}, 6.7)
+  .fromTo('.card', {z:-500, rotateY:24, opacity:0}, {z:(i)=>[110,0,-90][i], rotateY:(i)=>[26,0,-26][i], opacity:1, duration:1.1, stagger:.14}, 6.85)
+  .to('#world', {rotateY:-4, rotateX:0, z:-240, duration:2.0}, 7.6)
+  .to('#concepts', {opacity:0, z:-380, duration:.55}, 10.9)
+  .to('#world', {rotateY:5, rotateX:3, z:0, duration:1.1}, 10.9)
+
+// 11.2-14.4: chosen
+  .set('#chosen', {opacity:1, z:520}, 11.25)
+  .to('#chosen', {z:250, duration:1.1}, 11.25)
+  .from('#chosen .micro', {y:20, opacity:0, duration:.5}, 11.3)
+  .from('#chosen h2', {y:80, opacity:0, duration:.9}, 11.35)
+  .from('#chosen .scoreline', {y:24, opacity:0, duration:.6}, 11.85)
+  .to('#chosen', {opacity:0, z:-420, duration:.5}, 14.0)
+  .to('#world', {rotateY:-7, rotateX:-2, z:-100, duration:1.0}, 14.0)
+
+// 14.4-18.2: mechanism
+  .set('#code', {opacity:1, z:520}, 14.45)
+  .to('#code', {z:260, duration:1.0}, 14.45)
+  .from('#code .micro', {y:20, opacity:0, duration:.5}, 14.5)
+  .from('#code pre', {y:26, opacity:0, duration:.7}, 14.65)
+  .from('#code .out', {y:16, opacity:0, duration:.55}, 15.1)
+  .to('#code', {opacity:0, z:-420, duration:.5}, 17.8)
+  .to('#world', {rotateY:9, rotateX:4, z:-120, duration:1.1}, 17.8)
+
+// 18.2-22.2: proof
+  .set('#proof', {opacity:1, z:620}, 18.25)
+  .to('#proof', {z:300, duration:1.15}, 18.25)
+  .from('#proof .micro', {y:20, opacity:0, duration:.5}, 18.3)
+  .from('#proof .num', {scale:.35, opacity:0, duration:1.0, ease:'back.out(1.5)'}, 18.4)
+  .from('#proof .cap', {y:20, opacity:0, duration:.6}, 19.0)
+  .to('#proof', {opacity:0, z:-420, duration:.55}, 21.8)
+  .to('#world', {rotateY:-5, rotateX:-3, z:-100, duration:1.0}, 21.8)
+
+// 22.2-25: profile
+  .set('#profile', {opacity:1, z:520}, 22.25)
+  .to('#profile', {z:220, duration:1.0}, 22.25)
+  .from('.pcard', {z:-420, rotateY:-14, opacity:0, duration:.9, stagger:.12}, 22.35)
+  .to('#profile', {opacity:0, z:-420, duration:.55}, 24.8)
+  .to('#world', {rotateY:4, rotateX:0, z:0, duration:1.0}, 24.8)
+
+// 25-30: lockup
+  .set('#lockup', {opacity:1, z:620}, 25.05)
+  .to('#lockup', {z:0, duration:1.3}, 25.05)
+  .from('#lockup h1', {y:80, opacity:0, duration:1.0}, 25.1)
+  .from('#lockup .stats', {y:28, opacity:0, duration:.7}, 25.8)
+  .from('#lockup .url', {y:18, opacity:0, duration:.6}, 26.3)
+  .to({}, {duration:.1}, 29.9);
+
+window.__tl = tl;
+window.__filmReady = true;
+</script>
+</body>
+</html>
